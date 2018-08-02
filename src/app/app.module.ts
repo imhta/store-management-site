@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-
+import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { AppRoutingModule, routingComponent } from './app-routing.module';
 import {MatCardModule} from '@angular/material/card';
@@ -20,6 +20,8 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from './effects/auth.effect';
 import { authReducer, storeCheckReducer } from './reducers/auth.reducers';
+import { HomePageComponent } from './home-page/home-page.component';
+import { NavbarComponent } from './navbar/navbar.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,10 +30,14 @@ import { authReducer, storeCheckReducer } from './reducers/auth.reducers';
     StoreCheckComponent,
     SignUpComponent,
     SignInComponent,
+    HomePageComponent,
+    NavbarComponent,
+
 
 
   ],
   imports: [
+    HttpClientModule,
     BrowserModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,

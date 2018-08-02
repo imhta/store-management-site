@@ -1,0 +1,11 @@
+.active{
+  border-radius: 0px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+.top-margin{
+margin-top: 40px;
+}
+.max-width{
+  max-width: 250px;
+}

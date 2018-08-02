@@ -38,7 +38,7 @@ export function storeCheckReducer(state: Store, action: Action) {
       return {sid: action.payload, error: null, loading: false};
 
     case AuthActions.SID_NOTFOUND:
-      return {sid: null, error: 'your store sid not found', loading: false };
+      return {sid: null, error: 'your store id not found', loading: false };
 
     default:
       return {sid: null, error: null, loading: false};

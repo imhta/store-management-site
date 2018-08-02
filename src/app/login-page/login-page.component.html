@@ -3,8 +3,8 @@
       <app-logo></app-logo>
         <h1 class="toolbar">CLOTHX</h1>
           <app-store-check *ngIf="!storeid"></app-store-check>
-          {{error}}
-          <app-sign-in *ngIf="storeid"></app-sign-in>
+          <p class="error">{{error}}</p>
+          <app-sign-in [sid]="storeid" *ngIf="storeid"></app-sign-in>
             <p class="mt-5 mb-3 text-muted">© 2017-2018</p>
         </form>
 
