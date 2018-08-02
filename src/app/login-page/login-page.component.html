@@ -1,9 +1,11 @@
-<div class="text-center">
+<div class="text-center" >
     <form class="form-signin">
       <app-logo></app-logo>
         <h1 class="toolbar">CLOTHX</h1>
-          <app-store-check></app-store-check>
-          <p class="mt-5 mb-3 text-muted">© 2017-2018</p>
+          <app-store-check *ngIf="!storeid"></app-store-check>
+          {{error}}
+          <app-sign-in *ngIf="storeid"></app-sign-in>
+            <p class="mt-5 mb-3 text-muted">© 2017-2018</p>
         </form>
 
 </div>

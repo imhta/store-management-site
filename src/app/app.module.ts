@@ -16,6 +16,10 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import { environment } from '../environments/environment';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { AuthEffects } from './effects/auth.effect';
+import { authReducer, storeCheckReducer } from './reducers/auth.reducers';
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,15 +36,21 @@ import { environment } from '../environments/environment';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     FormsModule,
-    AppRoutingModule,
     MatCardModule,
     MatToolbarModule,
     MatCheckboxModule,
+    AppRoutingModule,
     AngularFirestoreModule,
     AngularFireStorageModule,
-    AngularFireModule.initializeApp(environment.firebase)
+    AngularFireModule.initializeApp(environment.firebase),
+    StoreModule.forRoot({
+      sid: storeCheckReducer,
+      user: authReducer
+    }),
+    EffectsModule.forRoot([AuthEffects]),
 
   ],
+  exports: [],
   providers: [
     {provide: MAT_CHECKBOX_CLICK_ACTION, useValue: 'check'}
   ],
