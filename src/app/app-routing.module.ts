@@ -20,4 +20,4 @@ const routes: Routes = [
 export class AppRoutingModule { }
 // tslint:disable-next-line:eofline
 // tslint:disable-next-line:semicolon
-export const routingComponent = [LoginPageComponent, HomePageComponent]
+export const routingComponent = [ HomePageComponent]

@@ -1,33 +1,19 @@
 import { Action } from '@ngrx/store';
-import {User, Store} from '../models/auth.model';
+import {User} from '../models/auth.model';
 
-export const CHECK_SID           = 'Check sid';
-export const SID_FOUND           = 'Sid found';
 export const NETWORK_ERROR       = 'Network error';
-export const SID_NOTFOUND        = 'Sid not found';
 export const LOGIN               = 'Logging in';
 export const LOGIN_SUCCESS       = 'Logedin successfully';
 export const LOGIN_FAILED        = 'Login failed';
+export const LOGOUT               = 'Logging out';
+export const LOGOUT_SUCCESS       = 'Logedout successfully';
+export const LOGOUT_FAILED        = 'Logout failed';
 
 
-export class CheckSid implements Action {
-  readonly type = CHECK_SID;
-  constructor(public payload: string) {}
-}
-
-export class SidFound implements Action {
-  readonly type = SID_FOUND;
-  constructor(public payload: any) {}
-}
 
 export class NetworkError implements Action {
   readonly type = NETWORK_ERROR;
   constructor(public payload: any) {}
-}
-
-export class SidNotFound implements Action {
-  readonly type = SID_NOTFOUND;
-  constructor(public payload?: any) {}
 }
 
 export class Login implements Action {
@@ -37,23 +23,36 @@ export class Login implements Action {
 
 export class LoginSuccess implements Action {
   readonly type = LOGIN_SUCCESS;
-  constructor(public payload?: User) {}
+  constructor(public payload: User) {}
 }
 
 export class LoginFailed implements Action {
   readonly type = LOGIN_FAILED;
   constructor(public payload?: any) {}
 }
+export class LogOut implements Action {
+  readonly type = LOGOUT;
+  constructor(public payload?: User) {}
+}
 
+export class LogoutSuccess implements Action {
+  readonly type = LOGOUT_SUCCESS;
+  constructor(public payload?: any) {}
+}
+
+export class LogoutFailed implements Action {
+  readonly type = LOGOUT_FAILED;
+  constructor(public payload?: any) {}
+}
 
 export type All
-  = CheckSid
-  | SidFound
-  | SidNotFound
+  = Login
   | NetworkError
-  | Login
   | LoginSuccess
-  | LoginFailed;
+  | LoginFailed
+  | LogOut
+  | LogoutSuccess
+  | LogoutFailed;
 
 
 

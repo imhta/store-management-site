@@ -1,17 +1,26 @@
-export interface User {
-  sid: string;
-  phoneNumber: string;
-  type: string;
-  key: string;
-  role: string;
-  name: string;
-  token: string;
-  loading?: boolean;
-  error?: string;
+export interface Roles {
+  store: boolean;
+  author?: boolean;
 }
 
-export interface Store {
-  sid: string;
-  loading?: boolean;
-  error?: string;
+export class User {
+  email:    string;
+  displayName: string;
+  photoUrl: string;
+  roles:    Roles;
+
+  constructor(authData) {
+    this.email    = authData.email;
+    this.displayName     = authData.displayName;
+    this.photoUrl = authData.photoURL;
+    this.roles    = { store: true };
+  }
+  toJson() {
+    return{
+      'email': this.email,
+      'displayName': this.displayName,
+      'photoUrl': this.photoUrl,
+      'roles': this.roles
+    };
+  }
 }

@@ -1,14 +1,18 @@
 
+<div class="page" [style.height]="this.windowHeight">
+
 <div class="text-center center" >
-    <form class="form-signin">
+    <form class="form-signin card">
       <app-logo></app-logo>
         <h1 class="toolbar">CLOTHX</h1>
-          <app-store-check *ngIf="!storeid"></app-store-check>
-          <p class="error">{{error}}</p>
-          <app-sign-in [sid]="storeid" *ngIf="storeid"></app-sign-in>
-            <p class="mt-5 mb-3 text-muted">© 2017-2018</p>
+        <h6>explore neighbourhood fashion</h6>
+            <div class="google-login-button" (click)="login()"></div>
+            <div class="terms-condition-container">
+                <p class="mt-5 mb-3 text-muted ">*By logging in, you agree to our Terms & Conditions & Privacy Policy.</p>
+            </div>
+            <p class="mt-5 mb-3 text-muted">©2017-2018</p>
         </form>
 
 </div>
 
-
+</div>

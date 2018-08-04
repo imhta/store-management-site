@@ -1,30 +1,68 @@
-app-store-check,
-app-sign-in {
+.page {
+  width: 100%;
+  background-image: url(../../assets/background/background.jpeg);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  background-color: #464646;
+}
+app-logo {
   margin: 20px;
 }
 .toolbar {
-  font-family: "Passion One", cursive;
-  font-size: 40px;
+  font-family: "Prompt", sans-serif;
+  letter-spacing: 2px;
+  font-size: 30px;
+  margin: 10px;
 }
 
 .form-signin {
   width: 100%;
-  max-width: 330px;
-  max-height: 500px;
   padding: 15px;
   margin: auto;
 }
 .error {
-  color: red
+  color: red;
 }
-.center{
+.center {
   width: auto;
-  height: 500px;
+  height: 600px;
   position: absolute;
-  top:0;
+  top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-
   margin: auto;
+}
+
+.google-login-button:hover {
+  background-image: url("../../assets/google-login-buttons/btn_google_signin_dark_focus_web@2x.png");
+}
+.google-login-button:active {
+  background-image: url("../../assets/google-login-buttons/btn_google_signin_dark_pressed_web@2x.png");
+}
+
+.google-login-button {
+  background-image: url("../../assets/google-login-buttons/btn_google_signin_dark_normal_web@2x.png");
+  background-size: 12rem;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 250px;
+  height: 50px;
+  margin: 0 auto;
+  margin-top: 50px;
+}
+.card {
+  border-radius: 10px;
+  max-width: 400px;
+  max-height: 600px;
+  -webkit-box-shadow: 0px 0px 150px 0px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0px 0px 150px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 150px 0px rgba(0, 0, 0, 0.1);
+}
+.terms-condition-container {
+  margin: 10px;
+  margin-bottom: 25px;
+  font-size: 12px;
 }

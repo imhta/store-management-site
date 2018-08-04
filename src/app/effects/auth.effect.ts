@@ -1,37 +1,33 @@
-import { AngularFirestore } from 'angularfire2/firestore';
 import { Injectable } from '@angular/core';
 import { Effect, Actions } from '@ngrx/effects';
 
 import { Observable } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
-
+import { map, mergeMap, tap } from 'rxjs/operators';
 import * as authActions from '../actions/auth.actions';
+import { AuthService } from '../service/auth.service';
 export type Action = authActions.All;
-
 @Injectable()
 export class AuthEffects {
-  constructor(private actions: Actions, private db: AngularFirestore) {}
+  constructor(private actions: Actions, private authService: AuthService) {}
 
   @Effect()
-  getPost: Observable<Action> = this.actions
-    .ofType(authActions.CHECK_SID)
-    .pipe(map((action: authActions.CheckSid) => action.payload))
+  login: Observable<Action> = this.actions
+    .ofType(authActions.LOGIN)
+    .pipe(mergeMap(() => this.authService.googleLogin()))
     .pipe(
-      mergeMap(payload =>
-        this.db
-          .collection('stores')
-          .doc(payload)
-          .ref.get()
-          .then(sid => sid)
-      )
-    )
-    .pipe(
-      map(sid => {
-        if (sid.exists) {
-          return new authActions.SidFound(sid.data()['sid']);
+      map(data => {
+        if (data) {
+          return new authActions.LoginSuccess(data);
         } else {
-          return new authActions.SidNotFound();
+          console.log('failed');
+          return new authActions.LoginFailed();
         }
       })
     );
+
+  @Effect()
+  logout: Observable<Action> = this.actions.ofType(authActions.LOGOUT).pipe(
+    tap(() => this.authService.signOut()),
+    map(() => new authActions.LogoutSuccess(null))
+  );
 }

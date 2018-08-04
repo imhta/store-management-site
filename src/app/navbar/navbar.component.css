@@ -1,7 +1,8 @@
 .navbar-brand{
-  font-family: "Passion One", cursive;
-  font-size: 30px;
-  letter-spacing: 2px;
+  font-family: 'Prompt', sans-serif;
+  font-size: 28px;
+  letter-spacing: 3px;
+
 }
 .btn{
   border-radius: 20px;
