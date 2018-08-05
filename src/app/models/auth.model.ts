@@ -1,6 +1,6 @@
 export interface Roles {
   store: boolean;
-  author?: boolean;
+  customer?: boolean;
 }
 
 export class User {
@@ -8,7 +8,7 @@ export class User {
   displayName: string;
   photoUrl: string;
   roles:    Roles;
-
+  loading: boolean;
   constructor(authData) {
     this.email    = authData.email;
     this.displayName     = authData.displayName;

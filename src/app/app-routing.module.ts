@@ -5,16 +5,22 @@ import {RouterModule, Routes } from '@angular/router';
 import { HomePageComponent } from './home-page/home-page.component';
 
 
+
 const routes: Routes = [
-  {path: '', component: HomePageComponent},
-  {path: 'login', component: LoginPageComponent},
+  {path: '', component: LoginPageComponent},
+  {path: 'home', component: HomePageComponent},
 ];
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+
   ],
-  exports: [RouterModule],
+  exports: [
+    RouterModule,
+
+
+  ],
   declarations: []
 })
 export class AppRoutingModule { }

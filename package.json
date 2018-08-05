@@ -24,6 +24,7 @@
     "@angular/router": "^6.0.3",
     "@ngrx/core": "^1.2.0",
     "@ngrx/effects": "^6.0.1",
+    "@ngrx/router-store": "^1.2.6",
     "@ngrx/store": "^6.0.1",
     "@ngrx/store-devtools": "^6.0.1",
     "angularfire2": "^5.0.0-rc.11",

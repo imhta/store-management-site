@@ -19,6 +19,9 @@ import { authReducer } from './reducers/auth.reducers';
 import { HomePageComponent } from './home-page/home-page.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { LoginPageComponent } from './login-page/login-page.component';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,6 +38,7 @@ import { LoginPageComponent } from './login-page/login-page.component';
     BrowserModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    MatProgressBarModule,
     FormsModule,
     AppRoutingModule,
     AngularFireAuthModule,
@@ -45,6 +49,9 @@ import { LoginPageComponent } from './login-page/login-page.component';
       user: authReducer
     }),
     EffectsModule.forRoot([AuthEffects]),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25
+    })
 
   ],
   exports: [],

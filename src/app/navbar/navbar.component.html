@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light bg">
   <a class="navbar-brand" href="#">
-    <img src="../../assets/logo/clothx_logo@2x.png"  height="50" class="d-inline-block align-top" alt="">
+    <img src="../../assets/logo/clothx_logo@2x.png"  height="40" class="d-inline-block align-top" alt="">
     <a> CLOTHX</a>
   </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -16,15 +16,15 @@
     <div class="form-inline my-2 my-lg-0">
       <ul class="navbar-nav mr-auto">
         <li>
-          <button  [className]="select == 1 ? 'btn btn-primary' : 'btn btn-light'"> Dashboard</button>
-          <button  [className]="select == 2 ? 'btn btn-primary' : 'btn btn-light'">Store</button>
-          <button  [className]="select == 3 ? 'btn btn-primary' : 'btn btn-light'">Notification</button>
-          <button  [className]="select == 4 ? 'btn btn-primary' : 'btn btn-light'">User</button>
-          <button  [className]="select == 5 ? 'btn btn-primary' : 'btn btn-light'">Help</button>
+          <button  [className]="select == 'dashboard' ? 'btn btn-primary' : 'btn btn-light'"> Dashboard</button>
+          <button  [className]="select == 'store' ? 'btn btn-primary' : 'btn btn-light'">Store</button>
+          <button  [className]="select == 'notification' ? 'btn btn-primary' : 'btn btn-light'">Notification</button>
+          <button  [className]="select == 'user' ? 'btn btn-primary' : 'btn btn-light'">User</button>
+          <button  [className]="select == 'help' ? 'btn btn-primary' : 'btn btn-light'">Help</button>
+          <button class="btn btn-light" (click)="logOut()"> Log out</button>
         </li>
-
       </ul>
-
+      <button   class="btn btn-light" *ngIf="false">Log in</button>
     </div>
   </div>
 </nav>
