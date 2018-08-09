@@ -11,12 +11,11 @@ app-logo {
   margin: 20px;
 }
 .toolbar {
-  font-family: "Prompt", sans-serif;
+  font-family: 'Audiowide', cursive;
   letter-spacing: 2px;
   font-size: 30px;
   margin: 10px;
 }
-
 .form-signin {
   width: 100%;
   padding: 15px;

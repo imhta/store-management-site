@@ -11,12 +11,15 @@ import { Observable } from 'rxjs';
 })
 export class NavbarComponent implements OnInit {
 @Input('select') select;
+loading;
 user$: Observable<User>;
 user: User;
+
   constructor(private store: Store<AppState>) { }
 
   ngOnInit() {  }
   logOut() {
+    this.loading = true;
     return this.store.dispatch(new AuthActions.LogOut());
   }
 }

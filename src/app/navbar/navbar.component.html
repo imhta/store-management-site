@@ -1,3 +1,5 @@
+<mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+
 <nav class="navbar navbar-expand-lg navbar-light bg">
   <a class="navbar-brand" href="#">
     <img src="../../assets/logo/clothx_logo@2x.png"  height="40" class="d-inline-block align-top" alt="">
@@ -21,10 +23,10 @@
           <button  [className]="select == 'notification' ? 'btn btn-primary' : 'btn btn-light'">Notification</button>
           <button  [className]="select == 'user' ? 'btn btn-primary' : 'btn btn-light'">User</button>
           <button  [className]="select == 'help' ? 'btn btn-primary' : 'btn btn-light'">Help</button>
-          <button class="btn btn-light" (click)="logOut()"> Log out</button>
+
         </li>
       </ul>
-      <button   class="btn btn-light" *ngIf="false">Log in</button>
+      <button class="btn btn-light" (click)="logOut()"> Log out</button>
     </div>
   </div>
 </nav>
