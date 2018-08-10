@@ -17,17 +17,17 @@ export class AuthService {
 
     ///// SignIn - SignOut Process /////
 
-    googleLogin() {
+  googleLogin() {
       const provider =  new firebase.auth.GoogleAuthProvider();
       return this.afAuth.auth.signInWithPopup(provider)
         .then(credential =>  {
             this.setUser(credential.user);
             return new User(credential.user);
-        }).catch((error) => null);
+        });
     }
 
     signOut() {
-      this.afAuth.auth.signOut();
+     return this.afAuth.auth.signOut();
     }
 
     //// Set user data ////
@@ -39,16 +39,12 @@ export class AuthService {
       const ref = this.db.collection('users').doc(authData.uid).ref;
       ref.onSnapshot((user) => {
         if (!user.exists) {
-           ref.set(userData.toJson());
+          return ref.set(userData.toJson());
         } else {
-          this.updateUser(ref, userData);
+         return  ref.update(userData.toJson());
         }
-        return null;
       });
     }
 
-    private updateUser(ref, userData) {
-      ref.update(userData.toJson());
-    }
 
 }

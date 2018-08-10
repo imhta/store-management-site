@@ -1,8 +1,3 @@
-export enum Roles {
-  Unknown,
-  Store
-}
-
 
 
 export class User {
@@ -10,14 +5,14 @@ export class User {
   uid: string;
   displayName: string;
   photoUrl: string;
-  roles:    Roles;
+  role:    'unknown' | 'store';
 
   constructor(authData) {
     this.email    = authData.email;
     this.displayName     = authData.displayName;
     this.photoUrl = authData.photoURL;
     this.uid = authData.uid;
-    this.roles    =  Roles.Store;
+    this.role    =  'store';
   }
   toJson() {
     return{
@@ -25,7 +20,7 @@ export class User {
       'displayName': this.displayName,
       'photoUrl': this.photoUrl,
       'uid': this.uid,
-      'roles': this.roles
+      'role': this.role
     };
   }
 }
@@ -34,5 +29,5 @@ export interface  UserModel {
   uid?: string;
   displayNam?: string;
   photoUrl?: string;
-  roles:    Roles;
+  role:   'unknown' | 'store';
 }

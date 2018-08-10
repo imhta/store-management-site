@@ -6,7 +6,6 @@ export class Login {
 
 export class LoginSuccessful {
   static readonly type = '[Auth] Login Successful';
-  constructor(private  payload: User) {}
 }
 
 export class LoginFailed {
@@ -21,7 +20,7 @@ export class Logout {
 
 export class LogoutSuccessful {
   static readonly type = '[Auth] Logout Successful';
-  constructor(private  payload: null) {}
+
 }
 
 export class LogoutFailed {

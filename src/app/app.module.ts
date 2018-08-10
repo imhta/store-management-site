@@ -20,7 +20,10 @@ import {AuthGuard} from './service/guard/auth.guard';
 
 import { NgxsModule } from '@ngxs/store';
 import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
-import {LoginState} from './shared/state/auth.state';
+import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+​
+import {AuthState} from './shared/state/auth.state';
 
 @NgModule({
   declarations: [
@@ -44,8 +47,10 @@ import {LoginState} from './shared/state/auth.state';
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireModule.initializeApp(environment.firebase),
-    NgxsModule.forRoot([LoginState]),
-    NgxsRouterPluginModule.forRoot()
+    NgxsModule.forRoot([AuthState]),
+    NgxsRouterPluginModule.forRoot(),
+    NgxsLoggerPluginModule.forRoot(),
+    NgxsReduxDevtoolsPluginModule.forRoot()
 
   ],
   exports: [],

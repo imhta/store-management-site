@@ -27,6 +27,7 @@
     "@ngxs/devtools-plugin": "^3.2.0",
     "@ngxs/logger-plugin": "^3.2.0",
     "@ngxs/router-plugin": "^3.2.0",
+    "@ngxs/storage-plugin": "^3.2.0",
     "@ngxs/store": "^3.2.0",
     "angularfire2": "^5.0.0-rc.11",
     "bootstrap": "^4.1.3",
