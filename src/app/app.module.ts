@@ -17,13 +17,12 @@ import { LoginPageComponent } from './login-page/login-page.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 import {AuthGuard} from './service/guard/auth.guard';
-
-import { NgxsModule } from '@ngxs/store';
+import {NgxsModule, Store} from '@ngxs/store';
 import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
-import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
-​
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';​
 import {AuthState} from './shared/state/auth.state';
+import {CheckAuthState} from './shared/actions/auth.actions';
 
 @NgModule({
   declarations: [
@@ -61,4 +60,8 @@ import {AuthState} from './shared/state/auth.state';
     CUSTOM_ELEMENTS_SCHEMA
   ]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(private  store: Store) {
+    this.store.dispatch(new CheckAuthState());
+  }
+}

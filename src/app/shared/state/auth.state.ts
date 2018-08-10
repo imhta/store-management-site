@@ -1,29 +1,55 @@
 import {Action, Selector, State, StateContext, Store} from '@ngxs/store';
 import {UserModel} from '../../models/auth.model';
-import {Login, Logout, LogoutFailed, LogoutSuccessful, LoginFailed, LoginSuccessful} from '../actions/auth.actions';
+import {
+  Login,
+  Logout,
+  LogoutFailed,
+  LogoutSuccessful,
+  LoginFailed,
+  LoginSuccessful,
+  CheckAuthState,
+  Authenticated, NotAuthenticated
+} from '../actions/auth.actions';
 import {AuthService} from '../../service/auth/auth.service';
 import { Navigate } from '@ngxs/router-plugin';
-​
+import {Observable} from 'rxjs';
 @State<UserModel>({
   name: 'user',
-  defaults: {
-    role: 'unknown'
-  }
+  defaults: null
 })
 export class AuthState {
+
   @Selector()
   static role(state: UserModel) { return state.role; }
+  @Selector()
+  static token(state: UserModel) { return state.token; }
+
   constructor(private authService: AuthService, private  store: Store) {
+  }
+  @Action(CheckAuthState)
+  async checkAuthState({setState}: StateContext<UserModel>) {
+
+    await this.authService
+      .checkAuth()
+      .then((user) => user
+        .subscribe((userData) => {
+          if (userData !== null) {
+            setState(userData);
+            return this.store.dispatch(new Authenticated());
+          } else {
+            return this.store.dispatch(new NotAuthenticated());
+          }
+        }));
   }
 
   @Action(Login)
   async login({setState}: StateContext<UserModel>) {
     await this.authService.googleLogin()
-      .then((user) => {
-        setState(user);
+      .then((data) => {
+        setState(data);
         return this.store.dispatch(new LoginSuccessful());
       })
-      .catch((err) => this.store.dispatch(new LoginFailed(err)));
+      .catch((err) => new LoginFailed(err));
 
   }
 
@@ -31,17 +57,16 @@ export class AuthState {
   async logout({setState}: StateContext<UserModel>) {
     await this.authService.signOut()
       .then(() => {
-        setState({role: 'unknown'});
+        setState(null);
         return this.store.dispatch(new LogoutSuccessful());
       })
       .catch((err) => this.store.dispatch(new LogoutFailed(err)));
   }
-  @Action(LoginSuccessful)
+  @Action([LoginSuccessful, Authenticated])
   navigateToHome() {
     return this.store.dispatch(new Navigate(['/home']));
   }
-  @Action(LogoutSuccessful)
-
+  @Action([LogoutSuccessful, NotAuthenticated])
   navigateToLogin() {
     return this.store.dispatch(new Navigate(['']));
   }

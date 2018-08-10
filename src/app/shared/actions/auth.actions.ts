@@ -1,4 +1,13 @@
-import {User} from 'firebase';
+export class CheckAuthState {
+  static readonly type = '[Auth] Checking Auth State';
+}
+export class Authenticated {
+  static readonly type = '[Auth] Already Authenticated';
+}
+
+export class NotAuthenticated {
+  static readonly type = '[Auth] Not already Authenticated';
+}
 
 export class Login {
   static readonly type = '[Auth] Attempt Login';

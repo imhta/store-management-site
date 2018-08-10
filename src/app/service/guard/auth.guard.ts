@@ -13,7 +13,7 @@ export class AuthGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    const role = this.store.selectSnapshot(AuthState.role);
-    return role !== 'unknown';
+    const token = this.store.selectSnapshot(AuthState.token);
+    return token !== undefined;
   }
 }
