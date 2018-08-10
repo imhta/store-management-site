@@ -21,7 +21,11 @@ export class User {
       'photoUrl': this.photoUrl,
       'uid': this.uid,
       'token': this.token,
-      'role': this.role
+      'role': this.role,
+      'isRegister': false,
+      'isEmployee': false,
+      'employeeOf': null,
+      'registerOf': []
     };
   }
 }
@@ -32,4 +36,8 @@ export interface  UserModel {
   photoUrl?: string;
   token?: string;
   role?:   'unknown' | 'store';
+  isRegister?: boolean;
+  isEmployee?: boolean;
+  employeeOf?: string;
+  registerOf?: string[];
 }

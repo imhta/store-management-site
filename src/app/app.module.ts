@@ -23,6 +23,7 @@ import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';​
 import {AuthState} from './shared/state/auth.state';
 import {CheckAuthState} from './shared/actions/auth.actions';
+import {LoadingState, LoadingTrue} from './shared/state/loading.state';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,7 @@ import {CheckAuthState} from './shared/actions/auth.actions';
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireModule.initializeApp(environment.firebase),
-    NgxsModule.forRoot([AuthState]),
+    NgxsModule.forRoot([AuthState, LoadingState]),
     NgxsRouterPluginModule.forRoot(),
     NgxsLoggerPluginModule.forRoot(),
     NgxsReduxDevtoolsPluginModule.forRoot()
@@ -62,6 +63,6 @@ import {CheckAuthState} from './shared/actions/auth.actions';
 })
 export class AppModule {
   constructor(private  store: Store) {
-    this.store.dispatch(new CheckAuthState());
+    this.store.dispatch([new LoadingTrue(), new CheckAuthState()]);
   }
 }

@@ -12,7 +12,7 @@ import {
 } from '../actions/auth.actions';
 import {AuthService} from '../../service/auth/auth.service';
 import { Navigate } from '@ngxs/router-plugin';
-import {Observable} from 'rxjs';
+import {LoadingFalse} from './loading.state';
 @State<UserModel>({
   name: 'user',
   defaults: null
@@ -49,7 +49,7 @@ export class AuthState {
         setState(data);
         return this.store.dispatch(new LoginSuccessful());
       })
-      .catch((err) => new LoginFailed(err));
+      .catch((err) => this.store.dispatch([new LoadingFalse(), new LoginFailed(err)]));
 
   }
 
@@ -58,17 +58,17 @@ export class AuthState {
     await this.authService.signOut()
       .then(() => {
         setState(null);
-        return this.store.dispatch(new LogoutSuccessful());
+        return this.store.dispatch( new LogoutSuccessful());
       })
-      .catch((err) => this.store.dispatch(new LogoutFailed(err)));
+      .catch((err) => this.store.dispatch([new LoadingFalse(), new LogoutFailed(err)]));
   }
   @Action([LoginSuccessful, Authenticated])
   navigateToHome() {
-    return this.store.dispatch(new Navigate(['/home']));
+    return this.store.dispatch([new LoadingFalse(), new Navigate(['/home'])]);
   }
   @Action([LogoutSuccessful, NotAuthenticated])
   navigateToLogin() {
-    return this.store.dispatch(new Navigate(['']));
+    return this.store.dispatch([new LoadingFalse(), new Navigate([''])]);
   }
 }
 

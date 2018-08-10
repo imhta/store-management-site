@@ -22,11 +22,10 @@
           <button  [className]="select == 'store' ? 'btn btn-primary' : 'btn btn-light'">Store</button>
           <button  [className]="select == 'notification' ? 'btn btn-primary' : 'btn btn-light'">Notification</button>
           <button  [className]="select == 'user' ? 'btn btn-primary' : 'btn btn-light'">User</button>
-          <button  [className]="select == 'help' ? 'btn btn-primary' : 'btn btn-light'">Help</button>
-
+          <button class="btn btn-light" (click)="logout()"> Log out</button>
         </li>
       </ul>
-      <button class="btn btn-light" (click)="logout()"> Log out</button>
+
     </div>
   </div>
 </nav>
