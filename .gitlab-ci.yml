@@ -2,6 +2,9 @@ image: node:8.11.1
 
 before_script:
    - npm install
+ 
+stages:
+   - pages
 pages:
   artifacts:
     paths:
