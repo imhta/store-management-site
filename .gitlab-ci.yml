@@ -6,6 +6,8 @@ before_script:
 stages:
    - pages
 pages:
+  stage:
+     - pages
   artifacts:
     paths:
        - dist
