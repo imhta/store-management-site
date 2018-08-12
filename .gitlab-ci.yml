@@ -1,0 +1,15 @@
+image: node:6.9.1
+
+before_script:
+   - npm install
+pages:
+  artifacts:
+    paths:
+       - dist
+  cache:
+    paths:
+       - node_modules
+  only:
+      - master
+  script:
+      - npm run build
