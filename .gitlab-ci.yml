@@ -10,10 +10,10 @@ pages:
   artifacts:
     paths:
        - dist
+  script:
+      - npm run build
   cache:
     paths:
        - node_modules
   only:
       - master
-  script:
-      - npm run build
