@@ -4,8 +4,6 @@ before_script:
    - npm install
  
 pages:
-  script:
-      - npm run build
   artifacts:
     paths:
        - dist
@@ -14,3 +12,5 @@ pages:
        - node_modules
   only:
       - master
+  script:
+      - npm run build
