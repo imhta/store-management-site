@@ -3,6 +3,7 @@
 @import ".././node_modules/bootstrap/dist/css/bootstrap.css";
 @import url('https://fonts.googleapis.com/css?family=Audiowide');
 @import url('https://fonts.googleapis.com/css?family=Roboto:400');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:900');
 
 body{
   font-family: 'Roboto', sans-serif;

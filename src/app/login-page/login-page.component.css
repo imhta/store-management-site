@@ -53,6 +53,10 @@ app-logo {
   margin-top: 50px;
   z-index: 2;
 }
+.disabled, .disabled:active, .disabled:hover{
+  background-image: url("../../assets/google-login-buttons/btn_google_signin_dark_disabled_web@2x.png");
+}
+
 .card {
   border-radius: 10px;
   max-width: 400px;
@@ -68,3 +72,4 @@ app-logo {
   font-size: 12px;
   z-index: 0
 }
+

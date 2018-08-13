@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { User } from '../models/auth.model';
+import {Component, OnInit, Input} from '@angular/core';
+import {User, UserModel} from '../models/auth.model';
 import {Select, Store} from '@ngxs/store';
 import {Logout} from '../shared/actions/auth.actions';
 import {LoadingTrue} from '../shared/state/loading.state';
@@ -11,19 +11,21 @@ import {LoadingTrue} from '../shared/state/loading.state';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-@Input('select') select;
-@Select('loading') loading$;
-loading: boolean;
+  @Select('loading') loading$;
+  @Select('user') user$;
+  loading: boolean;
+  user: UserModel;
 
-user: User;
 
-  constructor(private  store: Store) { }
+  constructor(private  store: Store) {
+  }
 
   ngOnInit() {
     this.loading$.subscribe((data) => this.loading = data.valueOf());
+    this.user$.subscribe((data) => this.user = data.valueOf());
   }
 
   logout() {
-   return this.store.dispatch([new LoadingTrue(), new Logout()]);
+    return this.store.dispatch([new LoadingTrue(), new Logout()]);
   }
 }

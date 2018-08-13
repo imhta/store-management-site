@@ -7,7 +7,7 @@
       <app-logo></app-logo>
         <h1 class="toolbar">Clothx</h1>
         <h6  >explore neighbourhood fashion</h6>
-            <div class="google-login-button" (click)="login()"></div>
+      <div class="google-login-button" (click)="loading? null: login()"  [ngClass]="{'disabled': loading}"></div>
             <div class="terms-condition-container">
                 <p class="mt-5 mb-3 text-muted ">*By logging in, you agree to our Terms & Conditions & Privacy Policy.</p>
             </div>

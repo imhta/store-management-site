@@ -4,11 +4,15 @@ import { CommonModule } from '@angular/common';
 import {RouterModule, Routes } from '@angular/router';
 import { HomePageComponent } from './home-page/home-page.component';
 import {AuthGuard} from './service/guard/auth.guard';
+import {SelectStorePageComponent} from './select-store-page/select-store-page.component';
+import {SetupStorePageComponent} from './setup-store-page/setup-store-page.component';
 
 
 
 const routes: Routes = [
   {path: '', component: LoginPageComponent},
+  {path: 'select/store', component: SelectStorePageComponent, canActivate: [AuthGuard]},
+  {path: 'store/setup', component: SetupStorePageComponent, canActivate: [AuthGuard]},
   {path: 'home', component: HomePageComponent, canActivate: [AuthGuard]},
 ];
 @NgModule({

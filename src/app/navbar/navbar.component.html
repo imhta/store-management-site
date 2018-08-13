@@ -1,31 +1,26 @@
 <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+<div class="bg-dark collapse" id="navbarHeader">
+  <div class="container">
+    <div class="app"><i class="material-icons">trending_up</i> dashboard</div>
+    <div class="app"><i class="material-icons">store</i>store</div>
+    <div class="app"><i class="material-icons">notifications_none</i>notification</div>
+    <div class="app"><i class="material-icons">account_circle</i>account</div>
+    <div class="app"><i class="material-icons">attach_money</i>billing</div>
+    <div class="app"><i class="material-icons">live_help</i>help</div>
+    <div class="app"><i class="material-icons">headset_mic</i>feedback</div>
+    <div class="app" (click)="logout()"><i class="material-icons">exit_to_app</i>log out</div>
+  </div>
+</div>
 
-<nav class="navbar navbar-expand-lg navbar-light bg">
-  <a class="navbar-brand" href="#">
-    <img src="../../assets/logo/logo.png"  height="40" class="d-inline-block align-top" alt="">
-    <a> Clothx</a>
-  </a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-    aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+<nav class="bg navbar">
+  <div>
+    <img src="../../assets/logo/logo.png" class="logo align-top" alt="">
+    <h4 class="logo-title">Clothx</h4>
+  </div>
+  <div>
+    <img class="profile-pic" src="{{this.user.photoUrl}}">
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-
-
-    </ul>
-    <div class="form-inline my-2 my-lg-0">
-      <ul class="navbar-nav mr-auto">
-        <li>
-          <button  [className]="select == 'dashboard' ? 'btn btn-primary' : 'btn btn-light'"> Dashboard</button>
-          <button  [className]="select == 'store' ? 'btn btn-primary' : 'btn btn-light'">Store</button>
-          <button  [className]="select == 'notification' ? 'btn btn-primary' : 'btn btn-light'">Notification</button>
-          <button  [className]="select == 'user' ? 'btn btn-primary' : 'btn btn-light'">User</button>
-          <button class="btn btn-light" (click)="logout()"> Log out</button>
-        </li>
-      </ul>
-
-    </div>
+    <a data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="true"
+       aria-label="Toggle navigation" class="menu"><i class="material-icons">apps</i></a>
   </div>
 </nav>

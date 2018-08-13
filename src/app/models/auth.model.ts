@@ -23,8 +23,6 @@ export class User {
       'token': this.token,
       'role': this.role,
       'isRegister': false,
-      'isEmployee': false,
-      'employeeOf': null,
       'registerOf': []
     };
   }
@@ -32,12 +30,10 @@ export class User {
 export interface  UserModel {
   email?:    string;
   uid?: string;
-  displayNam?: string;
+  displayName?: string;
   photoUrl?: string;
   token?: string;
   role?:   'unknown' | 'store';
   isRegister?: boolean;
-  isEmployee?: boolean;
-  employeeOf?: string;
   registerOf?: string[];
 }

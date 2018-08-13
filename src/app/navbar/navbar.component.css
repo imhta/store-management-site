@@ -1,18 +1,114 @@
-.navbar-brand{
+.logo-title {
   font-family: 'Audiowide', cursive;
+  margin-top: 15px;
+  display: flex;
+  float: left;
+}
+
+.logo {
+  margin: 10px 10px 10px 0;
+  width: 40px;
+  display: flex;
+  float: left;
+}
+
+.profile-pic {
+  border-radius: 50%;
+  margin: 10px;
+  cursor: pointer;
+  display: flex;
+  width: 35px;
+  float: right;
+
+}
+
+.profile-pic:hover {
+  border: solid 1px transparent;
+}
+
+.profile-pic:active {
+  border: solid 2px aquamarine;
+}
+
+.bg {
+  background-color: white;
+}
+
+.menu {
+
+  border-radius: 50%;
+  cursor: pointer;
+  float: right;
+  display: flex;
+  width: 35px;
+  height: 35px;
+  color: lightgray;
+  margin: 10px;
+  padding-top: 3px;
+}
+
+.menu .material-icons {
+  margin: 0 auto;
+  color: grey;
   font-size: 25px;
-  letter-spacing: 3px;
 
 }
-.btn{
-  border-radius: 20px;
-  margin: 5px;
+
+.menu:hover {
+  border: solid 1px transparent;
 }
 
+.menu:active {
+  border: solid 2px aquamarine;
+}
 
-.bg{
-background-color: white;
--webkit-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.08);
--moz-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.08);
-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.08);
+.container {
+  max-width: 940px;
+  margin: 0 20px;
+  display: grid;
+  grid-gap: 10px;
+  padding: 20px;
+
+}
+
+.container {
+  display: grid;
+  margin: 0 auto;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  grid-auto-rows: minmax(100px, auto);
+}
+
+.app {
+  /* needed for the flex layout*/
+  margin-left: 2px;
+  margin-right: 5px;
+  flex: 1 1 200px;
+  cursor: pointer;
+}
+
+.app .material-icons {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.app:hover {
+  border: solid 1px transparent;
+}
+
+.app:active {
+  border: solid 2px aquamarine;
+}
+
+.container > * {
+  background-color: #444;
+  color: #fff;
+  border-radius: 5px;
+  padding: 20px;
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+@supports (display: grid) {
+  .container > * {
+    margin: 0;
+  }
 }
