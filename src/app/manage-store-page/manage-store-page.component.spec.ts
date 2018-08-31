@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SelectStorePageComponent } from './select-store-page.component';
+import { ManageStorePageComponent } from './manage-store-page.component';
 
-describe('SelectStorePageComponent', () => {
-  let component: SelectStorePageComponent;
-  let fixture: ComponentFixture<SelectStorePageComponent>;
+describe('ManageStorePageComponent', () => {
+  let component: ManageStorePageComponent;
+  let fixture: ComponentFixture<ManageStorePageComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SelectStorePageComponent ]
+      declarations: [ ManageStorePageComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SelectStorePageComponent);
+    fixture = TestBed.createComponent(ManageStorePageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

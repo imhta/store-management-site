@@ -20,6 +20,7 @@ user$: Observable<UserModel>;
   this.user$ = await this.afAuth.authState.pipe(
       switchMap(user => {
         if (user) {
+          // @ts-ignore
           return this.db.doc<UserModel>(`users/${user.uid}`).valueChanges();
         } else {
           return of(null);

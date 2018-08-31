@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Store} from '@ngxs/store';
+import {Navigate} from '@ngxs/router-plugin';
+import {GetLinkedStores} from '../shared/actions/store.actions';
+
 
 @Component({
   selector: 'app-linked-store',
@@ -7,9 +11,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LinkedStoreComponent implements OnInit {
 
-  constructor() { }
+  constructor(private store: Store) { }
 
-  ngOnInit() {
+ ngOnInit() {
+   this.store.dispatch(new GetLinkedStores());
   }
-
+  navigateToSetupStore() {
+    return this.store.dispatch(new Navigate(['store/setup']));
+  }
 }

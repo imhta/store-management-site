@@ -2,14 +2,6 @@
   display: grid;
   grid-template-columns:  repeat(6,  1fr );
   grid-template-rows: repeat(6,  1fr );
-  position: absolute;
-  z-index: -1;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-
-
 }
 
 .card{
@@ -25,10 +17,12 @@
   width:120px;
   margin: 0 auto;
 }
+
 .content{
  text-align: center;
   margin-top: 20px;
   margin-bottom: 15px;
+  font-weight: 900;
   font-family: 'Montserrat', sans-serif;
   font-size: 30px;
   color: grey;
@@ -43,8 +37,12 @@
   border: solid 4px aquamarine;
   color: #214c3f;
   font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
   letter-spacing: 2px;
-  font-weight: bolder;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select:none;
+  user-select:none;
 }
 .setup-link:hover {
   border: solid 5px aquamarine;

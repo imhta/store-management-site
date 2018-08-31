@@ -1,5 +1,5 @@
-import {Component, OnInit, Input} from '@angular/core';
-import {User, UserModel} from '../models/auth.model';
+import {Component, OnInit} from '@angular/core';
+import { UserModel} from '../shared/models/auth.model';
 import {Select, Store} from '@ngxs/store';
 import {Logout} from '../shared/actions/auth.actions';
 import {LoadingTrue} from '../shared/state/loading.state';
@@ -23,8 +23,7 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
     this.loading$.subscribe((data) => this.loading = data.valueOf());
     this.user$.subscribe((data) => this.user = data.valueOf());
-  }
-
+}
   logout() {
     return this.store.dispatch([new LoadingTrue(), new Logout()]);
   }

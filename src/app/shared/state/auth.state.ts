@@ -1,5 +1,5 @@
 import {Action, Selector, State, StateContext, Store} from '@ngxs/store';
-import {UserModel} from '../../models/auth.model';
+import {UserModel} from '../models/auth.model';
 import {
   Login,
   Logout,
@@ -10,7 +10,7 @@ import {
   CheckAuthState,
   Authenticated, NotAuthenticated
 } from '../actions/auth.actions';
-import {AuthService} from '../../service/auth/auth.service';
+import {AuthService} from '../service/auth/auth.service';
 import { Navigate } from '@ngxs/router-plugin';
 import {LoadingFalse} from './loading.state';
 @State<UserModel>({
@@ -18,7 +18,8 @@ import {LoadingFalse} from './loading.state';
   defaults: null
 })
 export class AuthState {
-
+  @Selector()
+  static uid(state: UserModel) { return state.uid; }
   @Selector()
   static role(state: UserModel) { return state.role; }
   @Selector()
@@ -64,7 +65,7 @@ export class AuthState {
   }
   @Action([LoginSuccessful, Authenticated])
   navigateToHome() {
-    return this.store.dispatch([new LoadingFalse(), new Navigate(['/select/store'])]);
+    return this.store.dispatch([new LoadingFalse(), new Navigate(['/manage/store'])]);
   }
   @Action([LogoutSuccessful, NotAuthenticated])
   navigateToLogin() {

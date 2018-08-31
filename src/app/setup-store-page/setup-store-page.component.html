@@ -1,0 +1,45 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <div class="card">
+    <h2>Tell us about your store</h2>
+    <form [formGroup]="storeForm">
+
+      <div class="form-group">
+        <label for="store-name">Store Name</label>
+    <input class="form-control form-control-lg" id="store-name" type="text" formControlName="storeName">
+      </div>
+
+
+      <div class="form-group">
+        <label for="InputPhonenumber">Contact Number</label>
+        <input type="email" class="form-control form-control-lg" id="InputPhonenumber" aria-describedby="contactNumber" formControlName="contactNumber" >
+      </div>
+      <div formGroupName="address">
+      <div class="form-group">
+        <label for="address">Street Address</label>
+        <input type="email" class="form-control form-control-lg" id="address" formControlName="street" >
+      </div>
+      <div class="form-row ">
+        <div class="form-group col">
+          <label for="inputCity">City</label>
+          <input type="text" class="form-control form-control-lg" id="inputCity" formControlName="city">
+        </div>
+        <div class="form-group col">
+          <label for="inputState">State</label>
+          <input type="text" class="form-control form-control-lg" id="inputState" formControlName="state">
+        </div>
+
+      </div>
+      <div class="form-group ">
+        <label for="inputPin">Pin Code</label>
+        <input type="text" class="form-control form-control-lg" id="inputPin" formControlName="pinCode">
+      </div>
+      </div>
+      <a><p>*By signing up you agree to our store privacy policy and store terms of use.</p> </a>
+      <div class="button" (click)="onSubmit()"  > Setup</div>
+    </form>
+
+      </div>
+
+</div>
+<emptyspace></emptyspace>
