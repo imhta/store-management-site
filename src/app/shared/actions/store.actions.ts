@@ -5,7 +5,7 @@ export class GetLinkedStores {
 }
 export class GotLinkedStores {
   static readonly type = '[Store] Got Linked Stores';
-  constructor(public stores: ShopRegistrationForm[]) {}
+  constructor(public stores: any[]) {}
 }
 export class EmptyLinkedStore {
   static readonly type = '[Store] Empty Linked Stores';
@@ -24,4 +24,12 @@ export class NewStoreSetupNotSuccessful {
 export class ErrorInGetLinkedStore {
   static readonly type = '[Store] Error Occurred While Getting Store';
   constructor(public error: string) {}
+}
+export class SelectStore {
+  static readonly type = '[Store] Select store';
+  constructor(public index: number) {}
+}
+export class ResetSelectedStore {
+  static readonly type = '[Store] Reset selected store';
+  constructor(public index: null) {}
 }

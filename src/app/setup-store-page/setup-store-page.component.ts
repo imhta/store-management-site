@@ -6,6 +6,7 @@ import {ShopRegistrationForm} from '../shared/models/store.model';
 import {Observable, Subscription} from 'rxjs';
 import {FirestoreService} from '../shared/service/firestore/firestore.service';
 import {SetupNewStore} from '../shared/actions/store.actions';
+import {LoadingFalse, LoadingTrue} from '../shared/state/loading.state';
 
 @Component({
   selector: 'app-setup-store-page',
@@ -44,6 +45,6 @@ export class SetupStorePageComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     const store = new ShopRegistrationForm(this.storeForm.value);
-    return this.store.dispatch(new SetupNewStore(store));
+    return this.store.dispatch([new LoadingTrue(), new SetupNewStore(store)]);
   }
 }

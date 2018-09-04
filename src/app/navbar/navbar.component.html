@@ -1,4 +1,3 @@
-<mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
 <div class="bg-dark collapse" id="navbarHeader">
   <div class="container">
     <div class="app"><i class="material-icons">trending_up</i> Dashboard</div>
@@ -17,7 +16,7 @@
     <img src="../../assets/logo/logo.png" class="logo align-top" alt="">
     <h4 class="logo-title">Clothx</h4>
   </div>
-  <div>
+  <div *ngIf="storeState.selectedStore !== null">
     <img class="profile-pic" src="{{this.user.photoUrl}}">
 
     <a data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="true"

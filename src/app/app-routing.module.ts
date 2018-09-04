@@ -11,7 +11,7 @@ import {SetupStorePageComponent} from './setup-store-page/setup-store-page.compo
 
 const routes: Routes = [
   {path: '', component: LoginPageComponent},
-  {path: 'manage/store', component: ManageStorePageComponent, canActivate: [AuthGuard]},
+  {path: 'select/store', component: ManageStorePageComponent, canActivate: [AuthGuard]},
   {path: 'store/setup', component: SetupStorePageComponent, canActivate: [AuthGuard]},
   {path: 'home', component: HomePageComponent, canActivate: [AuthGuard]},
 ];

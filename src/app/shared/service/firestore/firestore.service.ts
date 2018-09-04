@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import {AngularFirestore} from 'angularfire2/firestore';
 import {ShopRegistrationForm} from '../../models/store.model';
-import {Select} from '@ngxs/store';
+import {Select, Store} from '@ngxs/store';
 import {AuthState} from '../../state/auth.state';
 import {Observable} from 'rxjs';
 import {take} from 'rxjs/operators';
+import {EmptyLinkedStore, GotLinkedStores} from '../../actions/store.actions';
+import {LoadingFalse} from '../../state/loading.state';
 
 // @ts-ignore
 @Injectable({
@@ -13,15 +15,27 @@ import {take} from 'rxjs/operators';
 export class FirestoreService {
   @Select(AuthState.uid) uid$: Observable<string>;
   uid;
-  constructor(private db: AngularFirestore) {}
+  stores: any[];
 
-  getLinkedStore() {
-    this.uid$
+  constructor(private db: AngularFirestore, private  store: Store) {}
+
+  async getLinkedStore() {
+    this.stores = [];
+    await this.uid$
       .pipe(take(1))
       .subscribe((uid) => this.uid = uid);
-    this.db.collection('stores').ref
+    await this.db.collection('stores').ref
       .where('registerUid', '==', this.uid)
-      .onSnapshot(data => {console.log(data.size); });
+      .get()
+      .then((data) =>  {
+        if (!data.empty) {
+          data.forEach((store) => this.stores.push(store.data()));
+          return this.store.dispatch([new LoadingFalse(), new GotLinkedStores(this.stores)]);
+        } else {
+          return this.store.dispatch([new LoadingFalse(), new EmptyLinkedStore()]);
+        }
+      });
+
   }
   setupNewStore(store: ShopRegistrationForm) {
     return this.db.collection('stores').add(store.toJson());

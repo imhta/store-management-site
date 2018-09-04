@@ -16,12 +16,11 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-
 import {AuthGuard} from './shared/service/guard/auth.guard';
 import {NgxsModule, Store} from '@ngxs/store';
 import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
-import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';​
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import {AuthState} from './shared/state/auth.state';
 import {CheckAuthState} from './shared/actions/auth.actions';
 import { ManageStorePageComponent } from './manage-store-page/manage-store-page.component';
@@ -30,6 +29,7 @@ import {LinkedStoreComponent} from './linked-store/linked-store.component';
 import {LoadingState, LoadingTrue} from './shared/state/loading.state';
 import {FirestoreService} from './shared/service/firestore/firestore.service';
 import {StoreState} from './shared/state/store.state';
+import { LoadingComponent } from './loading/loading.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,7 +40,8 @@ import {StoreState} from './shared/state/store.state';
     LoginPageComponent,
     ManageStorePageComponent,
     SetupStorePageComponent,
-    LinkedStoreComponent
+    LinkedStoreComponent,
+    LoadingComponent
 
 
   ],

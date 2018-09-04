@@ -1,3 +1,13 @@
+export class UserStoreState {
+  linkedStores: any[];
+  selectedStore: number; // index of selected store in stores array
+  constructor(data) {
+    this.linkedStores =  data.linkedStores;
+    this.selectedStore = data.selectedStore;
+  }
+}
+
+
 export class ShopRegistrationForm {
   registerUid: string;
   storeName: string;

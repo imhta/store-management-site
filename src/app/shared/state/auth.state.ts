@@ -65,7 +65,7 @@ export class AuthState {
   }
   @Action([LoginSuccessful, Authenticated])
   navigateToHome() {
-    return this.store.dispatch([new LoadingFalse(), new Navigate(['/manage/store'])]);
+    return this.store.dispatch([new LoadingFalse(), new Navigate(['/select/store'])]);
   }
   @Action([LogoutSuccessful, NotAuthenticated])
   navigateToLogin() {
