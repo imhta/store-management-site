@@ -6,7 +6,7 @@ import {AuthState} from '../../state/auth.state';
 import {Observable} from 'rxjs';
 import {take} from 'rxjs/operators';
 import {EmptyLinkedStore, GotLinkedStores} from '../../actions/store.actions';
-import {LoadingFalse} from '../../state/loading.state';
+import {SingleProductModel} from '../../models/product.model';
 
 // @ts-ignore
 @Injectable({
@@ -37,11 +37,19 @@ export class FirestoreService {
       });
 
   }
-  setupNewStore(store: ShopRegistrationForm) {
-    return this.db.collection('stores')
+   setupNewStore(store: ShopRegistrationForm) {
+    return  this.db.collection('stores')
       .add(store.toJson())
       .then((docRef) => this.db.collection('stores')
           .doc(`${docRef.id}`)
           .update({storeUid : docRef.id}));
+  }
+
+   uploadSingleProduct(product: SingleProductModel) {
+    return  this.db.collection(`stores/${product.storeId}/products`)
+      .add(product.toJson())
+      .then((docRef) => this.db.collection(`stores/${product.storeId}/products`)
+        .doc(`${docRef.id}`)
+        .update({productUid : docRef.id}));
   }
 }

@@ -31,6 +31,7 @@
   margin: 0 auto;
 }
 .item{
+  cursor: pointer;
   padding: 15px;
   border-radius:10px;
 

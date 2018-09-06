@@ -32,6 +32,7 @@ import {StoreState} from './shared/state/store.state';
 import { LoadingComponent } from './general-components/loading/loading.component';
 import { StorePageComponent } from './store-page/store-page.component';
 import { AddProductPageComponent } from './add-product-page/add-product-page.component';
+import {AllProductState} from './shared/state/allproduct.state';
 @NgModule({
   declarations: [
     AppComponent,
@@ -61,7 +62,7 @@ import { AddProductPageComponent } from './add-product-page/add-product-page.com
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireModule.initializeApp(environment.firebase),
-    NgxsModule.forRoot([AuthState, LoadingState, StoreState]),
+    NgxsModule.forRoot([AuthState, LoadingState, StoreState, AllProductState]),
     NgxsRouterPluginModule.forRoot(),
     NgxsLoggerPluginModule.forRoot(),
     NgxsReduxDevtoolsPluginModule.forRoot()

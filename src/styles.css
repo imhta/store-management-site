@@ -5,6 +5,15 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:400');
 @import url('https://fonts.googleapis.com/css?family=Raleway:500,600,700,900');
 
+input[type='number'] {
+  -moz-appearance:textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
 body{
   font-family: 'Roboto', sans-serif;
 }

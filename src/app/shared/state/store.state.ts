@@ -1,5 +1,5 @@
 import {Action, State, StateContext, Store} from '@ngxs/store';
-import {ShopRegistrationForm, UserStoreState} from '../models/store.model';
+import { UserStoreState} from '../models/store.model';
 import {
   GetLinkedStores,
   GotLinkedStores,
@@ -53,7 +53,7 @@ export class StoreState {
     const state = ctx.getState();
     state.selectedStore = action.index;
     ctx.setState({...state});
-    return this.store.dispatch([new LoadingFalse(), new Navigate(['add/product'])]);
+    return this.store.dispatch([new LoadingFalse(), new Navigate(['store'])]);
   }
   @Action(ResetSelectedStore)
   resetSelectedStore(ctx: StateContext<UserStoreState>, action: ResetSelectedStore) {
