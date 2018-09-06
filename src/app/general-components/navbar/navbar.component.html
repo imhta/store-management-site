@@ -1,0 +1,34 @@
+
+<div class="bg-dark collapse  " id="navbarHeader">
+  <div class="container">
+
+    <div class="app"  (click)="navigateTo('/home')"><i class="material-icons">trending_up</i> Dashboard</div>
+    <div class="app"><i class="material-icons">shopping_cart</i>Sell</div>
+    <div class="app"  (click)="navigateTo('/add/product')"><i class="material-icons">add_circle</i>Add product</div>
+    <div class="app"  (click)="navigateTo('/store')"><i class="material-icons" >store</i>Store</div>
+    <div class="app"><i class="material-icons">pages</i>Invoice</div>
+    <div class="app"><i class="material-icons">account_box</i>Manage users</div>
+    <div class="app" ><i class="material-icons">people</i>Customers</div>
+    <div class="app"><i class="material-icons">attach_money</i>Billing</div>
+    <div class="app"><i class="material-icons">live_help</i>Help</div>
+
+  </div>
+</div>
+
+
+<nav class="bg navbar">
+  <div>
+  <img src="../../../assets/logo/logo.png" class="logo align-top" alt="">
+  <h4 class="logo-title">Clothx</h4>
+  </div>
+  <div *ngIf="storeState.selectedStore !== null" >
+    <img class="profile-pic" (click)="logout()" src="{{this.user.photoUrl}}">
+    <a  data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="true"
+       aria-label="Toggle navigation" class="menu"><i class="material-icons">apps</i></a>
+  </div>
+  <diV *ngIf="linkedStoreEmpty">
+  <a  class="menu logout" (click)="logout()"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Logout">exit_to_app</i> </a>
+    <img class="profile-pic" src="{{this.user.photoUrl}}">
+  </diV>
+</nav>
+

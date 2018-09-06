@@ -31,9 +31,7 @@
   margin: 0 auto;
 }
 .item{
-  height: 60px;
-  padding-left: 30px;
-  padding-top: 6px;
+  padding: 15px;
   border-radius:10px;
 
 }
@@ -140,6 +138,9 @@
 
 .profile-pic:active {
   border: solid 2px aquamarine;
+}
+.empty-pos{
+  float: right;
 }
 .logout:active{
   border-color: red;

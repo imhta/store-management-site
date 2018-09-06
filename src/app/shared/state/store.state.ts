@@ -30,6 +30,8 @@ export class StoreState {
         const state = ctx.getState();
         state.linkedStores = stores;
         ctx.setState({...state});
+        this.store.dispatch([new LoadingFalse()]);
+
   }
   @Action(SetupNewStore)
   // @ts-ignore
@@ -51,7 +53,7 @@ export class StoreState {
     const state = ctx.getState();
     state.selectedStore = action.index;
     ctx.setState({...state});
-    return this.store.dispatch([new LoadingFalse(), new Navigate(['home'])]);
+    return this.store.dispatch([new LoadingFalse(), new Navigate(['add/product'])]);
   }
   @Action(ResetSelectedStore)
   resetSelectedStore(ctx: StateContext<UserStoreState>, action: ResetSelectedStore) {

@@ -1,18 +1,20 @@
+
 <div class="grid-wrapper" *ngIf="linkedStoreEmpty">
   <div class="card" >
-    <img src="../../assets/logo/logo.png" class="grey-icon" alt="">
+
+    <img src="../../../assets/logo/logo.png" class="grey-icon" alt="">
     <div class="content">Your store has not setup yet</div>
     <div class="setup-link" (click)="navigateToSetupStore()">SETUP NOW</div>
   </div>
 </div>
-<diV class="container">
+<diV class="container"  *ngIf="!linkedStoreEmpty && storeState.linkedStores !== null">
   <h3>Get started</h3>
   <a  class="menu logout" (click)="logout()"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Logout">exit_to_app</i> </a>
   <img class="profile-pic" src="{{this.user.photoUrl}}">
   <a  class="menu" (click)="navigateToSetupStore()" data-toggle="tooltip" data-placement="bottom" title="Setup new store"><i class="material-icons">add_circle</i> </a>
 
 
-<div class="card " *ngIf="!linkedStoreEmpty">
+<div class="card ">
   <div class="item-wrapper" >
     <div class="item" *ngFor="let store of storeState.linkedStores; let i = index" (click)="selectStore(i)">
       <a  class="menu" ><i class="material-icons">keyboard_arrow_right</i> </a>

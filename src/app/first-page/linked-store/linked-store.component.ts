@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {Store, Select, Actions, ofActionDispatched} from '@ngxs/store';
 import {Navigate} from '@ngxs/router-plugin';
-import {EmptyLinkedStore, GetLinkedStores, ResetSelectedStore, SelectStore} from '../shared/actions/store.actions';
+import {EmptyLinkedStore, GetLinkedStores, ResetSelectedStore, SelectStore} from '../../shared/actions/store.actions';
 import {Observable} from 'rxjs';
-import {UserStoreState} from '../shared/models/store.model';
-import {LoadingTrue} from '../shared/state/loading.state';
-import {Logout} from '../shared/actions/auth.actions';
-import {UserModel} from '../shared/models/auth.model';
+import {UserStoreState} from '../../shared/models/store.model';
+import {LoadingTrue} from '../../shared/state/loading.state';
+import {Logout} from '../../shared/actions/auth.actions';
+import {UserModel} from '../../shared/models/auth.model';
 
 
 @Component({
@@ -32,7 +32,8 @@ export class LinkedStoreComponent implements OnInit {
    this.actions$
      .pipe(ofActionDispatched(EmptyLinkedStore))
      .subscribe(() => this.linkedStoreEmpty = true );
-   this.storeState$.subscribe((data) => this.storeState = new UserStoreState(data.valueOf()));
+   this.storeState$
+     .subscribe((data) => this.storeState = new UserStoreState(data.valueOf()));
 
   }
   navigateToSetupStore() {

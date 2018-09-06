@@ -1,0 +1,38 @@
+import { LoginPageComponent } from '../login-page/login-page.component';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {RouterModule, Routes } from '@angular/router';
+import { HomePageComponent } from '../home-page/home-page.component';
+import {AuthGuard} from '../shared/service/guard/auth.guard';
+import {ManageStorePageComponent} from '../first-page/manage-store-page/manage-store-page.component';
+import {SetupStorePageComponent} from '../first-page/setup-store-page/setup-store-page.component';
+import {StorePageComponent} from '../store-page/store-page.component';
+import {AddProductPageComponent} from '../add-product-page/add-product-page.component';
+
+
+
+const routes: Routes = [
+  {path: '', component: LoginPageComponent},
+  {path: 'select/store', component: ManageStorePageComponent, canActivate: [AuthGuard]},
+  {path: 'store/setup', component: SetupStorePageComponent, canActivate: [AuthGuard]},
+  {path: 'home', component: HomePageComponent, canActivate: [AuthGuard]},
+  {path: 'store', component: StorePageComponent, canActivate: [AuthGuard]},
+  {path: 'add/product', component: AddProductPageComponent, canActivate: [AuthGuard]},
+];
+@NgModule({
+  imports: [
+    CommonModule,
+    RouterModule.forRoot(routes),
+
+
+  ],
+  exports: [
+    RouterModule,
+
+
+  ],
+  declarations: []
+})
+export class AppRoutingModule { }
+
+export const routingComponent = [ HomePageComponent];

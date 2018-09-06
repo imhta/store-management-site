@@ -54,9 +54,9 @@ form a p{
   margin: 25px;
 }
 .button:hover {
-  border: solid 5px aquamarine;
+  border: solid 4px rgba(127, 255, 212, 0.5);
 }
 
 .button:active {
-  border: solid 3px aquamarine;
+  border: solid 4px aquamarine;
 }

@@ -30,14 +30,18 @@ export class FirestoreService {
       .then((data) =>  {
         if (!data.empty) {
           data.forEach((store) => this.stores.push(store.data()));
-          return this.store.dispatch([new LoadingFalse(), new GotLinkedStores(this.stores)]);
+          return this.store.dispatch([new GotLinkedStores(this.stores)]);
         } else {
-          return this.store.dispatch([new LoadingFalse(), new EmptyLinkedStore()]);
+          return this.store.dispatch([ new EmptyLinkedStore()]);
         }
       });
 
   }
   setupNewStore(store: ShopRegistrationForm) {
-    return this.db.collection('stores').add(store.toJson());
+    return this.db.collection('stores')
+      .add(store.toJson())
+      .then((docRef) => this.db.collection('stores')
+          .doc(`${docRef.id}`)
+          .update({storeUid : docRef.id}));
   }
 }
