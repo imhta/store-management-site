@@ -1,0 +1,40 @@
+<app-navbar></app-navbar>
+
+
+<div class="container">
+    <div class="card">
+      <h2>Add new product</h2>
+
+      <form [formGroup]="productForm">
+      <div class="form-group ">
+        <label for="product-name">Product Name</label>
+        <input class="form-control form-control-lg " id="product-name" type="text" formControlName="productName">
+      </div>
+      <div class="form-group ">
+        <label for="description">Description</label>
+        <input type="text" class="form-control form-control-lg" id="description" formControlName="description">
+      </div>
+
+      <div class="form-group">
+        <label for="stock">Stock</label>
+        <input type="number" class="form-control form-control-lg" id="stock" aria-describedby="stock" formControlName="stock" >
+      </div>
+
+
+      <div class="form-group">
+        <label for="price">Price</label>
+        <input type="number" class="form-control form-control-lg"  aria-describedby="price" id="price"  formControlName="price" >
+      </div>
+        <div class="form-group">
+          <label for="tags">Tags: </label>
+          <span class="badge badge-primary" *ngFor="let tag of tagsArray;let i = index" (click)="removeTag(i)" data-toggle="tooltip" data-placement="top" title="Click tag delete"> {{tag}}</span>
+          <input type="text" class="form-control form-control-lg"  aria-describedby="tags" id="tags"  [(ngModel)]="this.tagVal" [ngModelOptions]="{standalone: true}" (keyup.space)="addTag()"  >
+        </div>
+
+      <div class="button" (click)="onSubmit()"> Add</div>
+    </form>
+
+  </div>
+
+</div>
+<emptyspace></emptyspace>
