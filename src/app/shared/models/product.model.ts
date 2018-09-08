@@ -8,6 +8,7 @@ export class  SingleProductModel {
   tags: string[];
   addedBy: string;
   storeId: string;
+  createdOn: Date = new Date();
 
   constructor(data) {
     this.productName = data.productName;
@@ -30,6 +31,7 @@ export class  SingleProductModel {
       'tags': this.tags,
       'addedBy': this.addedBy,
       'storeId': this.storeId,
+      'createdOn': this.createdOn,
       'isUnlistable': true
     };
   }

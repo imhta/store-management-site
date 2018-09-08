@@ -8,6 +8,8 @@ import {ManageStorePageComponent} from '../first-page/manage-store-page/manage-s
 import {SetupStorePageComponent} from '../first-page/setup-store-page/setup-store-page.component';
 import {StorePageComponent} from '../store-page/store-page.component';
 import {AddProductPageComponent} from '../add-product-page/add-product-page.component';
+import {ProductPageComponent} from '../product-page/product-page.component';
+import {QrPageComponent} from '../qr-page/qr-page.component';
 
 
 
@@ -18,6 +20,8 @@ const routes: Routes = [
   {path: 'home', component: HomePageComponent, canActivate: [AuthGuard]},
   {path: 'store', component: StorePageComponent, canActivate: [AuthGuard]},
   {path: 'add/product', component: AddProductPageComponent, canActivate: [AuthGuard]},
+  {path: 'store/product', component: ProductPageComponent, canActivate: [AuthGuard]},
+  {path: 'generated/qr', component: QrPageComponent, canActivate: [AuthGuard]},
 ];
 @NgModule({
   imports: [

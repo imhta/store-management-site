@@ -1,1 +1,51 @@
 <app-navbar></app-navbar>
+
+<div class="form-group">
+  <h5><b>{{currentStore['storeName']}}</b></h5>
+  <div class="input-group">
+    <input type="text" class="form-control form-control-lg " id="search" aria-describedby="button-addon4"
+           [ngModel]="searchKeyword">
+    <div class="input-group-append" id="button-addon4">
+      <button class="btn btn-primary" type="button">Search</button>
+    </div>
+  </div>
+  <span class="badge search-option" [ngClass]="selectedSearchOption == i?'badge-primary': 'badge-light'" (click)="selectSearchOption(i)" *ngFor="let searchOption of searchOptions;let i = index">{{searchOption}}</span>
+</div>
+<nav class="bg-dark navbar toolbar">
+  <!--<diV></diV>-->
+  <!--<div>-->
+    <!--<a  class="text-white" (click)="navigateToAddProduct()" data-toggle="tooltip" data-placement="bottom" title="Add new product"><i class="material-icons">add_circle</i> </a>-->
+    <!--<a class="text-white upload-csv" data-toggle="tooltip" data-placement="bottom" title="Bulk upload (.csv)"><i-->
+      <!--class="material-icons">library_add</i></a>-->
+    <!--<a class="text-white"-->
+       <!--href="https://firebasestorage.googleapis.com/v0/b/clothxnet.appspot.com/o/csv%2Fproduct-template.csv?alt=media&token=b0c53609-2700-4e09-8d80-9e79ff2c8e0b"-->
+       <!--data-toggle="tooltip" data-placement="bottom" title="Download product template"><i class="material-icons">cloud_download </i></a>-->
+  <!--</div>-->
+</nav>
+<div class="container">
+  <div class="card" *ngFor="let product of isWhitespace ?allProducts:resultProduct; let i = index"
+       (click)="navigateToProduct(product)">
+    <div class="card-header text-white bg-primary ">
+      {{product['productUid']}}
+
+    </div>
+    <div class="card-body">
+      <ngx-kjua class="float-left qr-code"
+                [renderAsync]="true"
+                [text]="product['productUid']"
+                [crisp]="true"
+                [size]="250"
+      ></ngx-kjua>
+      <div class="card-content float-left">
+        <h5 class="card-title ">{{product['productName']}}</h5>
+        <p class="card-text ">{{product['description']}}</p>
+        <p class="card-text "> Stock: {{product['stock']}}</p>
+        <p class="card-text ">Price: {{product['price']}} Rs</p>
+        <span class="badge badge-primary" *ngFor="let tag of product['tags'];"> {{tag}}</span>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+

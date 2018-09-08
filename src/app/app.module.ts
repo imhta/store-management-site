@@ -33,6 +33,10 @@ import { LoadingComponent } from './general-components/loading/loading.component
 import { StorePageComponent } from './store-page/store-page.component';
 import { AddProductPageComponent } from './add-product-page/add-product-page.component';
 import {AllProductState} from './shared/state/allproduct.state';
+// for qr code generation lib
+import { NgxKjuaModule } from 'ngx-kjua';
+import { ProductPageComponent } from './product-page/product-page.component';
+import { QrPageComponent } from './qr-page/qr-page.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,7 +50,9 @@ import {AllProductState} from './shared/state/allproduct.state';
     LinkedStoreComponent,
     LoadingComponent,
     StorePageComponent,
-    AddProductPageComponent
+    AddProductPageComponent,
+    ProductPageComponent,
+    QrPageComponent
 
 
   ],
@@ -65,7 +71,8 @@ import {AllProductState} from './shared/state/allproduct.state';
     NgxsModule.forRoot([AuthState, LoadingState, StoreState, AllProductState]),
     NgxsRouterPluginModule.forRoot(),
     NgxsLoggerPluginModule.forRoot(),
-    NgxsReduxDevtoolsPluginModule.forRoot()
+    NgxsReduxDevtoolsPluginModule.forRoot(),
+    NgxKjuaModule
 
   ],
   exports: [],

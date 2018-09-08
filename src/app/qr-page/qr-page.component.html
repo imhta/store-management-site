@@ -1,0 +1,10 @@
+<div class="container">
+<div class="card" *ngFor="let qr of data;" style="max-width: 250px">
+<ngx-kjua
+          [renderAsync]="true"
+          [text]="qr"
+          [crisp]="true"
+          [size]="50"
+></ngx-kjua>
+</div>
+</div>

@@ -1,0 +1,111 @@
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+a{
+  cursor: pointer;
+}
+.upload-csv{
+  text-decoration: none;
+  cursor: pointer;
+}
+.material-icons{
+  margin-right: 25px;
+}
+.material-icons:hover{
+  color: aquamarine;
+}
+.material-icons:active{
+  color: rgba(127, 255, 212, 0.5);
+}
+.badge {
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.search-option {
+  float: right;
+  margin: 5px 5px 10px;
+}
+
+.search-option:hover {
+  background-color: #007bff;
+  color: white;
+}
+.input-group{
+  max-width: 700px;
+  margin: 0 auto;
+}
+.input-group .btn{
+  border-top-right-radius: 50px ;
+  border-bottom-right-radius: 50px;
+}
+.card-content {
+  margin: 30px 20px 0;
+
+}
+
+.qr-code {
+  margin: -22px;
+}
+
+.toolbar {
+  height: 50px;
+  width: 100%;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.container {
+  max-width: 1200px;
+  display: grid;
+  margin: 0 auto;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 250px));
+  grid-auto-rows: minmax(500px, auto);
+  gap: 20px;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.card {
+  -webkit-box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.12);
+  -moz-box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.12);
+  width: 100%;
+  border-radius: 6px 6px 20px 20px;
+  max-width: 250px;
+  max-height: 600px;
+  cursor: pointer;
+  border: solid 2px transparent;
+}
+
+.card:hover {
+  border: solid 2px #007bff;
+}
+
+.card:active {
+  border: solid 2px #007bff;
+}
+
+@supports (display: grid) {
+  .container > * {
+    margin: 0;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .container {
+    max-width: 280px;
+  }
+
+  .form-group {
+    margin: 10px;
+  }
+
+  .title {
+    display: none;
+  }
+}
