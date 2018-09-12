@@ -1,0 +1,26 @@
+<app-navbar></app-navbar>
+<nav class="bg-dark navbar toolbar">
+  <div></div>
+
+</nav>
+<div class="container">
+  <div class="card">
+    <h2>Add new user</h2>
+
+    <form [formGroup]="userAddingForm">
+      <div class="form-group ">
+        <label for="description">Email address</label>
+        <input type="email" class="form-control form-control-lg" id="description" formControlName="email">
+      </div>
+      <div class="form-group">
+        <label for="stock">Role</label>
+        <h3><span class="badge" [ngClass]="userAddingForm.value['role'] == role?'badge-primary': 'badge-light'" (click)="selectRole(i)"  *ngFor="let role of roles;let i = index">{{role}}</span></h3>
+      </div>
+
+      <div class="button" (click)="onSubmit()"> Add</div>
+    </form>
+
+  </div>
+
+</div>
+<emptyspace></emptyspace>

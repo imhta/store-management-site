@@ -1,0 +1,17 @@
+.toolbar {
+  height: 50px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+.icon-button{
+  cursor: pointer;
+}
+.material-icons{
+  text-decoration: none;
+}
+.material-icons:hover{
+  color: aquamarine;
+}
+.material-icons:active{
+  color: rgba(127, 255, 212, 0.5);
+}
