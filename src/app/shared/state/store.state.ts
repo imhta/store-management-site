@@ -1,7 +1,8 @@
 import {Action, State, StateContext, Store} from '@ngxs/store';
 import { UserStoreState} from '../models/store.model';
 import {
-  GetLinkedStores,
+  GetEmployeeLinkedStores,
+  GetLinkedStores, GotEmployeeLinkedStoresSuccessfully,
   GotLinkedStores,
   NewStoreSetupNotSuccessful,
   NewStoreSetupSuccessfully, ResetSelectedStore, SelectStore,
@@ -10,6 +11,7 @@ import {
 import {FirestoreService} from '../service/firestore/firestore.service';
 import {Navigate} from '@ngxs/router-plugin';
 import {LoadingFalse} from './loading.state';
+
 
 
 @State<UserStoreState>({
@@ -22,8 +24,8 @@ import {LoadingFalse} from './loading.state';
 export class StoreState {
   constructor( private dbService: FirestoreService, private  store: Store) {}
   @Action(GetLinkedStores)
-  getLinkedStores() {
-    this.dbService.getLinkedStore().then().catch((err) => console.log(err));
+  getLinkedStores(ctx: StateContext<any>, {uid}: GetLinkedStores) {
+    this.dbService.getLinkedStore(uid).then().catch((err) => console.log(err));
   }
   @Action(GotLinkedStores)
  gotLinkedStores(ctx: StateContext<UserStoreState>, { stores }: GotLinkedStores) {
@@ -62,5 +64,16 @@ export class StoreState {
     ctx.setState({...state});
     return this.store.dispatch([new LoadingFalse()]);
   }
+  @Action(GetEmployeeLinkedStores)
+  getEmployeeLinkedStores(ctx: StateContext<UserStoreState>, {linkedStores}: GetEmployeeLinkedStores) {
+    return this.dbService.GetEmployeeLinkedStore(linkedStores);
+  }
+  @Action(GotEmployeeLinkedStoresSuccessfully)
+  gotEmployeeLinkedStoresSuccessfully(ctx: StateContext<UserStoreState>, { stores }: GotEmployeeLinkedStoresSuccessfully) {
+    const state = ctx.getState();
+    state.linkedStores = stores;
+    ctx.setState({...state});
+    this.store.dispatch([new LoadingFalse()]);
 
+  }
 }

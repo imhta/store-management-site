@@ -1,3 +1,6 @@
+import {ExtraUser} from '../models/auth.model';
+
+
 export class CheckAuthState {
   static readonly type = '[Auth] Checking Auth State';
 }
@@ -19,7 +22,7 @@ export class LoginSuccessful {
 
 export class LoginFailed {
   static readonly type = '[Auth] Login Attempt Failed';
-  constructor(private  error: string) {}
+  constructor(public  error: string) {}
 }
 
 
@@ -34,5 +37,17 @@ export class LogoutSuccessful {
 
 export class LogoutFailed {
   static readonly type = '[Auth] Logout Attempt Failed';
-  constructor(private  error: string) {}
+  constructor(public  error: string) {}
+}
+
+export class AddExtraUser {
+  static readonly type = '[Auth] Add Extra User';
+  constructor(public  extraUser: ExtraUser) {}
+}
+export class ExtraUserAddedSuccessfully {
+  static readonly type = '[Auth] Extra User added successfully';
+}
+export class ErrorInAddingExtraUser {
+  static readonly type = '[Auth] Error in adding extra user';
+  constructor(public  error: string) {}
 }

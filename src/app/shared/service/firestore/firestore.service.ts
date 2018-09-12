@@ -5,30 +5,32 @@ import {Select, Store} from '@ngxs/store';
 import {AuthState} from '../../state/auth.state';
 import {Observable} from 'rxjs';
 import {take} from 'rxjs/operators';
-import {EmptyLinkedStore, GotLinkedStores} from '../../actions/store.actions';
+import {
+  EmptyLinkedStore,
+  ErrorInGettingEmployeeLinkedStore,
+  GotEmployeeLinkedStoresSuccessfully,
+  GotLinkedStores
+} from '../../actions/store.actions';
 import {SingleProductModel} from '../../models/product.model';
-import {GetAllProductsError, GotAllProducts} from '../../actions/product.actions';
+import {GetAllProductsError, GotAllProducts, ProductFounded} from '../../actions/product.actions';
+import {ExtraUser} from '../../models/auth.model';
 
 // @ts-ignore
 @Injectable({
   providedIn: 'root'
 })
 export class FirestoreService {
-  @Select(AuthState.uid) uid$: Observable<string>;
-  uid;
   stores: any[];
   allProducts: any[];
+  resultProducts: any[];
 
   constructor(private db: AngularFirestore, private  store: Store) {
   }
 
-  async getLinkedStore() {
+  async getLinkedStore(uid) {
     this.stores = [];
-    await this.uid$
-      .pipe(take(1))
-      .subscribe((uid) => this.uid = uid);
     await this.db.collection('stores').ref
-      .where('registerUid', '==', this.uid)
+      .where('registerUid', '==', uid)
       .get()
       .then((data) => {
         if (!data.empty) {
@@ -62,7 +64,7 @@ export class FirestoreService {
       .ref.get().then((data) => {
         this.allProducts = [];
         data.forEach((product) => {
-            this.allProducts.push(product.data());
+          this.allProducts.push(product.data());
         });
         this.store.dispatch([new GotAllProducts(this.allProducts)]);
       }).catch((err) => {
@@ -71,8 +73,70 @@ export class FirestoreService {
       });
   }
 
-  deleteProduct(storeId, productUid) {
-    return this.db.collection(`stores/${storeId}`).doc(`${productUid}`).delete().then().catch();
+  searchForProduct(storeUid, keyword, searchOption) {
+    console.log(storeUid, keyword, searchOption);
+    switch (searchOption) {
+      case 'Product id':
+        this.db.collection(`stores/${storeUid}/products`).ref.where('prn', '==', keyword).onSnapshot((result) => {
+          this.resultProducts = [];
+          result.forEach((product) => {
+            this.resultProducts.push(product.data());
+            this.store.dispatch([new ProductFounded(this.resultProducts)]);
+          });
+        });
+        break;
+      case 'Product name':
+        this.db.collection(`stores/${storeUid}/products`).ref.where('productName', '==', keyword).onSnapshot((result) => {
+          this.resultProducts = [];
+          result.forEach((product) => {
+            this.resultProducts.push(product.data());
+            this.store.dispatch([new ProductFounded(this.resultProducts)]);
+          });
+        });
+        break;
+      case 'Description':
+        this.db.collection(`stores/${storeUid}/products`).ref.where('description', '==', keyword).onSnapshot((result) => {
+          this.resultProducts = [];
+          result.forEach((product) => {
+            this.resultProducts.push(product.data());
+            this.store.dispatch([new ProductFounded(this.resultProducts)]);
+          });
+        });
+        break;
+      case 'Tags':
+        this.db.collection(`stores/${storeUid}/products`).ref.where('tags', 'array-contains', keyword).onSnapshot((result) => {
+          this.resultProducts = [];
+          result.forEach((product) => {
+            this.resultProducts.push(product.data());
+            this.store.dispatch([new ProductFounded(this.resultProducts)]);
+          });
+        });
+        break;
+    }
   }
 
+  deleteProduct(storeId, productUid) {
+    return this.db.collection(`stores/${storeId}/products`).doc(`${productUid}`).delete();
+  }
+
+  addingExtraUser(extraUser: ExtraUser) {
+    return this.db.collection('users').doc(`${extraUser.email}`).set(extraUser.toJson(), {merge: true});
+  }
+
+  deleteExtraUser(email: string) {
+    return this.db.collection('users').doc(`${email}`).delete();
+  }
+
+  GetEmployeeLinkedStore(stores: string[]) {
+    this.stores = [];
+    stores.forEach((storeUid) => {
+      this.db.collection('stores').doc(`${storeUid}`).ref.get().then((store) => {
+        if (store.exists) {
+          this.stores.push(store.data());
+        }
+      }).catch((err) => {this.store.dispatch([new ErrorInGettingEmployeeLinkedStore(err)]);
+      console.log(err); });
+    });
+    this.store.dispatch([new GotEmployeeLinkedStoresSuccessfully(this.stores)]);
+  }
 }

@@ -5,7 +5,7 @@ import {
   SingleProductNotUploaded,
   SingleProductUploadedSuccessfully,
   UploadSingleProduct,
-  GotAllProducts
+  GotAllProducts, DeleteAProduct, ProductDeletedSuccessfully, ErrorInDeletingProduct, SearchForProduct
 } from '../actions/product.actions';
 import {LoadingFalse} from './loading.state';
 import {Navigate} from '@ngxs/router-plugin';
@@ -22,7 +22,7 @@ export class AllProductState {
 
 
   @Action(UploadSingleProduct)
-  uploadSingleProduct(cxt: StateContext<any>, {product}: UploadSingleProduct) {
+  uploadSingleProduct(cxt: StateContext<any[]>, {product}: UploadSingleProduct) {
     this.dbService.uploadSingleProduct(product).then(() => {
       this.store.dispatch([new SingleProductUploadedSuccessfully()]);
     }).catch((err) => this.store.dispatch([new SingleProductNotUploaded(err)]));
@@ -34,7 +34,7 @@ export class AllProductState {
   }
 
   @Action(GetAllProducts)
-  getAllProducts(cxt: StateContext<SingleProductModel[]>, {storeId}: GetAllProducts) {
+  getAllProducts(cxt: StateContext<any[]>, {storeId}: GetAllProducts) {
     this.dbService.getAllProducts(storeId).then().catch();
   }
 
@@ -43,4 +43,19 @@ export class AllProductState {
     cxt.setState(allProduct);
   }
 
+  @Action(DeleteAProduct)
+  deleteProduct(cxt: StateContext<any[]>, {productUid, storeId}: DeleteAProduct) {
+    this.dbService
+      .deleteProduct(storeId, productUid)
+      .then(() => this.store.dispatch([new ProductDeletedSuccessfully()]))
+      .catch((err) => this.store.dispatch([new ErrorInDeletingProduct(err)]));
+  }
+  @Action(ProductDeletedSuccessfully)
+  productDeletedSuccessfully() {
+    return this.store.dispatch([new Navigate(['store'])]);
+  }
+  @Action(SearchForProduct)
+  searchForProduct(cxt: StateContext<any[]>, {storeId, keyword, searchOption }: SearchForProduct) {
+    this.dbService.searchForProduct(storeId, keyword, searchOption);
+  }
 }

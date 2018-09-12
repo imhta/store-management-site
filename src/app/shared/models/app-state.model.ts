@@ -1,8 +1,8 @@
-import { User } from './auth.model';
+import { LoginModel } from './auth.model';
 
 
 export interface AppState {
-  user: User;
+  user: LoginModel;
 
 
 }

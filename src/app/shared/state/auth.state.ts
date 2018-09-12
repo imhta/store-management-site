@@ -8,25 +8,37 @@ import {
   LoginFailed,
   LoginSuccessful,
   CheckAuthState,
-  Authenticated, NotAuthenticated
+  Authenticated, NotAuthenticated, AddExtraUser, ExtraUserAddedSuccessfully, ErrorInAddingExtraUser
 } from '../actions/auth.actions';
 import {AuthService} from '../service/auth/auth.service';
-import { Navigate } from '@ngxs/router-plugin';
+import {Navigate} from '@ngxs/router-plugin';
 import {LoadingFalse} from './loading.state';
+import {FirestoreService} from '../service/firestore/firestore.service';
+import {delay} from 'rxjs/operators';
+
 @State<UserModel>({
   name: 'user',
   defaults: null
 })
 export class AuthState {
   @Selector()
-  static uid(state: UserModel) { return state.uid; }
-  @Selector()
-  static role(state: UserModel) { return state.role; }
-  @Selector()
-  static token(state: UserModel) { return state.token; }
-
-  constructor(private authService: AuthService, private  store: Store) {
+  static uid(state: UserModel) {
+    return state.uid;
   }
+
+  @Selector()
+  static role(state: UserModel) {
+    return state.role;
+  }
+
+  @Selector()
+  static token(state: UserModel) {
+    return state.token;
+  }
+
+  constructor(private authService: AuthService, private  store: Store, private dbService: FirestoreService) {
+  }
+
   @Action(CheckAuthState)
   async checkAuthState({setState}: StateContext<UserModel>) {
 
@@ -47,7 +59,7 @@ export class AuthState {
   async login({setState}: StateContext<UserModel>) {
     await this.authService.googleLogin()
       .then((data) => {
-        setState(data);
+        setState(data).pipe(delay(2000));
         return this.store.dispatch(new LoginSuccessful());
       })
       .catch((err) => this.store.dispatch([new LoadingFalse(), new LoginFailed(err)]));
@@ -59,17 +71,32 @@ export class AuthState {
     await this.authService.signOut()
       .then(() => {
         setState(null);
-        return this.store.dispatch( new LogoutSuccessful());
+        return this.store.dispatch(new LogoutSuccessful());
       })
       .catch((err) => this.store.dispatch([new LoadingFalse(), new LogoutFailed(err)]));
   }
+
   @Action([LoginSuccessful, Authenticated])
   navigateToHome() {
-    return this.store.dispatch([new LoadingFalse(), new Navigate(['/select/store'])]);
+      return this.store.dispatch([new Navigate(['select/store']), new LoadingFalse()]);
   }
+
   @Action([LogoutSuccessful, NotAuthenticated])
   navigateToLogin() {
     return this.store.dispatch([new LoadingFalse(), new Navigate([''])]);
+  }
+
+  @Action(AddExtraUser)
+  addExtraUser(ctx: StateContext<UserModel>, {extraUser}: AddExtraUser) {
+    return this.dbService
+      .addingExtraUser(extraUser)
+      .then(() => this.store.dispatch([new ExtraUserAddedSuccessfully()]))
+      .catch((err) => this.store.dispatch([new ErrorInAddingExtraUser(err)]));
+  }
+
+  @Action(ExtraUserAddedSuccessfully)
+  extraUserAddedSuccessfully() {
+    return this.store.dispatch([new LoadingFalse(), new Navigate(['manage/users'])]);
   }
 }
 

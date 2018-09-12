@@ -4,9 +4,9 @@
   <h5><b>{{currentStore['storeName']}}</b></h5>
   <div class="input-group">
     <input type="text" class="form-control form-control-lg " id="search" aria-describedby="button-addon4"
-           [ngModel]="searchKeyword">
+          (ngModelChange)="onChange()"  s [(ngModel)]="searchKeyword" (keyup.enter)="search()">
     <div class="input-group-append" id="button-addon4">
-      <button class="btn btn-primary" type="button">Search</button>
+      <button class="btn btn-primary" type="button" (click)="search()" >Search</button>
     </div>
   </div>
   <span class="badge search-option" [ngClass]="selectedSearchOption == i?'badge-primary': 'badge-light'" (click)="selectSearchOption(i)" *ngFor="let searchOption of searchOptions;let i = index">{{searchOption}}</span>
@@ -22,17 +22,46 @@
        <!--data-toggle="tooltip" data-placement="bottom" title="Download product template"><i class="material-icons">cloud_download </i></a>-->
   <!--</div>-->
 </nav>
-<div class="container">
-  <div class="card" *ngFor="let product of isWhitespace ?allProducts:resultProduct; let i = index"
+<div class="container" *ngIf="!searchKeyword">
+  <div class="card" *ngFor="let product of allProducts; let i = index "
        (click)="navigateToProduct(product)">
     <div class="card-header text-white bg-primary ">
-      {{product['productUid']}}
+      {{product['prn']}}
 
     </div>
     <div class="card-body">
       <ngx-kjua class="float-left qr-code"
                 [renderAsync]="true"
-                [text]="product['productUid']"
+                [text]="product['prn']"
+                [crisp]="true"
+                [size]="250"
+      ></ngx-kjua>
+      <div class="card-content float-left">
+        <h5 class="card-title ">{{product['productName']}}</h5>
+        <p class="card-text ">{{product['description']}}</p>
+        <p class="card-text "> Stock: {{product['stock']}}</p>
+        <p class="card-text ">Price: {{product['price']}} Rs</p>
+        <span class="badge badge-primary" *ngFor="let tag of product['tags'];"> {{tag}}</span>
+      </div>
+    </div>
+
+  </div>
+
+
+</div>
+<h3  *ngIf="searchKeyword">See all search results for {{searchKeyword}}</h3>
+<div class="container"  *ngIf="searchKeyword">
+
+  <div class="card" *ngFor="let product of resultProduct; let i = index "
+       (click)="navigateToProduct(product)">
+    <div class="card-header text-white bg-primary ">
+      {{product['prn']}}
+
+    </div>
+    <div class="card-body">
+      <ngx-kjua class="float-left qr-code"
+                [renderAsync]="true"
+                [text]="product['prn']"
                 [crisp]="true"
                 [size]="250"
       ></ngx-kjua>
@@ -48,4 +77,3 @@
   </div>
 
 </div>
-

@@ -1,23 +1,23 @@
 <app-navbar></app-navbar>
 <nav class="bg-dark navbar toolbar">
   <div></div>
-  <div class="form-inline">
-    <input class="form-control" id="required-qr" placeholder="Number of QR" [(ngModel)]="requiredNumber"
-           [ngModelOptions]="{standalone: true}">
-    <div class="button" (click)="generateQr()">Generate</div>
-  </div>
+  <!--<div class="form-inline">-->
+    <!--<input class="form-control" id="required-qr" placeholder="Number of QR" [(ngModel)]="requiredNumber"-->
+           <!--[ngModelOptions]="{standalone: true}">-->
+    <!--<div class="button" (click)="generateQr()">Generate</div>-->
+  <!--</div>-->
 </nav>
 <div class="container">
   <div class="card">
     <div class="card-header text-white bg-primary ">
-      {{product['productUid']}}
-      <a class="float-right"><i class="material-icons" style="margin-left: 5px">delete</i></a>
+      {{product['prn']}}
+      <a class="float-right" (click)="deleteProduct()"><i class="material-icons" style="margin-left: 5px">delete</i></a>
       <!--<a class="float-right"><i class="material-icons" style="margin-left: 5px">edit</i></a>-->
     </div>
     <div class="card-body">
       <ngx-kjua class="float-left qr-code"
                 [renderAsync]="true"
-                [text]="product['productUid']"
+                [text]="product['prn']"
                 [crisp]="true"
                 [size]="250"
       ></ngx-kjua>

@@ -16,7 +16,7 @@ import { NavbarComponent } from './general-components/navbar/navbar.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {AuthGuard} from './shared/service/guard/auth.guard';
+import {AuthGuard} from './shared/service/guard/auth/auth.guard';
 import {NgxsModule, Store} from '@ngxs/store';
 import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
@@ -37,6 +37,8 @@ import {AllProductState} from './shared/state/allproduct.state';
 import { NgxKjuaModule } from 'ngx-kjua';
 import { ProductPageComponent } from './product-page/product-page.component';
 import { QrPageComponent } from './qr-page/qr-page.component';
+import { ManageUsersComponent } from './manage-users/manage-users.component';
+import { AddUserComponent } from './add-user/add-user.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,7 +54,9 @@ import { QrPageComponent } from './qr-page/qr-page.component';
     StorePageComponent,
     AddProductPageComponent,
     ProductPageComponent,
-    QrPageComponent
+    QrPageComponent,
+    ManageUsersComponent,
+    AddUserComponent
 
 
   ],

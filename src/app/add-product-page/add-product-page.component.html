@@ -32,7 +32,7 @@
         <div class="form-group">
           <label for="tags">Tags: </label>
           <span class="badge badge-primary" *ngFor="let tag of tagsArray;let i = index" (click)="removeTag(i)" data-toggle="tooltip" data-placement="top" title="Click tag delete"> {{tag}}</span>
-          <input type="text" class="form-control form-control-lg"  aria-describedby="tags" id="tags"  [(ngModel)]="this.tagVal" [ngModelOptions]="{standalone: true}" (keyup.space)="addTag()"  >
+          <input type="text" class="form-control form-control-lg"  aria-describedby="tags" id="tags"  [(ngModel)]="this.tagVal" [ngModelOptions]="{standalone: true}" (keyup.enter)="addTag()"  >
         </div>
 
       <div class="button" (click)="onSubmit()"> Add</div>

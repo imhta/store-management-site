@@ -38,17 +38,7 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
 
   constructor(private fb: FormBuilder, private store: Store) {  }
 
-  ngOnInit() {
-    this.userDataSubscription = this.user$.subscribe((data) => {
-      this.user = data.valueOf();
-      this.productForm.patchValue({addedBy: this.user.uid});
-    });
-    this.storeDataSubscription = this.storeState$.subscribe((data) => {
-      this.storeState = new UserStoreState(data.valueOf());
-      const currentStore = this.storeState.linkedStores[this.storeState.selectedStore];
-      this.productForm.patchValue({storeId: currentStore['storeUid']});
-    });
-  }
+  ngOnInit() { }
 
   ngOnDestroy() {
     this.userDataSubscription.unsubscribe();
@@ -56,15 +46,30 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    this.addStoreId();
+    this.addAddedBy();
     this.productForm.patchValue({tags: this.tagsArray});
     const product = new SingleProductModel(this.productForm.value);
 
     this.store.dispatch([new LoadingTrue(), new UploadSingleProduct(product)]);
     this.productForm.reset();
     this.tagsArray = [];
+    this.tagVal = '';
 
   }
-
+  addStoreId() {
+    this.storeDataSubscription = this.storeState$.subscribe((data) => {
+      this.storeState = new UserStoreState(data.valueOf());
+      const currentStore = this.storeState.linkedStores[this.storeState.selectedStore];
+      this.productForm.patchValue({storeId: currentStore['storeUid']});
+    });
+  }
+  addAddedBy() {
+    this.userDataSubscription = this.user$.subscribe((data) => {
+      this.user = data.valueOf();
+      this.productForm.patchValue({addedBy: this.user.uid});
+    });
+  }
   addTag() {
     const isWhitespace = (this.tagVal || '').trim().length === 0;
     if (!isWhitespace) {

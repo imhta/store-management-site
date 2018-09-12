@@ -23,3 +23,27 @@ export  class  GetAllProductsError {
   static  readonly  type = '[Product] Error: Get all products';
   constructor(public err: string) {}
 }
+export class  DeleteAProduct {
+  static readonly type = '[Product] Delete product';
+  constructor(public  storeId: string, public productUid: string) {}
+}
+export class  ProductDeletedSuccessfully {
+  static readonly type = '[Product] product deleted successfully';
+}
+export class  ErrorInDeletingProduct {
+  static readonly type = '[Product] Error: While deleting product';
+  constructor(public err: string) {}
+}
+export class  SearchForProduct {
+  static readonly type = '[Product] Search for product';
+  constructor(public  storeId: string, public keyword: string, public searchOption: string) {}
+}
+export class ProductFounded {
+  static readonly type = '[Product] Product founded';
+  constructor(public resultProducts: any[]) {}
+}
+
+export class  ErrorInProductSearch {
+  static readonly type = '[Product] Error: error in Product search';
+  constructor(public  err: string) {}
+}
