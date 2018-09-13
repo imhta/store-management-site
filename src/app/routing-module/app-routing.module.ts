@@ -12,20 +12,22 @@ import {ProductPageComponent} from '../product-page/product-page.component';
 import {QrPageComponent} from '../qr-page/qr-page.component';
 import {ManageUsersComponent} from '../manage-users/manage-users.component';
 import {AddUserComponent} from '../add-user/add-user.component';
+import {RegisterGuard} from '../shared/service/guard/role/register-guard/register-guard';
+import {ManagerGuard} from '../shared/service/guard/role/manager-guard/manager-guard';
 
 
 
 const routes: Routes = [
   {path: '', component: LoginPageComponent},
   {path: 'select/store', component: ManageStorePageComponent, canActivate: [AuthGuard]},
-  {path: 'store/setup', component: SetupStorePageComponent, canActivate: [AuthGuard]},
+  {path: 'store/setup', component: SetupStorePageComponent, canActivate: [AuthGuard, RegisterGuard]},
   {path: 'home', component: HomePageComponent, canActivate: [AuthGuard]},
   {path: 'store', component: StorePageComponent, canActivate: [AuthGuard]},
   {path: 'add/product', component: AddProductPageComponent, canActivate: [AuthGuard]},
   {path: 'store/product', component: ProductPageComponent, canActivate: [AuthGuard]},
   {path: 'generated/qr', component: QrPageComponent, canActivate: [AuthGuard]},
-  {path: 'manage/users', component: ManageUsersComponent, canActivate: [AuthGuard]},
-  {path: 'add/user', component: AddUserComponent, canActivate: [AuthGuard]},
+  {path: 'manage/users', component: ManageUsersComponent, canActivate: [AuthGuard, RegisterGuard || ManagerGuard]},
+  {path: 'add/user', component: AddUserComponent, canActivate: [AuthGuard, RegisterGuard || ManagerGuard]},
 ];
 @NgModule({
   imports: [

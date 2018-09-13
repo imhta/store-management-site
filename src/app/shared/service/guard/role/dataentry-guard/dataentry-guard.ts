@@ -7,12 +7,12 @@ import {AuthState} from '../../../../state/auth.state';
 @Injectable({
   providedIn: 'root'
 })
-export class BillingGuardGuard implements CanActivate {
+export class DataentryGuard implements CanActivate {
   constructor(private store: Store) {}
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     const role = this.store.selectSnapshot(AuthState.role);
-    return role === 'Billing';
+    return role === 'Data entry';
   }
 }

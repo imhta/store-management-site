@@ -46,3 +46,18 @@ export class ErrorInGettingEmployeeLinkedStore {
   static readonly type = '[Store] Error in getting employee linked store';
   constructor(public error: string) {}
 }
+export class GetAllEmployees {
+  static readonly type = '[Store] Get all employees';
+  constructor(public storeUid: string) {}
+}
+export class GotAllEmployeesSuccessfully {
+  static readonly type = '[Store] Got all employees successfully';
+  constructor(public employees: any[]) {}
+}
+export class DeleteEmployee {
+  static readonly type = '[Store] Delete employee';
+  constructor(public email: string) {}
+}
+export class EmployeeDeletedSuccessfully {
+  static readonly type = '[Store] Employee deleted successfully ';
+}

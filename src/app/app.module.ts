@@ -1,7 +1,7 @@
 import { AuthService } from './shared/service/auth/auth.service';
 import { LogoComponent } from './general-components/logo/logo.component';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import {NgModule, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA, OnInit} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
@@ -91,4 +91,5 @@ export class AppModule {
   constructor(private  store: Store) {
     this.store.dispatch([new LoadingTrue(), new CheckAuthState()]);
   }
+
 }

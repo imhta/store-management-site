@@ -7,7 +7,7 @@ import {Observable} from 'rxjs';
 import {take} from 'rxjs/operators';
 import {
   EmptyLinkedStore,
-  ErrorInGettingEmployeeLinkedStore,
+  ErrorInGettingEmployeeLinkedStore, GotAllEmployeesSuccessfully,
   GotEmployeeLinkedStoresSuccessfully,
   GotLinkedStores
 } from '../../actions/store.actions';
@@ -21,6 +21,7 @@ import {ExtraUser} from '../../models/auth.model';
 })
 export class FirestoreService {
   stores: any[];
+  employees: any[];
   allProducts: any[];
   resultProducts: any[];
 
@@ -126,6 +127,15 @@ export class FirestoreService {
   deleteExtraUser(email: string) {
     return this.db.collection('users').doc(`${email}`).delete();
   }
+  getExtraUser(storeUid: string) {
+    this.employees = [];
+    this.db.collection('users').ref.where('employeeOf', 'array-contains', storeUid).get().then((users) => {
+      users.forEach((user) => {
+        this.employees.push(user.data());
+      });
+
+    }).then(() => this.store.dispatch([new GotAllEmployeesSuccessfully(this.employees)]) );
+  }
 
   GetEmployeeLinkedStore(stores: string[]) {
     this.stores = [];
@@ -133,10 +143,16 @@ export class FirestoreService {
       this.db.collection('stores').doc(`${storeUid}`).ref.get().then((store) => {
         if (store.exists) {
           this.stores.push(store.data());
+          console.log(this.stores);
         }
-      }).catch((err) => {this.store.dispatch([new ErrorInGettingEmployeeLinkedStore(err)]);
-      console.log(err); });
+      }).then(() => this.store.dispatch([new GotEmployeeLinkedStoresSuccessfully(this.stores)])
+    ).
+      catch((err) => {
+        this.store.dispatch([new ErrorInGettingEmployeeLinkedStore(err)]);
+        console.log(err);
+      });
     });
-    this.store.dispatch([new GotEmployeeLinkedStoresSuccessfully(this.stores)]);
+
+
   }
 }

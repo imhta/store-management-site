@@ -3,3 +3,16 @@
   <div></div>
   <a class="text-white icon-button" (click)="navigateToAddUser()"><i class="material-icons">person_add</i></a>
 </nav>
+<div class="container">
+  <h3>Manage users</h3>
+
+  <div class="card ">
+  <div class="item-wrapper">
+  <div class="item" *ngFor="let employee of employees; let i = index" >
+  <a class="menu" (click)="deleteEmployee(employee['email'])"><i class="material-icons">delete</i> </a>
+  <h5>{{ employee['email'] }}</h5>
+  <h6>{{employee['role']}}</h6>
+  </div>
+  </div>
+  </div>
+</div>
