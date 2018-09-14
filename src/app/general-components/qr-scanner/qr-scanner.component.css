@@ -1,0 +1,8 @@
+@media only screen and (max-width: 600px) {
+  .select{
+    width: 100vw;
+  }
+}
+.badge {
+  cursor: pointer;
+}

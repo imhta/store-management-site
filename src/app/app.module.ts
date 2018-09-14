@@ -35,10 +35,14 @@ import { AddProductPageComponent } from './add-product-page/add-product-page.com
 import {AllProductState} from './shared/state/allproduct.state';
 // for qr code generation lib
 import { NgxKjuaModule } from 'ngx-kjua';
+// qr scanner module
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { ProductPageComponent } from './product-page/product-page.component';
 import { QrPageComponent } from './qr-page/qr-page.component';
 import { ManageUsersComponent } from './manage-users/manage-users.component';
 import { AddUserComponent } from './add-user/add-user.component';
+import { BillingPageComponent } from './billing-page/billing-page.component';
+import { QrScannerComponent } from './general-components/qr-scanner/qr-scanner.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -56,7 +60,10 @@ import { AddUserComponent } from './add-user/add-user.component';
     ProductPageComponent,
     QrPageComponent,
     ManageUsersComponent,
-    AddUserComponent
+    AddUserComponent,
+    BillingPageComponent,
+    QrScannerComponent
+
 
 
   ],
@@ -76,7 +83,8 @@ import { AddUserComponent } from './add-user/add-user.component';
     NgxsRouterPluginModule.forRoot(),
     NgxsLoggerPluginModule.forRoot(),
     NgxsReduxDevtoolsPluginModule.forRoot(),
-    NgxKjuaModule
+    NgxKjuaModule,
+    ZXingScannerModule,
 
   ],
   exports: [],

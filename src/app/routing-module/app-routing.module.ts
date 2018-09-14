@@ -14,6 +14,9 @@ import {ManageUsersComponent} from '../manage-users/manage-users.component';
 import {AddUserComponent} from '../add-user/add-user.component';
 import {RegisterGuard} from '../shared/service/guard/role/register-guard/register-guard';
 import {ManagerGuard} from '../shared/service/guard/role/manager-guard/manager-guard';
+import {DataentryGuard} from '../shared/service/guard/role/dataentry-guard/dataentry-guard';
+import {BillingPageComponent} from '../billing-page/billing-page.component';
+import {BillingGuard} from '../shared/service/guard/role/billing-guard/billing-guard';
 
 
 
@@ -23,6 +26,7 @@ const routes: Routes = [
   {path: 'store/setup', component: SetupStorePageComponent, canActivate: [AuthGuard, RegisterGuard]},
   {path: 'home', component: HomePageComponent, canActivate: [AuthGuard]},
   {path: 'store', component: StorePageComponent, canActivate: [AuthGuard]},
+  {path: 'sell', component: BillingPageComponent, canActivate: [AuthGuard, RegisterGuard || BillingGuard || ManagerGuard]},
   {path: 'add/product', component: AddProductPageComponent, canActivate: [AuthGuard]},
   {path: 'store/product', component: ProductPageComponent, canActivate: [AuthGuard]},
   {path: 'generated/qr', component: QrPageComponent, canActivate: [AuthGuard]},

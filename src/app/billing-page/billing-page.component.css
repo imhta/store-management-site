@@ -1,0 +1,18 @@
+.qr-scanner-preview{
+  max-width: 250px;
+  max-height: 250px;
+  margin: 10px auto;
+}
+@media only screen and (max-width: 600px) {
+  .qr-scanner-preview{
+    max-width: 100vw;
+    max-height: 400px;
+    margin: -20px auto;
+  }
+}
+.toolbar {
+  height: 50px;
+  width: 100%;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
