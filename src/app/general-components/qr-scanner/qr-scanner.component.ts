@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {ZXingScannerComponent} from '@zxing/ngx-scanner';
 
 @Component({
@@ -8,13 +8,12 @@ import {ZXingScannerComponent} from '@zxing/ngx-scanner';
 })
 export class QrScannerComponent implements OnInit {
 
-
+  @Output() prn = new EventEmitter<string>();
   @ViewChild('scanner')
   scanner: ZXingScannerComponent;
 
   hasCameras = false;
   hasPermission: boolean;
-  qrResultString: string;
 
   availableDevices: MediaDeviceInfo[];
   selectedDevice: MediaDeviceInfo;
@@ -51,11 +50,12 @@ export class QrScannerComponent implements OnInit {
     });
 
   }
-
+  getPrn(prn: string) {
+    this.prn.emit(prn);
+  }
   handleQrCodeResult(resultString: string) {
     QrScannerComponent.playAudio();
-    console.log('Result: ', resultString);
-    this.qrResultString = resultString;
+    this.getPrn(resultString);
   }
 
   onDeviceSelectChange(selectedValue: string) {

@@ -43,6 +43,7 @@ import { ManageUsersComponent } from './manage-users/manage-users.component';
 import { AddUserComponent } from './add-user/add-user.component';
 import { BillingPageComponent } from './billing-page/billing-page.component';
 import { QrScannerComponent } from './general-components/qr-scanner/qr-scanner.component';
+import {InvoicesState} from './shared/state/invoice.state';
 @NgModule({
   declarations: [
     AppComponent,
@@ -79,7 +80,7 @@ import { QrScannerComponent } from './general-components/qr-scanner/qr-scanner.c
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireModule.initializeApp(environment.firebase),
-    NgxsModule.forRoot([AuthState, LoadingState, StoreState, AllProductState]),
+    NgxsModule.forRoot([AuthState, LoadingState, StoreState, AllProductState, InvoicesState]),
     NgxsRouterPluginModule.forRoot(),
     NgxsLoggerPluginModule.forRoot(),
     NgxsReduxDevtoolsPluginModule.forRoot(),

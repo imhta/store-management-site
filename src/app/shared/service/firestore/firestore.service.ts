@@ -14,6 +14,7 @@ import {
 import {SingleProductModel} from '../../models/product.model';
 import {GetAllProductsError, GotAllProducts, ProductFounded} from '../../actions/product.actions';
 import {ExtraUser} from '../../models/auth.model';
+import {InvoiceModel} from '../../models/invoice.model';
 
 // @ts-ignore
 @Injectable({
@@ -47,17 +48,13 @@ export class FirestoreService {
   setupNewStore(store: ShopRegistrationForm) {
     return this.db.collection('stores')
       .add(store.toJson())
-      .then((docRef) => this.db.collection('stores')
-        .doc(`${docRef.id}`)
-        .update({storeUid: docRef.id}));
+      .then((docRef) => docRef.update({storeUid: docRef.id}));
   }
 
   uploadSingleProduct(product: SingleProductModel) {
     return this.db.collection(`stores/${product.storeId}/products`)
       .add(product.toJson())
-      .then((docRef) => this.db.collection(`stores/${product.storeId}/products`)
-        .doc(`${docRef.id}`)
-        .update({productUid: docRef.id}));
+      .then((docRef) => docRef.update({productUid: docRef.id}));
   }
 
   getAllProducts(storeId: string) {
@@ -127,6 +124,7 @@ export class FirestoreService {
   deleteExtraUser(email: string) {
     return this.db.collection('users').doc(`${email}`).delete();
   }
+
   getExtraUser(storeUid: string) {
     this.employees = [];
     this.db.collection('users').ref.where('employeeOf', 'array-contains', storeUid).get().then((users) => {
@@ -134,7 +132,7 @@ export class FirestoreService {
         this.employees.push(user.data());
       });
 
-    }).then(() => this.store.dispatch([new GotAllEmployeesSuccessfully(this.employees)]) );
+    }).then(() => this.store.dispatch([new GotAllEmployeesSuccessfully(this.employees)]));
   }
 
   GetEmployeeLinkedStore(stores: string[]) {
@@ -146,13 +144,22 @@ export class FirestoreService {
           console.log(this.stores);
         }
       }).then(() => this.store.dispatch([new GotEmployeeLinkedStoresSuccessfully(this.stores)])
-    ).
-      catch((err) => {
+      ).catch((err) => {
         this.store.dispatch([new ErrorInGettingEmployeeLinkedStore(err)]);
         console.log(err);
       });
     });
 
 
+  }
+
+  saveInvoice(invoice: InvoiceModel) {
+    return this.db
+      .collection(`stores/${invoice.storeUid}/invoices`)
+      .add(invoice.toJson())
+      .then((docRef) => docRef.update({invoiceId: docRef.id}));
+  }
+  getAllInvoice(storeUid: string) {
+    return this.db.collection(`stores/${storeUid}/invoices`).ref.get().then((invoices) => console.log(invoices.docs));
   }
 }

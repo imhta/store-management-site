@@ -4,7 +4,7 @@
   <h5><b>{{currentStore['storeName']}}</b></h5>
   <div class="input-group">
     <input type="text" class="form-control form-control-lg " id="search" aria-describedby="button-addon4"
-          (ngModelChange)="onChange()"  s [(ngModel)]="searchKeyword" (keyup.enter)="search()">
+          (ngModelChange)="onChange()"   [(ngModel)]="searchKeyword" (keyup.enter)="search()">
     <div class="input-group-append" id="button-addon4">
       <button class="btn btn-primary" type="button" (click)="search()" >Search</button>
     </div>

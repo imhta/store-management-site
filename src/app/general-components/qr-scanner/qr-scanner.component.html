@@ -1,7 +1,7 @@
 
 <div [hidden]="!hasCameras">
 
-  <zxing-scanner  #scanner class="test-class"  start="true" [device]="selectedDevice"    [autofocusEnabled]="true" (scanSuccess)="handleQrCodeResult($event)"></zxing-scanner>
+  <zxing-scanner  #scanner class="test-class"  start="true" [device]="selectedDevice"  (scanSuccess)="handleQrCodeResult($event)"></zxing-scanner>
 
   <p *ngIf="!this.selectedDevice">No camera selected.</p>
 
@@ -28,12 +28,12 @@
   <p>You denied the camera permissions, we can't scan anything without it. 😪</p>
 
 </div>
-<!--<div *ngIf="availableDevices">-->
-  <!--<select (change)="onDeviceSelectChange($event.target.value)">-->
-    <!--<option value="" [selected]="!selectedDevice">No Device</option>-->
-    <!--<option *ngFor="let device of availableDevices" [value]="device.deviceId" [selected]="selectedDevice && device.deviceId === selectedDevice.deviceId">{{ device.label }}</option>-->
-  <!--</select>-->
-<!--</div>-->
-<div *ngIf="availableDevices">
-  <h6> <span *ngFor="let device of availableDevices" (click)="onDeviceSelectChange(device.deviceId)"   class="badge badge-primary">{{ device.label }}</span></h6>
+<div *ngIf="availableDevices" class="selectWrapper">
+  <select (change)="onDeviceSelectChange($event.target.value)" class="select">
+    <option value="" [selected]="!selectedDevice">No Device</option>
+    <option *ngFor="let device of availableDevices" [value]="device.deviceId" [selected]="selectedDevice && device.deviceId === selectedDevice.deviceId">{{ device.label }}</option>
+  </select>
 </div>
+<!--<div *ngIf="availableDevices">-->
+  <!--<h6> <span *ngFor="let device of availableDevices" (click)="onDeviceSelectChange(device.deviceId)"   class="badge badge-primary">{{ device.label }}</span></h6>-->
+<!--</div>-->

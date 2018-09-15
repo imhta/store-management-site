@@ -33,13 +33,20 @@ a{
   background-color: #007bff;
   color: white;
 }
-.input-group{
-  max-width: 700px;
-  margin: 0 auto;
-}
 .input-group .btn{
   border-top-right-radius: 50px ;
   border-bottom-right-radius: 50px;
+  border-color: #06bca9;
+  background-color: #06bca9;
+}
+.input-group .btn:hover{
+  background-color: #06bca9;
+  color: white;
+}
+.input-group .btn:focus{
+  border-color: #06bca9;
+  box-shadow: 0 1px 1px #06bca9 inset, 0 0 8px #06bca9;
+  outline: 0 none;
 }
 .card-content {
   margin: 30px 20px 0;

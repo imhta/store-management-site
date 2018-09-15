@@ -38,7 +38,10 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
 
   constructor(private fb: FormBuilder, private store: Store) {  }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.addStoreId();
+    this.addAddedBy();
+  }
 
   ngOnDestroy() {
     this.userDataSubscription.unsubscribe();
