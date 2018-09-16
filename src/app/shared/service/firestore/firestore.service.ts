@@ -1,10 +1,7 @@
 import {Injectable} from '@angular/core';
 import {AngularFirestore} from 'angularfire2/firestore';
 import {ShopRegistrationForm} from '../../models/store.model';
-import {Select, Store} from '@ngxs/store';
-import {AuthState} from '../../state/auth.state';
-import {Observable} from 'rxjs';
-import {take} from 'rxjs/operators';
+import {Store} from '@ngxs/store';
 import {
   EmptyLinkedStore,
   ErrorInGettingEmployeeLinkedStore, GotAllEmployeesSuccessfully,
@@ -15,6 +12,7 @@ import {SingleProductModel} from '../../models/product.model';
 import {GetAllProductsError, GotAllProducts, ProductFounded} from '../../actions/product.actions';
 import {ExtraUser} from '../../models/auth.model';
 import {InvoiceModel} from '../../models/invoice.model';
+import {GotAllInvoiceSuccessfully} from '../../actions/invoice.actions';
 
 // @ts-ignore
 @Injectable({
@@ -25,6 +23,7 @@ export class FirestoreService {
   employees: any[];
   allProducts: any[];
   resultProducts: any[];
+  allInvoice: InvoiceModel[];
 
   constructor(private db: AngularFirestore, private  store: Store) {
   }
@@ -159,7 +158,16 @@ export class FirestoreService {
       .add(invoice.toJson())
       .then((docRef) => docRef.update({invoiceId: docRef.id}));
   }
-  getAllInvoice(storeUid: string) {
-    return this.db.collection(`stores/${storeUid}/invoices`).ref.get().then((invoices) => console.log(invoices.docs));
+
+  async getAllInvoice(storeUid: string) {
+    return this.db.collection(`stores/${storeUid}/invoices`).ref.get().then((invoices) => {
+      this.allInvoice = [];
+      invoices.forEach((data) => {
+        const invoice = new InvoiceModel();
+        invoice.fromJson(data.data());
+        this.allInvoice.push(invoice);
+      });
+      this.store.dispatch([new GotAllInvoiceSuccessfully(this.allInvoice)]);
+    });
   }
 }

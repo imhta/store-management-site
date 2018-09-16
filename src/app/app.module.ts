@@ -40,10 +40,14 @@ import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { ProductPageComponent } from './product-page/product-page.component';
 import { QrPageComponent } from './qr-page/qr-page.component';
 import { ManageUsersComponent } from './manage-users/manage-users.component';
-import { AddUserComponent } from './add-user/add-user.component';
-import { BillingPageComponent } from './billing-page/billing-page.component';
+import { AddUserComponent } from './manage-users/add-user/add-user.component';
+import { SellPageComponent } from './sell-page/sell-page.component';
 import { QrScannerComponent } from './general-components/qr-scanner/qr-scanner.component';
 import {InvoicesState} from './shared/state/invoice.state';
+import { InvoicePageComponent } from './invoice-page/invoice-page.component';
+import { CustomerPageComponent } from './customer-page/customer-page.component';
+import { DashboardPageComponent } from './dashboard-page/dashboard-page.component';
+import { BillingPageComponent } from './billing-page/billing-page.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -62,8 +66,12 @@ import {InvoicesState} from './shared/state/invoice.state';
     QrPageComponent,
     ManageUsersComponent,
     AddUserComponent,
-    BillingPageComponent,
-    QrScannerComponent
+    SellPageComponent,
+    QrScannerComponent,
+    InvoicePageComponent,
+    CustomerPageComponent,
+    DashboardPageComponent,
+    BillingPageComponent
 
 
 

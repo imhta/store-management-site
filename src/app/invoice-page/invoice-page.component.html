@@ -1,0 +1,19 @@
+<app-navbar></app-navbar>
+<nav class="bg-dark navbar toolbar">
+  <div></div>
+</nav>
+<div class="container">
+  <h3>Invoices</h3>
+
+  <div class="card ">
+    <div class="item-wrapper">
+      <div class="item" *ngFor="let invoice of allInvoices; let i = index" >
+        <h6 class="float-right">{{invoice.createdOn | date:'short'}}</h6>
+        <p>{{invoice.invoiceId}}</p>
+        <h5>{{invoice.customerNumber}}</h5>
+        <p>Total quantity:  {{invoice.totalQuantity}}</p>
+        <p>Total price:  &#8377; {{invoice.totalPrice}}</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -11,23 +11,32 @@ import {AddProductPageComponent} from '../add-product-page/add-product-page.comp
 import {ProductPageComponent} from '../product-page/product-page.component';
 import {QrPageComponent} from '../qr-page/qr-page.component';
 import {ManageUsersComponent} from '../manage-users/manage-users.component';
-import {AddUserComponent} from '../add-user/add-user.component';
+import {AddUserComponent} from '../manage-users/add-user/add-user.component';
 import {RegisterGuard} from '../shared/service/guard/role/register-guard/register-guard';
 import {ManagerGuard} from '../shared/service/guard/role/manager-guard/manager-guard';
 import {DataentryGuard} from '../shared/service/guard/role/dataentry-guard/dataentry-guard';
-import {BillingPageComponent} from '../billing-page/billing-page.component';
+import {SellPageComponent} from '../sell-page/sell-page.component';
 import {BillingGuard} from '../shared/service/guard/role/billing-guard/billing-guard';
+import {InvoicePageComponent} from '../invoice-page/invoice-page.component';
+import {CustomerPageComponent} from '../customer-page/customer-page.component';
+import {DashboardPageComponent} from '../dashboard-page/dashboard-page.component';
+import {BillingPageComponent} from '../billing-page/billing-page.component';
 
 
 
 const routes: Routes = [
+
   {path: '', component: LoginPageComponent},
+  {path: 'home', component: HomePageComponent},
   {path: 'select/store', component: ManageStorePageComponent, canActivate: [AuthGuard]},
   {path: 'store/setup', component: SetupStorePageComponent, canActivate: [AuthGuard, RegisterGuard]},
-  {path: 'home', component: HomePageComponent, canActivate: [AuthGuard]},
+  {path: 'dashboard', component: DashboardPageComponent, canActivate: [AuthGuard]},
   {path: 'store', component: StorePageComponent, canActivate: [AuthGuard]},
-  {path: 'sell', component: BillingPageComponent, canActivate: [AuthGuard, RegisterGuard || BillingGuard || ManagerGuard]},
+  {path: 'sell', component: SellPageComponent, canActivate: [AuthGuard, RegisterGuard || BillingGuard || ManagerGuard]},
+  {path: 'billing', component: BillingPageComponent, canActivate: [AuthGuard, RegisterGuard ]},
   {path: 'add/product', component: AddProductPageComponent, canActivate: [AuthGuard]},
+  {path: 'invoice', component: InvoicePageComponent, canActivate: [AuthGuard]},
+  {path: 'customers', component: CustomerPageComponent, canActivate: [AuthGuard]},
   {path: 'store/product', component: ProductPageComponent, canActivate: [AuthGuard]},
   {path: 'generated/qr', component: QrPageComponent, canActivate: [AuthGuard]},
   {path: 'manage/users', component: ManageUsersComponent, canActivate: [AuthGuard, RegisterGuard || ManagerGuard]},

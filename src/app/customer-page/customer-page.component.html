@@ -1,0 +1,37 @@
+<app-navbar></app-navbar>
+<nav class="bg-dark navbar toolbar">
+  <div></div>
+</nav>
+<div class="container" *ngIf="changeCustomer">
+
+  <h3 *ngIf="changeCustomer">Customers</h3>
+
+<div class="list-group" >
+  <a  class="list-group-item list-group-item-action " (click)="selectCustomer(i)" *ngFor="let customer of uniqueCustomers; let i = index" [ngClass]="selectedCustomer === i ? 'active text-white' : ''">
+    {{customer}}
+  </a>
+</div>
+
+</div>
+<div class="container"  *ngIf="!changeCustomer">
+  <a class="menu float-right"  (click)="toggleCustomer()"><i class="material-icons">view_list</i></a>
+  <h3>{{selectedCustomerValue}} History</h3>
+  <div class="card" *ngFor="let invoice of selectedCustomerData">
+    <div class="card-body" *ngFor="let product of invoice.cartProducts">
+      <p>{{product['prn']}}</p>
+      <h5 class="card-title">{{product['productName']}}</h5>
+      <p class="card-text">Total product quantity: {{product['totalQuantity']}}</p>
+      <p class="card-text">Total product price:   &#8377;  {{product['totalPrice']}}</p>
+      <hr >
+    </div>
+
+    <div class="card-body bg-dark text-white">
+      <h5 class="card-title">Total price:  &#8377; {{invoice.totalPrice}}</h5>
+      <p class="card-text">Total quantity: {{invoice.totalQuantity}}</p>
+
+    </div>
+    <div class="card-footer bg-dark text-white">
+      {{invoice.createdOn | date: 'short'}}
+    </div>
+  </div>
+</div>

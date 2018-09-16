@@ -51,8 +51,9 @@ export class InvoiceModel {
       'totalQuantity': this.totalQuantity,
       'totalTax': this.totalTax,
       'storeUid': this.storeUid,
-      'createdOn': new Date(),
-      'invoiceId': this.invoiceId ? this.invoiceId : ''
+      'createdOn': Date.now(),
+      'invoiceId': this.invoiceId ? this.invoiceId : '',
+      'pending': true
     };
   }
 

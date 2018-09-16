@@ -1,11 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Select, Store} from '@ngxs/store';
 import {Observable, Subscription} from 'rxjs';
-import {ExtraUser, UserModel} from '../shared/models/auth.model';
-import {UserStoreState} from '../shared/models/store.model';
+import {ExtraUser, UserModel} from '../../shared/models/auth.model';
+import {UserStoreState} from '../../shared/models/store.model';
 import {FormBuilder} from '@angular/forms';
-import {LoadingTrue} from '../shared/state/loading.state';
-import {AddExtraUser} from '../shared/actions/auth.actions';
+import {LoadingTrue} from '../../shared/state/loading.state';
+import {AddExtraUser} from '../../shared/actions/auth.actions';
 
 @Component({
   selector: 'app-add-user',

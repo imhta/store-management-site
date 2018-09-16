@@ -13,6 +13,7 @@ import {
 import {FirestoreService} from '../service/firestore/firestore.service';
 import {Navigate} from '@ngxs/router-plugin';
 import {LoadingFalse} from './loading.state';
+import {UserModel} from '../models/auth.model';
 
 
 @State<UserStoreState>({
@@ -23,6 +24,10 @@ import {LoadingFalse} from './loading.state';
   }
 })
 export class StoreState {
+  @Selector()
+  static uid(state: UserStoreState) {
+    return state.linkedStores[state.selectedStore]['storeUid'];
+  }
 
   constructor(private dbService: FirestoreService, private  store: Store) {
   }
