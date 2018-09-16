@@ -1,0 +1,102 @@
+.qr-scanner-preview {
+  max-width: 250px;
+  max-height: 250px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 5;
+}
+
+@media only screen and (max-width: 600px) {
+  .qr-scanner-preview {
+    position: static;
+    max-width: 100vw;
+    max-height: 400px;
+  }
+}
+
+.toolbar {
+  height: 50px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.container {
+  max-width: 700px;
+}
+
+.container h3 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+  display: flex;
+}
+
+.item-wrapper {
+  margin: 0 auto;
+}
+
+.item {
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 10px;
+  margin: 10px;
+  -webkit-box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.12);
+  -moz-box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.12);
+  border-radius: 10px;
+}
+
+.item h5 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  margin: 0 auto;
+}
+
+.item-wrapper {
+  margin: 15px;
+}
+
+.input-group .btn {
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 50px;
+  border-color: #06bca9;
+  background-color: #06bca9;
+}
+
+.input-group .btn:hover {
+  background-color: #06bca9;
+  color: white;
+}
+
+.input-group .btn:focus {
+  border-color: #06bca9;
+  box-shadow: 0 1px 1px #06bca9 inset, 0 0 8px #06bca9;
+  outline: 0 none;
+}
+
+.badge {
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.total-detail a {
+  margin-left: 15px;
+  cursor: pointer;
+}
+
+.icon-button {
+  cursor: pointer;
+
+}
+
+.material-icons {
+  text-decoration: none;
+}
+
+.material-icons:hover {
+  color: #06bca9;
+}
+
+.material-icons:active {
+  color: aquamarine;
+}
