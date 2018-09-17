@@ -22,7 +22,7 @@
   <h4 class="logo-title">Clothx</h4>
   </div>
   <div *ngIf="storeState.selectedStore !== null" >
-    <img class="profile-pic" (click)="navigateTo('/select/store')" src="{{this.user.photoUrl}}">
+    <img class="profile-pic" (click)="navigateTo('/select/store')" src="{{this.user.photoUrl}}" alt="logo">
     <a  data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="true"
        aria-label="Toggle navigation" class="menu"><i class="material-icons">apps</i></a>
   </div>

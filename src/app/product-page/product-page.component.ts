@@ -1,10 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, Params} from '@angular/router';
-import {Observable, Subscription} from 'rxjs';
-import {Select, Store} from '@ngxs/store';
+import {ActivatedRoute} from '@angular/router';
+import {Subscription} from 'rxjs';
+import {Store} from '@ngxs/store';
 import {Navigate} from '@ngxs/router-plugin';
-import {UserStoreState} from '../shared/models/store.model';
-import {DeleteAProduct, GetAllProducts} from '../shared/actions/product.actions';
+import {DeleteAProduct} from '../shared/actions/product.actions';
 
 
 @Component({
