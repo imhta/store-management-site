@@ -22,7 +22,10 @@ export class LoginSuccessful {
 
 export class LoginFailed {
   static readonly type = '[Auth] Login Attempt Failed';
-  constructor(public  error: string) {}
+
+  constructor(public  error: string) {
+    console.log(this.error);
+  }
 }
 
 
@@ -37,7 +40,9 @@ export class LogoutSuccessful {
 
 export class LogoutFailed {
   static readonly type = '[Auth] Logout Attempt Failed';
-  constructor(public  error: string) {}
+
+  constructor(public  error: string) {
+  }
 }
 
 export class AddExtraUser {
@@ -49,5 +54,7 @@ export class ExtraUserAddedSuccessfully {
 }
 export class ErrorInAddingExtraUser {
   static readonly type = '[Auth] Error in adding extra user';
-  constructor(public  error: string) {}
+
+  constructor(public  error: string) {
+  }
 }

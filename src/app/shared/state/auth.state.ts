@@ -1,14 +1,18 @@
 import {Action, Selector, State, StateContext, Store} from '@ngxs/store';
 import {UserModel} from '../models/auth.model';
 import {
+  AddExtraUser,
+  Authenticated,
+  CheckAuthState,
+  ErrorInAddingExtraUser,
+  ExtraUserAddedSuccessfully,
   Login,
+  LoginFailed,
+  LoginSuccessful,
   Logout,
   LogoutFailed,
   LogoutSuccessful,
-  LoginFailed,
-  LoginSuccessful,
-  CheckAuthState,
-  Authenticated, NotAuthenticated, AddExtraUser, ExtraUserAddedSuccessfully, ErrorInAddingExtraUser
+  NotAuthenticated
 } from '../actions/auth.actions';
 import {AuthService} from '../service/auth/auth.service';
 import {Navigate} from '@ngxs/router-plugin';
@@ -62,7 +66,10 @@ export class AuthState {
         setState(data).pipe(delay(2000));
         return this.store.dispatch(new LoginSuccessful());
       })
-      .catch((err) => this.store.dispatch([new LoadingFalse(), new LoginFailed(err)]));
+      .catch((err) => {
+        console.log(err);
+        this.store.dispatch([new LoadingFalse(), new LoginFailed(err)]);
+      });
 
   }
 
