@@ -49,6 +49,7 @@ import {CustomerPageComponent} from './customer-page/customer-page.component';
 import {DashboardPageComponent} from './dashboard-page/dashboard-page.component';
 import {BillingPageComponent} from './billing-page/billing-page.component';
 import {ServiceWorkerModule} from '@angular/service-worker';
+import {PwaService} from './shared/service/pwa/pwa.service';
 
 @NgModule({
   declarations: [
@@ -100,7 +101,7 @@ import {ServiceWorkerModule} from '@angular/service-worker';
 
   ],
   exports: [],
-  providers: [AuthService, AuthGuard, FirestoreService],
+  providers: [AuthService, AuthGuard, FirestoreService, PwaService],
   bootstrap: [AppComponent],
   schemas: [
     NO_ERRORS_SCHEMA,
