@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import { UserModel} from '../../shared/models/auth.model';
+import {UserModel} from '../../shared/models/auth.model';
 import {Actions, ofActionDispatched, Select, Store} from '@ngxs/store';
 import {Logout} from '../../shared/actions/auth.actions';
 import {LoadingTrue} from '../../shared/state/loading.state';
@@ -43,5 +43,9 @@ export class NavbarComponent implements OnInit {
   }
   logout() {
     return this.store.dispatch([new LoadingTrue(), new Logout()]);
+  }
+
+  onNavigate() {
+    window.open('https://www.clothx.net', '_blank');
   }
 }

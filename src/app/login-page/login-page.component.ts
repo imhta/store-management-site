@@ -1,9 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 import {Select, Store} from '@ngxs/store';
 import {Login} from '../shared/actions/auth.actions';
 import {LoadingTrue} from '../shared/state/loading.state';
 import {Observable} from 'rxjs';
+
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
