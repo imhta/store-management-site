@@ -6,7 +6,7 @@
     <div class="setup-link" (click)="navigateToSetupStore()">SETUP NOW</div>
   </div>
 </div>
-<diV class="container" *ngIf="!linkedStoreEmpty">
+<diV class="container" *ngIf="!linkedStoreEmpty && (this.user.isEmployee || this.user.isRegister)">
   <h3>Get started</h3>
   <a class="menu logout" (click)="logout()"><i class="material-icons" data-toggle="tooltip" data-placement="bottom"
                                                title="Logout">exit_to_app</i> </a>

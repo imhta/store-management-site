@@ -63,7 +63,8 @@ export class AuthState {
   async login({setState}: StateContext<UserModel>) {
     await this.authService.googleLogin()
       .then((data) => {
-        setState(data).pipe(delay(2000));
+        setState(data);
+        delay(2000);
         return this.store.dispatch(new LoginSuccessful());
       })
       .catch((err) => {
@@ -88,11 +89,15 @@ export class AuthState {
       return this.store.dispatch([new Navigate(['select/store']), new LoadingFalse()]);
   }
 
-  @Action([LogoutSuccessful, NotAuthenticated])
+  @Action([LogoutSuccessful])
+  refreshAndNavigateToLogin() {
+    window.location.replace('/');
+  }
+
+  @Action([NotAuthenticated])
   navigateToLogin() {
     return this.store.dispatch([new LoadingFalse(), new Navigate([''])]);
   }
-
   @Action(AddExtraUser)
   addExtraUser(ctx: StateContext<UserModel>, {extraUser}: AddExtraUser) {
     return this.dbService

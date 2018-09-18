@@ -20,13 +20,14 @@ import {InvoicePageComponent} from '../invoice-page/invoice-page.component';
 import {CustomerPageComponent} from '../customer-page/customer-page.component';
 import {DashboardPageComponent} from '../dashboard-page/dashboard-page.component';
 import {BillingPageComponent} from '../billing-page/billing-page.component';
+import {DataentryGuard} from '../shared/service/guard/role/dataentry-guard/dataentry-guard';
 
 
 const routes: Routes = [
 
   {path: '', component: LoginPageComponent},
   {path: 'select/store', component: ManageStorePageComponent, canActivate: [AuthGuard]},
-  {path: 'store/setup', component: SetupStorePageComponent, canActivate: [AuthGuard, RegisterGuard]},
+  {path: 'store/setup', component: SetupStorePageComponent, canActivate: [AuthGuard || !(BillingGuard || DataentryGuard || ManagerGuard)]},
   {path: 'dashboard', component: DashboardPageComponent, canActivate: [AuthGuard]},
   {path: 'store', component: StorePageComponent, canActivate: [AuthGuard]},
   {path: 'sell', component: SellPageComponent, canActivate: [AuthGuard, RegisterGuard || BillingGuard || ManagerGuard]},

@@ -17,16 +17,13 @@ import {LoginPageComponent} from './login-page/login-page.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {AuthGuard} from './shared/service/guard/auth/auth.guard';
-import {NgxsModule, Store} from '@ngxs/store';
+import {NgxsModule} from '@ngxs/store';
 import {NgxsRouterPluginModule} from '@ngxs/router-plugin';
-import {NgxsLoggerPluginModule} from '@ngxs/logger-plugin';
-import {NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
 import {AuthState} from './shared/state/auth.state';
-import {CheckAuthState} from './shared/actions/auth.actions';
 import {ManageStorePageComponent} from './first-page/manage-store-page/manage-store-page.component';
 import {SetupStorePageComponent} from './first-page/setup-store-page/setup-store-page.component';
 import {LinkedStoreComponent} from './first-page/linked-store/linked-store.component';
-import {LoadingState, LoadingTrue} from './shared/state/loading.state';
+import {LoadingState} from './shared/state/loading.state';
 import {FirestoreService} from './shared/service/firestore/firestore.service';
 import {StoreState} from './shared/state/store.state';
 import {LoadingComponent} from './general-components/loading/loading.component';
@@ -51,6 +48,7 @@ import {BillingPageComponent} from './billing-page/billing-page.component';
 import {ServiceWorkerModule} from '@angular/service-worker';
 import {PwaService} from './shared/service/pwa/pwa.service';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -74,7 +72,7 @@ import {PwaService} from './shared/service/pwa/pwa.service';
     InvoicePageComponent,
     CustomerPageComponent,
     DashboardPageComponent,
-    BillingPageComponent
+    BillingPageComponent,
 
 
 
@@ -93,8 +91,8 @@ import {PwaService} from './shared/service/pwa/pwa.service';
     AngularFireModule.initializeApp(environment.firebase),
     NgxsModule.forRoot([AuthState, LoadingState, StoreState, AllProductState, InvoicesState]),
     NgxsRouterPluginModule.forRoot(),
-    NgxsLoggerPluginModule.forRoot(),
-    NgxsReduxDevtoolsPluginModule.forRoot(),
+    // NgxsLoggerPluginModule.forRoot(),
+    // NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxKjuaModule,
     ZXingScannerModule,
     ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
@@ -109,8 +107,4 @@ import {PwaService} from './shared/service/pwa/pwa.service';
   ]
 })
 export class AppModule {
-  constructor(private  store: Store) {
-    this.store.dispatch([new LoadingTrue(), new CheckAuthState()]);
-  }
-
 }
