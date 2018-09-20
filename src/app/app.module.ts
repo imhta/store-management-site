@@ -47,6 +47,8 @@ import {DashboardPageComponent} from './dashboard-page/dashboard-page.component'
 import {BillingPageComponent} from './billing-page/billing-page.component';
 import {ServiceWorkerModule} from '@angular/service-worker';
 import {PwaService} from './shared/service/pwa/pwa.service';
+import {NgxsLoggerPluginModule} from '@ngxs/logger-plugin';
+import {NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
 
 
 @NgModule({
@@ -91,8 +93,8 @@ import {PwaService} from './shared/service/pwa/pwa.service';
     AngularFireModule.initializeApp(environment.firebase),
     NgxsModule.forRoot([AuthState, LoadingState, StoreState, AllProductState, InvoicesState]),
     NgxsRouterPluginModule.forRoot(),
-    // NgxsLoggerPluginModule.forRoot(),
-    // NgxsReduxDevtoolsPluginModule.forRoot(),
+    NgxsLoggerPluginModule.forRoot(),
+    NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxKjuaModule,
     ZXingScannerModule,
     ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
