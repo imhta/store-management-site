@@ -1,69 +1,64 @@
 <app-navbar></app-navbar>
-
-<div class=" qr-scanner-preview">
-  <div class="card">
-    <app-qr-scanner (prn)="getPrn($event)"></app-qr-scanner>
-  </div>
-</div>
-<nav class="bg-dark navbar toolbar text-white">
-  <div class=" total-detail">
-    <a>Total Quantity: {{invoice.totalQuantity}}</a>
-    <a>Total Price: &#8377; {{invoice.totalPrice}}</a>
-  </div>
-  <div>
-
-    <a class="icon-button" (click)="saveInvoice()"> <i class="material-icons">save_alt</i></a>
-  </div>
-</nav>
-
-<div class="container">
-  <h3>Create invoice</h3>
-  <div class="form-group">
-    <label for="customer-number">Customer number :</label>
-    <h6 class="float-right"><span class="badge "
-                                  [ngClass]="invoice.typeOfPayment == payment?'badge-primary': 'badge-light'"
-                                  (click)="selectPayment(payment)"
-                                  *ngFor="let payment of typeOfPayment">{{payment}}</span></h6>
-    <div class="input-group">
-      <input type="text" class="form-control form-control-md " id="customer-number"
-             [(ngModel)]="invoice.customerNumber ">
+<div class="page">
+  <div class=" qr-scanner-preview">
+    <div class="card">
+      <app-qr-scanner (prn)="getPrn($event)"></app-qr-scanner>
     </div>
   </div>
+  <nav class="bg-dark text-white navbar toolbar ">
+    <div class=" total-detail">
+      <a>Total Quantity: {{invoice.totalQuantity}}</a>
+      <a>Total Price: &#8377; {{invoice.totalPrice}}</a>
+    </div>
+    <div>
 
-</div>
+      <a class="icon-button" (click)="saveInvoice()"> <i class="material-icons">save_alt</i></a>
+    </div>
+  </nav>
 
-
-<div class="container">
-  <div class="form-group">
-    <label for="add-cart">Product Id :</label>
-    <div class="input-group">
-      <input type="text" class="form-control form-control-md " id="add-cart" aria-describedby="button-addon4"
-             [(ngModel)]="prn" (keyup.enter)="addToCart(prn)">
-      <div class="input-group-append" id="button-addon4">
-        <button class="btn btn-primary" type="button" (click)="addToCart(prn)">Add</button>
+  <div class="container">
+    <h3>Create invoice</h3>
+    <div class="form-group">
+      <label for="customer-number">Customer number :</label>
+      <h6 class="float-right"><span class="badge "
+                                    [ngClass]="invoice.typeOfPayment == payment?'badge-primary': 'badge-light'"
+                                    (click)="selectPayment(payment)"
+                                    *ngFor="let payment of typeOfPayment">{{payment}}</span></h6>
+      <div class="input-group">
+        <input type="text" class="form-control form-control-md " id="customer-number"
+               [(ngModel)]="invoice.customerNumber ">
       </div>
     </div>
-  </div>
-</div>
-<div class="container" *ngIf="cartProducts.length > 0">
 
-  <div class="item-wrapper">
-    <div class="item" *ngFor="let product of cartProducts; let i = index">
-      <a class="menu float-right" (click)="deleteProductFromCart(i)"><i class="material-icons">delete</i> </a>
-      <h5>{{ product.productName }}</h5>
-      <h6>{{product.prn}}</h6>
-      <div class="form-group">
-        <label for="total-quantity">Quantity</label>
-        <div class="input-group">
-          <input type="number" class="form-control form-control-md " id="total-quantity"
-                 [(ngModel)]="product.totalQuantity " (ngModelChange)="calculateTotal(product)">
+    <div class="form-group">
+      <label for="add-cart">Product Id :</label>
+      <div class="input-group">
+        <input type="text" class="form-control form-control-md " id="add-cart" aria-describedby="button-addon4"
+               [(ngModel)]="prn" (keyup.enter)="addToCart(prn)">
+        <div class="input-group-append" id="button-addon4">
+          <button class="btn btn-primary" type="button" (click)="addToCart(prn)">Add</button>
         </div>
-        <p *ngIf="!product.totalQuantity">Quantity of the product can't be zero</p>
-        <p *ngIf="product.totalQuantity > product.maxQuantity">Out of stock</p>
       </div>
-      <h6>Price: &#8377; {{product.totalPrice}}</h6>
+    </div>
+
+    <div class="item-wrapper" *ngIf="cartProducts.length > 0">
+      <div class="item" *ngFor="let product of cartProducts; let i = index">
+        <a class="menu float-right" (click)="deleteProductFromCart(i)"><i class="material-icons">delete</i> </a>
+        <h5>{{ product.productName }}</h5>
+        <h6>{{product.prn}}</h6>
+        <div class="form-group">
+          <label for="total-quantity">Quantity</label>
+          <div class="input-group">
+            <input type="number" class="form-control form-control-md " id="total-quantity"
+                   [(ngModel)]="product.totalQuantity " (ngModelChange)="calculateTotal(product)">
+          </div>
+          <p *ngIf="!product.totalQuantity">Quantity of the product can't be zero</p>
+          <p *ngIf="product.totalQuantity > product.maxQuantity">Out of stock</p>
+        </div>
+        <h6>Price: &#8377; {{product.totalPrice}}</h6>
+      </div>
+
     </div>
 
   </div>
-
 </div>
