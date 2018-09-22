@@ -1,3 +1,5 @@
+import GeoPoint = firebase.firestore.GeoPoint;
+
 export class UserStoreState {
   linkedStores: any[];
   selectedStore: number; // index of selected store in stores array
@@ -13,17 +15,23 @@ export class ShopRegistrationForm {
   storeName: string;
   contactNo: string;
   address: object;
-  location: object;
+  location: GeoPoint;
+  locationAccuracy: number;
+  locationTimeStamp: number;
   verificationStatus?: string;
   createdAt?: Date;
   uploads?: object;
 
-  constructor(data) {
+  constructor() {
+
+  }
+
+  fromJson(data) {
     this.storeName = data.storeName;
     this.contactNo = data.contactNumber;
     this.address = data.address;
     this.registerUid = data.registerUid;
-    this.location = data.location;
+
   }
 
   toJson() {
@@ -33,6 +41,7 @@ export class ShopRegistrationForm {
       'contactNo': this.contactNo,
       'address': this.address,
       'location': this.location,
+      'locationTimeStamp': this.locationTimeStamp,
       'createdAt': new Date().toLocaleString(),
     };
   }

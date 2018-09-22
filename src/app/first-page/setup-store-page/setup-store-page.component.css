@@ -16,3 +16,11 @@
   margin: 15px;
 }
 
+.location-btn {
+  float: none;
+  margin: 0 auto;
+}
+
+.location-msg {
+  margin-bottom: 20px;
+}

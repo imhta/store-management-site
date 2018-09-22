@@ -4,9 +4,9 @@ import {Select, Store} from '@ngxs/store';
 import {UserModel} from '../../shared/models/auth.model';
 import {ShopRegistrationForm} from '../../shared/models/store.model';
 import {Observable, Subscription} from 'rxjs';
-import {FirestoreService} from '../../shared/service/firestore/firestore.service';
 import {SetupNewStore} from '../../shared/actions/store.actions';
 import {LoadingTrue} from '../../shared/state/loading.state';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-setup-store-page',
@@ -17,7 +17,8 @@ export class SetupStorePageComponent implements OnInit, OnDestroy {
   @Select('user') user$: Observable<object>;
   userDataSubscription: Subscription;
   user: UserModel;
-
+  isLocated = false;
+  _store = new ShopRegistrationForm();
   storeForm = this.fb.group({
     storeName: [''],
     contactNumber: [''],
@@ -28,16 +29,9 @@ export class SetupStorePageComponent implements OnInit, OnDestroy {
       state: [''],
       pinCode: ['']
     }),
-    geoLocation: this.fb.group({
-      lat: [''],
-      long: [''],
-      accuracy: [''],
-      timeStamp: ['']
-    })
   });
 
-  constructor(private fb: FormBuilder, private dbService: FirestoreService, private store: Store) {
-    this.getGeoLocation();
+  constructor(private fb: FormBuilder, private store: Store) {
   }
 
   ngOnInit() {
@@ -53,28 +47,38 @@ export class SetupStorePageComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    this.getGeoLocation();
-    const store = new ShopRegistrationForm(this.storeForm.value);
-    return this.store.dispatch([new LoadingTrue(), new SetupNewStore(store)]);
+    this._store.fromJson(this.storeForm.value);
+    return this.store.dispatch([new LoadingTrue(), new SetupNewStore(this._store)]);
+  }
+
+  locateStore() {
+    this.getGeoLocation().then(() => {
+      this.isLocated = true;
+    });
   }
 
   getGeoLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(this.showPosition);
-    } else {
-      console.log('Geo location not supported');
-    }
-  }
-
-  showPosition(position) {
-    this.storeForm.patchValue({
-      geoLocation: {
-        lat: position.coords.latitude,
-        long: position.coords.longitude,
-        accuracy: position.coords.accuracy,
-        timeStamp: position.timestamp
+    return new Promise((resolve, reject) => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          position => {
+            this._store.location = new firebase.firestore.GeoPoint(position.coords.latitude, position.coords.longitude);
+            this._store.locationAccuracy = position.coords.accuracy;
+            this._store.locationTimeStamp = position.timestamp;
+            console.log(this._store.location, this._store.locationTimeStamp);
+            resolve();
+          },
+          (err) => {
+            alert('Please enable your GPS position future.');
+            reject();
+          }, {maximumAge: 1, timeout: 10000, enableHighAccuracy: true}
+        );
+      } else {
+        console.log('Geo location not supported');
+        reject();
       }
+
+
     });
-    console.log(position.coords.latitude, position.coords.longitude, position.coords.accuracy, position.timestamp);
   }
 }
