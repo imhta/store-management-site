@@ -15,6 +15,6 @@ export class AddProductGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     const role = this.store.selectSnapshot(AuthState.role);
-    return !!(role === 'Data entry' || 'Manager' || 'Register');
+    return !(role === 'Billing');
   }
 }
