@@ -33,6 +33,7 @@ export class LinkedStoreComponent implements OnInit, OnDestroy {
 
 
   constructor(private store: Store, private actions$: Actions) {
+
   }
 
   ngOnInit() {
@@ -83,4 +84,5 @@ export class LinkedStoreComponent implements OnInit, OnDestroy {
   logout() {
     return this.store.dispatch([new LoadingTrue(), new Logout()]);
   }
+
 }

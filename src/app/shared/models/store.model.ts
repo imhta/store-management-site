@@ -13,6 +13,7 @@ export class ShopRegistrationForm {
   storeName: string;
   contactNo: string;
   address: object;
+  location: object;
   verificationStatus?: string;
   createdAt?: Date;
   uploads?: object;
@@ -22,6 +23,7 @@ export class ShopRegistrationForm {
     this.contactNo = data.contactNumber;
     this.address = data.address;
     this.registerUid = data.registerUid;
+    this.location = data.location;
   }
 
   toJson() {
@@ -30,6 +32,7 @@ export class ShopRegistrationForm {
       'storeName': this.storeName,
       'contactNo': this.contactNo,
       'address': this.address,
+      'location': this.location,
       'createdAt': new Date().toLocaleString(),
     };
   }
