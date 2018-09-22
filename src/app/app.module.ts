@@ -49,6 +49,10 @@ import {ServiceWorkerModule} from '@angular/service-worker';
 import {PwaService} from './shared/service/pwa/pwa.service';
 import {NgxsLoggerPluginModule} from '@ngxs/logger-plugin';
 import {NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
+import {RegisterGuard} from './shared/service/guard/role/register-guard/register-guard';
+import {SellingGuard} from './shared/service/guard/feature-guard/selling-guard/selling.guard';
+import {AddProductGuard} from './shared/service/guard/feature-guard/add-product-guard/add-product.guard';
+import {ManagerGuard} from './shared/service/guard/role/manager-guard/manager.guard';
 
 
 @NgModule({
@@ -77,7 +81,6 @@ import {NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
     BillingPageComponent,
 
 
-
   ],
   imports: [
     HttpClientModule,
@@ -101,7 +104,7 @@ import {NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
 
   ],
   exports: [],
-  providers: [AuthService, AuthGuard, FirestoreService, PwaService],
+  providers: [AuthService, FirestoreService, AuthGuard, PwaService, RegisterGuard, ManagerGuard, SellingGuard, AddProductGuard],
   bootstrap: [AppComponent],
   schemas: [
     NO_ERRORS_SCHEMA,
