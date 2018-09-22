@@ -36,6 +36,15 @@ export class AuthState {
   }
 
   @Selector()
+  static isEmployee(state: UserModel) {
+    return state.isEmployee;
+  }
+
+  @Selector()
+  static isRegister(state: UserModel) {
+    return state.isRegister;
+  }
+  @Selector()
   static token(state: UserModel) {
     return state.token;
   }

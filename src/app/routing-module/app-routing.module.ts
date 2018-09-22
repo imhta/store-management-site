@@ -19,13 +19,14 @@ import {CustomerPageComponent} from '../customer-page/customer-page.component';
 import {DashboardPageComponent} from '../dashboard-page/dashboard-page.component';
 import {BillingPageComponent} from '../billing-page/billing-page.component';
 import {SellingGuard} from '../shared/service/guard/feature-guard/selling-guard/selling.guard';
+import {StoreCreatorGuard} from '../shared/service/guard/feature-guard/store-creator-guard/store-creator.guard';
 
 
 const routes: Routes = [
 
   {path: '', component: LoginPageComponent},
   {path: 'select/store', component: ManageStorePageComponent, canActivate: [AuthGuard]},
-  {path: 'store/setup', component: SetupStorePageComponent, canActivate: [AuthGuard, RegisterGuard]},
+  {path: 'store/setup', component: SetupStorePageComponent, canActivate: [AuthGuard, StoreCreatorGuard]},
   {path: 'dashboard', component: DashboardPageComponent, canActivate: [AuthGuard]},
   {path: 'store', component: StorePageComponent, canActivate: [AuthGuard]},
   {path: 'sell', component: SellPageComponent, canActivate: [AuthGuard, SellingGuard]},

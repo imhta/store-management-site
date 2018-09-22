@@ -53,6 +53,7 @@ import {RegisterGuard} from './shared/service/guard/role/register-guard/register
 import {SellingGuard} from './shared/service/guard/feature-guard/selling-guard/selling.guard';
 import {AddProductGuard} from './shared/service/guard/feature-guard/add-product-guard/add-product.guard';
 import {ManagerGuard} from './shared/service/guard/role/manager-guard/manager.guard';
+import {StoreCreatorGuard} from './shared/service/guard/feature-guard/store-creator-guard/store-creator.guard';
 
 
 @NgModule({
@@ -104,7 +105,7 @@ import {ManagerGuard} from './shared/service/guard/role/manager-guard/manager.gu
 
   ],
   exports: [],
-  providers: [AuthService, FirestoreService, AuthGuard, PwaService, RegisterGuard, ManagerGuard, SellingGuard, AddProductGuard],
+  providers: [AuthService, FirestoreService, AuthGuard, PwaService, RegisterGuard, ManagerGuard, SellingGuard, AddProductGuard, StoreCreatorGuard],
   bootstrap: [AppComponent],
   schemas: [
     NO_ERRORS_SCHEMA,
