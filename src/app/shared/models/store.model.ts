@@ -1,3 +1,4 @@
+import * as firebase from 'firebase/firestore';
 import GeoPoint = firebase.firestore.GeoPoint;
 
 

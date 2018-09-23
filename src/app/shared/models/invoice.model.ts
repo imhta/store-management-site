@@ -71,6 +71,8 @@ export class CartProduct {
   totalPrice: number;
   taxInPercentage: number;
   totalTax: number;
+  differentSizes: object[];
+  selectedSize: number;
   constructor() {
     this.maxQuantity = 0;
   }

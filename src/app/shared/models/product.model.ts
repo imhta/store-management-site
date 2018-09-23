@@ -41,7 +41,8 @@ export class SingleProductModel {
       'addedBy': this.addedBy,
       'storeId': this.storeId,
       'createdOn': Date.now(),
-      'isListable': this.isListable
+      'isListable': this.isListable,
+      'isDeleted': false
     };
   }
 }

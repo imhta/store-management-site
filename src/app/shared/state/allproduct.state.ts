@@ -33,7 +33,7 @@ export class AllProductState {
 
   @Action(SingleProductUploadedSuccessfully)
   uploadSingleProductSuccessfully() {
-    this.store.dispatch([new LoadingFalse(), new Navigate(['add/product'])]);
+    this.store.dispatch([new LoadingFalse(), new Navigate(['add/store'])]);
   }
 
   @Action(GetAllProducts)
@@ -53,12 +53,14 @@ export class AllProductState {
       .then(() => this.store.dispatch([new ProductDeletedSuccessfully()]))
       .catch((err) => this.store.dispatch([new ErrorInDeletingProduct(err)]));
   }
+
   @Action(ProductDeletedSuccessfully)
   productDeletedSuccessfully() {
     return this.store.dispatch([new Navigate(['store'])]);
   }
+
   @Action(SearchForProduct)
-  searchForProduct(cxt: StateContext<any[]>, {storeId, keyword, searchOption }: SearchForProduct) {
+  searchForProduct(cxt: StateContext<any[]>, {storeId, keyword, searchOption}: SearchForProduct) {
     this.dbService.searchForProduct(storeId, keyword, searchOption);
   }
 }

@@ -60,31 +60,52 @@ export class SellPageComponent implements OnInit, OnDestroy {
 
   addToCart(prn) {
 
+
     if (this.checkProduct(prn)) {
       const resultProduct = this.findProduct(prn);
-      if (resultProduct.length !== 0 && parseFloat(resultProduct[0]['stock']) > 0) {
-        console.log(resultProduct);
-        const cartProduct = new CartProduct();
-        cartProduct.prn = resultProduct[0]['prn'];
-        cartProduct.typeOfProduct = resultProduct[0]['category'];
-        cartProduct.singleUnitPrice = parseFloat(resultProduct[0]['price']);
-        cartProduct.productName = resultProduct[0]['productName'];
-        cartProduct.maxQuantity = parseFloat(resultProduct[0]['stock']);
-        cartProduct.singleUnitPrice < 1000 ? cartProduct.taxInPercentage = 5 : cartProduct.taxInPercentage = 12;
-        cartProduct.totalQuantity = 1;
-        this.calculateTotal(cartProduct);
-        this.cartProducts.push(cartProduct);
-        this.calculateInvoiceTotal();
-        console.log(this.invoice);
+      const cartProduct = new CartProduct();
+      cartProduct.differentSizes = resultProduct[0]['ssp'];
+      const lengthOfAvailableSize = cartProduct.differentSizes.length;
+      if (lengthOfAvailableSize > 0) {
+        if (parseFloat(resultProduct[0]['stock']) === 0 || parseFloat(resultProduct[0]['stock']) < 0) {
+          console.log('out of stock');
+        } else {
+          // default selection of size
+          cartProduct.selectedSize = 0;
+          cartProduct.size = cartProduct.differentSizes[cartProduct.selectedSize]['size'];
+          cartProduct.singleUnitPrice = parseFloat(cartProduct.differentSizes[cartProduct.selectedSize]['price']);
+          cartProduct.maxQuantity = parseFloat(cartProduct.differentSizes[cartProduct.selectedSize]['stock']);
+
+          console.log(resultProduct);
+          cartProduct.prn = resultProduct[0]['prn'];
+          cartProduct.typeOfProduct = resultProduct[0]['category'];
+          cartProduct.productName = resultProduct[0]['productName'];
+          cartProduct.singleUnitPrice < 1000 ? cartProduct.taxInPercentage = 5 : cartProduct.taxInPercentage = 12;
+          cartProduct.totalQuantity = 1;
+          this.calculateTotal(cartProduct);
+          this.cartProducts.push(cartProduct);
+          this.calculateInvoiceTotal();
+          console.log(this.invoice);
+        }
+
       } else {
-        console.log('Product does not  exits');
+        return console.log('Product does not exits');
       }
+
 
     } else {
       console.log('Product already exits');
     }
     this.refreshAllProduct();
 
+  }
+
+  selectSize(cartProduct: CartProduct, index: number) {
+    cartProduct.selectedSize = index;
+    cartProduct.size = cartProduct.differentSizes[cartProduct.selectedSize]['size'];
+    cartProduct.singleUnitPrice = parseFloat(cartProduct.differentSizes[cartProduct.selectedSize]['price']);
+    cartProduct.maxQuantity = parseFloat(cartProduct.differentSizes[cartProduct.selectedSize]['stock']);
+    this.calculateTotal(cartProduct);
   }
 
   calculateTotal(product) {

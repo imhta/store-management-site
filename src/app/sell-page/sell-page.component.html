@@ -46,6 +46,13 @@
         <a class="menu float-right" (click)="deleteProductFromCart(i)"><i class="material-icons">delete</i> </a>
         <h5>{{ product.productName }}</h5>
         <h6>{{product.prn}}</h6>
+        <span class="badge search-option"
+              [ngClass]="product.selectedSize === i?'badge-primary': 'badge-light'"
+              (click)="selectSize(product, i)"
+              *ngFor="let differentSize of product.differentSizes;let i = index">
+          {{differentSize['size']}}
+        </span>
+
         <div class="form-group">
           <label for="total-quantity">Quantity</label>
           <div class="input-group">
