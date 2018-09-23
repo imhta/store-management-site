@@ -34,7 +34,7 @@ export class ProductPageComponent implements OnInit, OnDestroy {
     this.store.dispatch([new Navigate(['generated/qr'], {'number': this.requiredNumber, 'productId': this.product['productUid']})]);
   }
   deleteProduct() {
-    return this.store.dispatch([new DeleteAProduct(this.product['storeId'], this.product['productUid'])]);
+    return this.store.dispatch([new DeleteAProduct(this.product['productUid'])]);
   }
 
 }

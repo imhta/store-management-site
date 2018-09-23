@@ -1,15 +1,18 @@
 import {Action, State, StateContext, Store} from '@ngxs/store';
 import {FirestoreService} from '../service/firestore/firestore.service';
 import {
+  DeleteAProduct,
+  ErrorInDeletingProduct,
   GetAllProducts,
+  GotAllProducts,
+  ProductDeletedSuccessfully,
+  SearchForProduct,
   SingleProductNotUploaded,
   SingleProductUploadedSuccessfully,
-  UploadSingleProduct,
-  GotAllProducts, DeleteAProduct, ProductDeletedSuccessfully, ErrorInDeletingProduct, SearchForProduct
+  UploadSingleProduct
 } from '../actions/product.actions';
 import {LoadingFalse} from './loading.state';
 import {Navigate} from '@ngxs/router-plugin';
-import {SingleProductModel} from '../models/product.model';
 
 
 @State<any[]>({
@@ -44,9 +47,9 @@ export class AllProductState {
   }
 
   @Action(DeleteAProduct)
-  deleteProduct(cxt: StateContext<any[]>, {productUid, storeId}: DeleteAProduct) {
+  deleteProduct(cxt: StateContext<any[]>, {productUid}: DeleteAProduct) {
     this.dbService
-      .deleteProduct(storeId, productUid)
+      .deleteProduct(productUid)
       .then(() => this.store.dispatch([new ProductDeletedSuccessfully()]))
       .catch((err) => this.store.dispatch([new ErrorInDeletingProduct(err)]));
   }

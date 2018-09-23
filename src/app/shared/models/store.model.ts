@@ -1,5 +1,6 @@
 import GeoPoint = firebase.firestore.GeoPoint;
 
+
 export class UserStoreState {
   linkedStores: any[];
   selectedStore: number; // index of selected store in stores array

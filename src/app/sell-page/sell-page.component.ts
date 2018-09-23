@@ -66,7 +66,7 @@ export class SellPageComponent implements OnInit, OnDestroy {
         console.log(resultProduct);
         const cartProduct = new CartProduct();
         cartProduct.prn = resultProduct[0]['prn'];
-        cartProduct.typeOfProduct = resultProduct[0]['productType'];
+        cartProduct.typeOfProduct = resultProduct[0]['category'];
         cartProduct.singleUnitPrice = parseFloat(resultProduct[0]['price']);
         cartProduct.productName = resultProduct[0]['productName'];
         cartProduct.maxQuantity = parseFloat(resultProduct[0]['stock']);

@@ -1,0 +1,14 @@
+.preview {
+  width: 50px;
+  display: inline-block;
+  margin: 20px;
+  cursor: pointer;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.preview:hover {
+  background-color: rgba(255, 0, 0, 0.25);
+}

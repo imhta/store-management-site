@@ -54,6 +54,8 @@ import {SellingGuard} from './shared/service/guard/feature-guard/selling-guard/s
 import {AddProductGuard} from './shared/service/guard/feature-guard/add-product-guard/add-product.guard';
 import {ManagerGuard} from './shared/service/guard/role/manager-guard/manager.guard';
 import {StoreCreatorGuard} from './shared/service/guard/feature-guard/store-creator-guard/store-creator.guard';
+import {FileUploadComponent} from './add-product-page/file-upload/file-upload.component';
+import {FileSizePipe} from './shared/service/pipe/file-size-pipe/file-size.pipe';
 
 
 @NgModule({
@@ -80,6 +82,8 @@ import {StoreCreatorGuard} from './shared/service/guard/feature-guard/store-crea
     CustomerPageComponent,
     DashboardPageComponent,
     BillingPageComponent,
+    FileUploadComponent,
+    FileSizePipe,
 
 
   ],
@@ -105,7 +109,17 @@ import {StoreCreatorGuard} from './shared/service/guard/feature-guard/store-crea
 
   ],
   exports: [],
-  providers: [AuthService, FirestoreService, AuthGuard, PwaService, RegisterGuard, ManagerGuard, SellingGuard, AddProductGuard, StoreCreatorGuard],
+  providers: [
+    AuthService,
+    FirestoreService,
+    AuthGuard,
+    PwaService,
+    RegisterGuard,
+    ManagerGuard,
+    SellingGuard,
+    AddProductGuard,
+    StoreCreatorGuard
+  ],
   bootstrap: [AppComponent],
   schemas: [
     NO_ERRORS_SCHEMA,

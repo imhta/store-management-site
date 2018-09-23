@@ -1,4 +1,4 @@
-import { SingleProductModel} from '../models/product.model';
+import {SingleProductModel} from '../models/product.model';
 
 export class UploadSingleProduct {
   static readonly type = '[Product] Upload single product';
@@ -25,7 +25,9 @@ export  class  GetAllProductsError {
 }
 export class  DeleteAProduct {
   static readonly type = '[Product] Delete product';
-  constructor(public  storeId: string, public productUid: string) {}
+
+  constructor(public productUid: string) {
+  }
 }
 export class  ProductDeletedSuccessfully {
   static readonly type = '[Product] product deleted successfully';

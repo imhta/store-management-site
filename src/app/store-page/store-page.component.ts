@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ChangeDetectionStrategy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Actions, ofActionDispatched, Select, Store} from '@ngxs/store';
 import {UserStoreState} from '../shared/models/store.model';
 import {Observable, Subscription} from 'rxjs';
@@ -21,8 +21,8 @@ export class StorePageComponent implements OnInit, OnDestroy {
   allProducts: any[];
   resultProduct: any[];
   searchKeyword = '';
-  searchOptions = ['Tags', 'Description', 'Product name', 'Product id'];
-  selectedSearchOption = 3;
+  searchOptions = ['Description', 'Product name', 'Product id'];
+  selectedSearchOption = 2;
   isWhitespace = true;
 
   constructor(private store: Store, private actions$: Actions) {

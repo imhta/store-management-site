@@ -4,7 +4,8 @@ import {ShopRegistrationForm} from '../../models/store.model';
 import {Store} from '@ngxs/store';
 import {
   EmptyLinkedStore,
-  ErrorInGettingEmployeeLinkedStore, GotAllEmployeesSuccessfully,
+  ErrorInGettingEmployeeLinkedStore,
+  GotAllEmployeesSuccessfully,
   GotEmployeeLinkedStoresSuccessfully,
   GotLinkedStores
 } from '../../actions/store.actions';
@@ -51,14 +52,16 @@ export class FirestoreService {
   }
 
   uploadSingleProduct(product: SingleProductModel) {
-    return this.db.collection(`stores/${product.storeId}/products`)
+    return this.db.collection(`products`)
       .add(product.toJson())
       .then((docRef) => docRef.update({productUid: docRef.id}));
   }
 
   getAllProducts(storeId: string) {
-    return this.db.collection(`stores/${storeId}/products`)
-      .ref.get().then((data) => {
+    return this.db.collection(`products`).ref
+      .where('storeId', '==', `${storeId}`)
+      .where('isDeleted', '==', false)
+      .get().then((data) => {
         this.allProducts = [];
         data.forEach((product) => {
           this.allProducts.push(product.data());
@@ -74,7 +77,10 @@ export class FirestoreService {
     console.log(storeUid, keyword, searchOption);
     switch (searchOption) {
       case 'Product id':
-        this.db.collection(`stores/${storeUid}/products`).ref.where('prn', '==', keyword).onSnapshot((result) => {
+        this.db.collection(`products`).ref
+          .where('storeId', '==', `${storeUid}`)
+          .where('isDeleted', '==', false)
+          .where('prn', '==', keyword).onSnapshot((result) => {
           this.resultProducts = [];
           result.forEach((product) => {
             this.resultProducts.push(product.data());
@@ -83,7 +89,10 @@ export class FirestoreService {
         });
         break;
       case 'Product name':
-        this.db.collection(`stores/${storeUid}/products`).ref.where('productName', '==', keyword).onSnapshot((result) => {
+        this.db.collection(`products`).ref
+          .where('storeId', '==', `${storeUid}`)
+          .where('isDeleted', '==', false)
+          .where('productName', '==', keyword).onSnapshot((result) => {
           this.resultProducts = [];
           result.forEach((product) => {
             this.resultProducts.push(product.data());
@@ -92,7 +101,10 @@ export class FirestoreService {
         });
         break;
       case 'Description':
-        this.db.collection(`stores/${storeUid}/products`).ref.where('description', '==', keyword).onSnapshot((result) => {
+        this.db.collection(`products`).ref
+          .where('storeId', '==', `${storeUid}`)
+          .where('isDeleted', '==', false)
+          .where('description', '==', keyword).onSnapshot((result) => {
           this.resultProducts = [];
           result.forEach((product) => {
             this.resultProducts.push(product.data());
@@ -100,20 +112,13 @@ export class FirestoreService {
           });
         });
         break;
-      case 'Tags':
-        this.db.collection(`stores/${storeUid}/products`).ref.where('tags', 'array-contains', keyword).onSnapshot((result) => {
-          this.resultProducts = [];
-          result.forEach((product) => {
-            this.resultProducts.push(product.data());
-            this.store.dispatch([new ProductFounded(this.resultProducts)]);
-          });
-        });
-        break;
+
     }
   }
 
-  deleteProduct(storeId, productUid) {
-    return this.db.collection(`stores/${storeId}/products`).doc(`${productUid}`).delete();
+  deleteProduct(productUid) {
+    return this.db.collection(`products`).ref
+      .doc(`${productUid}`).update('isDeleted', true);
   }
 
   addingExtraUser(extraUser: ExtraUser) {

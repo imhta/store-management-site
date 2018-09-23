@@ -30,3 +30,16 @@
 .badge-primary:active{
   background-color: red;
 }
+
+.remove-btn, .add-btn {
+  cursor: pointer;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.btn-center {
+  margin: 20px auto;
+  max-width: 225px;
+}
