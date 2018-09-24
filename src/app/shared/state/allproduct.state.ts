@@ -33,7 +33,7 @@ export class AllProductState {
 
   @Action(SingleProductUploadedSuccessfully)
   uploadSingleProductSuccessfully() {
-    this.store.dispatch([new LoadingFalse(), new Navigate(['add/store'])]);
+    this.store.dispatch([new LoadingFalse(), new Navigate(['store'])]);
   }
 
   @Action(GetAllProducts)

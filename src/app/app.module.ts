@@ -47,8 +47,6 @@ import {DashboardPageComponent} from './dashboard-page/dashboard-page.component'
 import {BillingPageComponent} from './billing-page/billing-page.component';
 import {ServiceWorkerModule} from '@angular/service-worker';
 import {PwaService} from './shared/service/pwa/pwa.service';
-import {NgxsLoggerPluginModule} from '@ngxs/logger-plugin';
-import {NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
 import {RegisterGuard} from './shared/service/guard/role/register-guard/register-guard';
 import {SellingGuard} from './shared/service/guard/feature-guard/selling-guard/selling.guard';
 import {AddProductGuard} from './shared/service/guard/feature-guard/add-product-guard/add-product.guard';
@@ -101,8 +99,8 @@ import {FileSizePipe} from './shared/service/pipe/file-size-pipe/file-size.pipe'
     AngularFireModule.initializeApp(environment.firebase),
     NgxsModule.forRoot([AuthState, LoadingState, StoreState, AllProductState, InvoicesState]),
     NgxsRouterPluginModule.forRoot(),
-    NgxsLoggerPluginModule.forRoot(),
-    NgxsReduxDevtoolsPluginModule.forRoot(),
+    // NgxsLoggerPluginModule.forRoot(),
+    // NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxKjuaModule,
     ZXingScannerModule,
     ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),

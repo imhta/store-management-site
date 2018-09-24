@@ -4,8 +4,8 @@ export class SingleProductModel {
   category: string;
   description: string;
   gender: 'Male' | 'Female' | 'Boy' | 'Girl';
-  picturesUrls: string[];
-  picturesPaths: string[];
+  picturesUrls: string[] = [];
+  picturesPaths: string[] = [];
   isDeleted: boolean;
   ssp: { size: string, stock: number, price: number }[];
   addedBy: string;
