@@ -17,7 +17,7 @@
     <div class="card-body">
       <ngx-kjua class="float-left qr-code"
                 [renderAsync]="true"
-                [text]="product['prn']"
+                [text]=" product['storeId'] +'/'+ product['prn'] + '/' + product['productUid'] "
                 [crisp]="true"
                 [size]="250"
       ></ngx-kjua>

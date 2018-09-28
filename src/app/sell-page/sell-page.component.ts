@@ -54,8 +54,8 @@ export class SellPageComponent implements OnInit, OnDestroy {
     });
   }
 
-  getPrn(prn) {
-    this.prn = prn;
+  getProduct(product: string) {
+    this.prn = product.split('/')[1];
   }
 
   addToCart(prn) {
