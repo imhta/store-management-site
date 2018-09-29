@@ -80,7 +80,9 @@ export class FirestoreService {
         this.db.collection(`products`).ref
           .where('storeId', '==', `${storeUid}`)
           .where('isDeleted', '==', false)
-          .where('prn', '==', keyword).onSnapshot((result) => {
+          .orderBy('prn')
+          .startAt(keyword)
+          .onSnapshot((result) => {
           this.resultProducts = [];
           result.forEach((product) => {
             this.resultProducts.push(product.data());
@@ -92,7 +94,9 @@ export class FirestoreService {
         this.db.collection(`products`).ref
           .where('storeId', '==', `${storeUid}`)
           .where('isDeleted', '==', false)
-          .where('productName', '==', keyword).onSnapshot((result) => {
+          .orderBy('productName')
+          .startAt(keyword)
+          .onSnapshot((result) => {
           this.resultProducts = [];
           result.forEach((product) => {
             this.resultProducts.push(product.data());
@@ -103,8 +107,8 @@ export class FirestoreService {
       case 'Description':
         this.db.collection(`products`).ref
           .where('storeId', '==', `${storeUid}`)
-          .where('isDeleted', '==', false)
-          .where('description', '==', keyword).onSnapshot((result) => {
+          .where('isDeleted', '==', false).orderBy('description').startAt(keyword)
+          .onSnapshot((result) => {
           this.resultProducts = [];
           result.forEach((product) => {
             this.resultProducts.push(product.data());
