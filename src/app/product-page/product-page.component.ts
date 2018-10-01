@@ -2,9 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {Store} from '@ngxs/store';
-import {Navigate} from '@ngxs/router-plugin';
 import {DeleteAProduct} from '../shared/actions/product.actions';
-
 
 @Component({
   selector: 'app-product-page',
@@ -14,7 +12,11 @@ import {DeleteAProduct} from '../shared/actions/product.actions';
 export class ProductPageComponent implements OnInit, OnDestroy {
   product;
   paramsSubscription: Subscription;
-  requiredNumber: string;
+  // requiredNumber: string;
+  // pageWidth = '5cm';
+  // pageHeight = '5cm';
+  printContents = '';
+
   constructor(private activatedRoute: ActivatedRoute, private store: Store) {
   }
 
@@ -29,10 +31,42 @@ export class ProductPageComponent implements OnInit, OnDestroy {
     this.paramsSubscription.unsubscribe();
   }
 
-  generateQr() {
-    console.log(this.requiredNumber);
-    this.store.dispatch([new Navigate(['generated/qr'], {'number': this.requiredNumber, 'productId': this.product['productUid']})]);
+
+  print(): void {
+    this.printContents = '';
+    let popupWin;
+    for (let i = 0; i < 70; i++) {
+      this.printContents = document.getElementById('print-section').innerHTML + this.printContents;
+    }
+    popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
+    popupWin.document.open();
+    popupWin.document.write(`
+      <html>
+        <head>
+          <title>Print tab</title>
+          <style>
+          body{
+          margin: 0;
+          }
+        .container {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, 100px);
+          grid-template-rows:repeat(auto-fit, 125px);
+        }
+          </style>
+        </head>
+    <body onload="window.print();window.close()">
+    <div class="container" >
+
+     ${this.printContents}
+    </div>
+    </body>
+      </html>`
+    );
+    popupWin.document.close();
   }
+
+
   deleteProduct() {
     return this.store.dispatch([new DeleteAProduct(this.product['productUid'])]);
   }
