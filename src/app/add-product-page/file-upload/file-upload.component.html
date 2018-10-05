@@ -1,3 +1,4 @@
+<div class="container">
 <div class="box">
   <div class="input-group ">
     <div class="input-group-prepend">
@@ -19,13 +20,14 @@
 
 </div>
 
-<img [src]="pictureUrl" *ngFor="let pictureUrl of localDownloadUrls; let i = index" width="50" class="preview"
-     (click)="removePicture(i)">
+  <img [src]="pictureUrl" *ngFor="let pictureUrl of localDownloadUrls; let i = index" width="50" class="preview"
+       (click)="removePicture(i)">
 
 
-<!--<div *ngIf="snapshot | async as snap" >-->
+  <!--<div *ngIf="snapshot | async as snap" >-->
 <!--{{ snap.bytesTransferred | fileSize }} of {{ snap.totalBytes | fileSize }}-->
 
 
-<!--</div>-->
+  <!--</div>-->
 
+</div>

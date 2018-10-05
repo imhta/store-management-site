@@ -1,6 +1,7 @@
 export class SingleProductModel {
   productUid: string;
   productName: string;
+  brandName: string;
   category: string;
   description: string;
   gender: 'Male' | 'Female' | 'Boy' | 'Girl';
@@ -10,6 +11,7 @@ export class SingleProductModel {
   ssp: { size: string, stock: number, price: number }[];
   addedBy: string;
   storeId: string;
+  tags: string[];
   createdOn: Date;
   isListable: boolean;
   lastModified: Date;
@@ -20,17 +22,20 @@ export class SingleProductModel {
 
   fromFromData(data) {
     this.gender = data.gender;
+    this.brandName = data.brandName;
     this.productName = data.productName;
     this.category = data.category;
     this.description = data.description;
     this.ssp = data.ssp;
     this.addedBy = data.addedBy;
     this.storeId = data.storeId;
+    this.tags = data.tags;
   }
 
 
   toJson() {
     return {
+      'brandName': this.brandName,
       'productName': this.productName,
       'description': this.description,
       'category': this.category,
@@ -38,6 +43,7 @@ export class SingleProductModel {
       'ssp': this.ssp,
       'picturesPath': this.picturesPaths,
       'picturesUrl': this.picturesUrls,
+      'tags': this.tags,
       'addedBy': this.addedBy,
       'storeId': this.storeId,
       'createdOn': Date.now(),

@@ -22,12 +22,16 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
   user: UserModel;
   storeState: UserStoreState;
   sspItems: FormArray;
+  tagVal: string;
+  tagsArray = [];
   productForm = this.fb.group({
     gender: ['Men'],
+    brandName: [''],
     productName: [''],
     category: [''],
     description: [''],
     storeId: [''],
+    tags: [['']],
     addedBy: [''],
     ssp: this.fb.array([this.createSspItem()])
   });
@@ -56,7 +60,8 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
     this.product.picturesUrls.length > 0 ? this.product.isListable = true : this.product.isListable = false;
     this.store.dispatch([new LoadingTrue(), new UploadSingleProduct(this.product)]);
     this.productForm.reset();
-
+    this.tagsArray = [];
+    this.tagVal = '';
   }
 
   addStoreId() {
@@ -104,4 +109,27 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
   getPicturePath(picturePath: string[]) {
     this.product.picturesPaths = picturePath;
   }
+
+  addTag() {
+    const isWhitespace = (this.tagVal || '').trim().length === 0;
+    if (!isWhitespace) {
+      if (this.tagsArray.length < 5) {
+        this.tagsArray.push(this.tagVal);
+        this.tagVal = '';
+        this.productForm.patchValue({tags: this.tagsArray});
+      } else {
+        console.log('tag is full');
+      }
+    } else {
+      console.log('cannot add empty tag');
+    }
+  }
+
+  removeTag(index: number) {
+    if (index > -1) {
+      this.tagsArray.splice(index, 1);
+      this.productForm.patchValue({tags: this.tagsArray});
+    }
+  }
+
 }
