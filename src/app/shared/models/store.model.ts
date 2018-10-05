@@ -15,6 +15,7 @@ export class UserStoreState {
 export class ShopRegistrationForm {
   registerUid: string;
   storeName: string;
+  gstNumber: string;
   contactNo: string;
   address: object;
   location: GeoPoint;
@@ -33,6 +34,7 @@ export class ShopRegistrationForm {
     this.contactNo = data.contactNumber;
     this.address = data.address;
     this.registerUid = data.registerUid;
+    this.gstNumber = data.gstNumber;
 
   }
 
@@ -41,6 +43,7 @@ export class ShopRegistrationForm {
       'registerUid': this.registerUid,
       'storeName': this.storeName,
       'contactNo': this.contactNo,
+      'gstNumber': this.gstNumber,
       'address': this.address,
       'location': this.location,
       'locationTimeStamp': this.locationTimeStamp,

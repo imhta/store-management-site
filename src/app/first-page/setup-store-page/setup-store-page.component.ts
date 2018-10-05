@@ -23,6 +23,7 @@ export class SetupStorePageComponent implements OnInit, OnDestroy {
     storeName: [''],
     contactNumber: [''],
     registerUid: [''],
+    gstNumber: [''],
     address: this.fb.group({
       street: [''],
       city: [''],

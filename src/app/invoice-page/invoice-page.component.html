@@ -7,12 +7,48 @@
 
   <div class="card ">
     <div class="item-wrapper">
-      <div class="item" *ngFor="let invoice of allInvoices; let i = index" >
+      <div class="item" *ngFor="let invoice of allInvoices; let i = index">
+        <a class="float-right" style="margin-left: 15px" (click)="print()"><i class="material-icons">print</i></a>
         <h6 class="float-right">{{invoice.createdOn | date:'short'}}</h6>
         <p>{{invoice.invoiceId}}</p>
         <h5>{{invoice.customerNumber}}</h5>
-        <p>Total quantity:  {{invoice.totalQuantity}}</p>
-        <p>Total price:  &#8377; {{invoice.totalPrice}}</p>
+        <p>Total quantity: {{invoice.totalQuantity}}</p>
+        <p>Total price: &#8377; {{invoice.totalPrice}}</p>
+
+        //billing invoice
+
+        <div style="display: none">
+          <div id="print-section">
+            <h2> {{ currentStore['storeName'] }}</h2>
+            <h4 style="font-weight: normal;">{{currentStore['address']['street'] + ' ' + currentStore['address']['city']
+              }}<br>Customer no: {{invoice.customerNumber}}<br>{{invoice.createdOn | date: 'short'}}</h4>
+            <table class="table" *ngFor="let product of invoice.cartProducts; let i = index">
+              <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">PRN</th>
+                <th scope="col">Product name</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Total Price</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <th scope="row">{{i+1}}</th>
+                <td>{{product['prn']}}</td>
+                <td>{{product['productName'] +' - ' + product['size']}}</td>
+                <td>{{product['totalQuantity']}}</td>
+                <td>&#8377; {{product['totalPrice']}}</td>
+              </tr>
+
+              </tbody>
+            </table>
+            <p>Total tax :{{invoice.totalTax}}</p>
+            <p>Total products :{{invoice.cartProducts.length}}</p>
+            <p>Total quantity: {{invoice.totalQuantity}}</p>
+            <p>Total price: &#8377; {{invoice.totalPrice}}</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
