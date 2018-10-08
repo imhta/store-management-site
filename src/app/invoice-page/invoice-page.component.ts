@@ -41,6 +41,15 @@ export class InvoicePageComponent implements OnInit {
         <head>
           <title>Print tab</title>
           <style>
+           @page {
+            size: auto;  /* auto is the initial value */
+            margin: 0mm; /* this affects the margin in the printer settings */
+          }
+          html {
+            background-color: #FFFFFF;
+            margin: 0px; /* this affects the margin on the HTML before sending to printer */
+            padding: 0px;
+          }
           .container{
           max-width: 300px;
           text-align: center;
