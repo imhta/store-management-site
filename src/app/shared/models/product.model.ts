@@ -12,6 +12,9 @@ export class SingleProductModel {
   addedBy: string;
   storeId: string;
   tags: string[];
+  taxType: 'footwear' | 'textile' | 'other';
+  otherTax: number;
+  inclusiveAllTaxes: boolean;
   createdOn: Date;
   isListable: boolean;
   lastModified: Date;
@@ -30,6 +33,9 @@ export class SingleProductModel {
     this.addedBy = data.addedBy;
     this.storeId = data.storeId;
     this.tags = data.tags;
+    this.taxType = data.taxType;
+    this.otherTax = +data.otherTax;
+    this.inclusiveAllTaxes = data.inclusiveAllTaxes;
   }
 
 
@@ -44,6 +50,9 @@ export class SingleProductModel {
       'picturesPath': this.picturesPaths,
       'picturesUrl': this.picturesUrls,
       'tags': this.tags,
+      'taxType': this.taxType,
+      'otherTax': this.otherTax,
+      'inclusiveAllTaxes': this.inclusiveAllTaxes,
       'addedBy': this.addedBy,
       'storeId': this.storeId,
       'createdOn': Date.now(),

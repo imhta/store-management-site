@@ -2,29 +2,30 @@
 
 
 <div class="container">
-    <div class="card">
-      <h2>Add new product</h2>
-      <form [formGroup]="productForm">
-        <div class="btn-center">
-          <div class="btn-group btn-group-toggle" data-toggle="buttons">
-            <label class="btn btn-primary active" (click)="selectGender('Men')">
-              <input type="radio" id="option1" value="Men" autocomplete="off" checked> Men
-            </label>
-            <label class="btn btn-primary" (click)="selectGender('Female')">
-              <input type="radio" id="option2" value="Women" autocomplete="off"> Female
-            </label>
-            <label class="btn btn-primary" (click)="selectGender('Boy')">
-              <input type="radio" id="option3" value="Boy" autocomplete="off"> Boy
-            </label>
-            <label class="btn btn-primary" (click)="selectGender('Girl')">
-              <input type="radio" id="option4" value="Girl" autocomplete="off"> Girl
-            </label>
-          </div>
+  <div class="card">
+    <h2>Add new product</h2>
+    <form [formGroup]="productForm">
+      <div class="btn-center">
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+          <label class="btn btn-primary active" (click)="selectGender('Men')">
+            <input type="radio" id="option1" value="Men" autocomplete="off" checked> Men
+          </label>
+          <label class="btn btn-primary" (click)="selectGender('Female')">
+            <input type="radio" id="option2" value="Women" autocomplete="off"> Female
+          </label>
+          <label class="btn btn-primary" (click)="selectGender('Boy')">
+            <input type="radio" id="option3" value="Boy" autocomplete="off"> Boy
+          </label>
+          <label class="btn btn-primary" (click)="selectGender('Girl')">
+            <input type="radio" id="option4" value="Girl" autocomplete="off"> Girl
+          </label>
         </div>
-        <div class="form-group ">
-          <label for="brand-name">Brand Name</label>
-          <input class="form-control form-control-lg " id="brand-name" type="text" formControlName="brandName">
-        </div>
+      </div>
+
+      <div class="form-group ">
+        <label for="brand-name">Brand Name</label>
+        <input class="form-control form-control-lg " id="brand-name" type="text" formControlName="brandName">
+      </div>
       <div class="form-group ">
         <label for="product-name">Product Name</label>
         <input class="form-control form-control-lg " id="product-name" type="text" formControlName="productName">
@@ -33,35 +34,49 @@
         <label for="description">Description</label>
         <input type="text" class="form-control form-control-lg" id="description" formControlName="description">
       </div>
-        <div class="form-group">
-          <label for="type">Category</label>
-          <input type="text" class="form-control form-control-lg" id="type" aria-describedby="type"
-                 formControlName="category">
-        </div>
+      <div class="form-group">
+        <label for="category">Category</label>
+        <input type="text" class="form-control form-control-lg" id="category" aria-describedby="type"
+               formControlName="category">
+      </div>
+      <div formArrayName="ssp"
+           *ngFor="let sspItem of sspItems.controls; let i = index;" class="form-group">
+        <a (click)="addItem()" class="float-right text-success add-btn" *ngIf="i === 0">add ssp</a>
 
-        <div formArrayName="ssp"
-             *ngFor="let sspItem of sspItems.controls; let i = index;" class="form-group">
-          <a (click)="addItem()" class="float-right text-success add-btn" *ngIf="i === 0">add ssp</a>
-          <label for="ssp"> SSP <sup>{{i + 1}}</sup></label>
-          <div [formGroupName]="i" class="input-group" id="ssp">
-            <input formControlName="size" placeholder="Size" class="form-control  form-control-lg">
-            <input formControlName="stock" placeholder="Stock " class="form-control  form-control-lg">
-            <input formControlName="price" placeholder="Price" class="form-control  form-control-lg">
+        <label for="ssp"> SSP <sup>{{i + 1}}</sup></label>
+        <div [formGroupName]="i" class="input-group" id="ssp">
+          <input formControlName="size" placeholder="Size" class="form-control  form-control-lg">
+          <input formControlName="stock" placeholder="Stock " class="form-control  form-control-lg">
+          <input formControlName="price" placeholder="Price" class="form-control  form-control-lg">
 
-          </div>
-          <a (click)="removeItem(i)" *ngIf="i !== 0" class="float-right text-danger remove-btn">remove</a>
         </div>
-        <div class="form-group">
-          <label for="tags">Tags: </label>
-          <span class="badge badge-primary" *ngFor="let tag of tagsArray;let i = index" (click)="removeTag(i)"
-                data-toggle="tooltip" data-placement="top" title="Click tag delete"> {{tag}}</span>
-          <input type="text" class="form-control form-control-lg" aria-describedby="tags" id="tags"
-                 [(ngModel)]="this.tagVal" [ngModelOptions]="{standalone: true}" (keyup.enter)="addTag()">
-        </div>
-
-        <!--{{productForm.value | json}}-->
-        <app-file-upload [storeId]="productForm.get('storeId').value" (downloadUrls)="getDownloadUrls($event)"
-                         (pictureRefs)="getPicturePath($event)"></app-file-upload>
+        <a (click)="removeItem(i)" *ngIf="i !== 0" class="float-right text-danger remove-btn">remove</a>
+      </div>
+      <div class="form-group">
+        <label for="tags">Tags: </label>
+        <span class="badge badge-primary" *ngFor="let tag of tagsArray;let i = index" (click)="removeTag(i)"
+              data-toggle="tooltip" data-placement="top" title="Click tag delete"> {{tag}}</span>
+        <input type="text" class="form-control form-control-lg" aria-describedby="tags" id="tags"
+               [(ngModel)]="this.tagVal" [ngModelOptions]="{standalone: true}" (keyup.enter)="addTag()">
+      </div>
+      <div class="form-group card">
+        <label for="type">Tax Type</label>
+        <mat-form-field>
+          <mat-select formControlName="taxType" id="type">
+            <mat-option value="footwear">Footwear</mat-option>
+            <mat-option value="textile">Garment, Apparel, Clothing</mat-option>
+            <mat-option value="other">Other</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-checkbox formControlName="inclusiveAllTaxes">Inclusive all taxes</mat-checkbox>
+      </div>
+      <div class="form-group " *ngIf="productForm.get('taxType').value === 'other'">
+        <label for="other-tax">Other Tax (%)</label>
+        <input class="form-control form-control-lg " id="other-tax" type="number" formControlName="otherTax">
+      </div>
+      <!--{{productForm.value | json}}-->
+      <app-file-upload [storeId]="productForm.get('storeId').value" (downloadUrls)="getDownloadUrls($event)"
+                       (pictureRefs)="getPicturePath($event)"></app-file-upload>
 
       <div class="button" (click)="onSubmit()"> Add</div>
     </form>

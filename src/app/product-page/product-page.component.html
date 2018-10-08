@@ -12,7 +12,7 @@
       <a class="float-right" style="margin-left: 15px" (click)="print()"><i class="material-icons">print</i></a>
     </div>
     <div class="card-body">
-      <ngx-kjua class="float-left qr-code"
+      <ngx-kjua class="float-right qr-code"
                 [renderAsync]="true"
                 [text]=" product['storeId'] +'/'+ product['prn'] + '/' + product['productUid'] "
                 [crisp]="true"
@@ -23,22 +23,45 @@
         <p class="card-text ">{{product['description']}}</p>
 
       </div>
+
+
+    </div>
+
+
+  </div>
+  <div style="display: none">
+    <div id="print-section">
+      <div style="text-align: center; width: 100px; height: 125px;">
+        <ngx-kjua class=" qr-code"
+                  [renderAsync]="true"
+                  [text]=" product['storeId'] +'/'+ product['prn'] + '/' + product['productUid'] "
+                  [crisp]="true"
+                  [size]="100"
+        ></ngx-kjua>
+        <strong>{{ product['prn'] }}</strong>
+      </div>
+
     </div>
 
   </div>
 
-</div>
-<div style="display: none">
-  <div id="print-section">
-    <div style="text-align: center; width: 100px; height: 125px;">
-      <ngx-kjua class=" qr-code"
-                [renderAsync]="true"
-                [text]=" product['storeId'] +'/'+ product['prn'] + '/' + product['productUid'] "
-                [crisp]="true"
-                [size]="100"
-      ></ngx-kjua>
-      <strong>{{ product['prn'] }}</strong>
-    </div>
 
-  </div>
-</div>
+  <!--<div id="carouselIndicators" class="carousel slide " data-ride="carousel" *ngFor="let pic of product['picturesUrl']; let i = index;" style="max-width: 280px">-->
+  <!--<ol class="carousel-indicators">-->
+  <!--<li data-target="#carouselIndicators" [data-slide-to]="i" (click)="selectedSlide = i" [ngClass]="selectedSlide === i ? 'active' : ''"></li>-->
+  <!--</ol>-->
+  <!--<div class="carousel-inner">-->
+  <!--<div class="carousel-item" [ngClass]="selectedSlide === i ? 'active' : ''">-->
+  <!--<img   [src]="pic"  [alt]="product['productName'] + i" >-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<a class="carousel-control-prev" href="#carouselIndicators" role="button" data-slide="prev" (click)="selectedSlide !== 0 ? selectedSlide = i - 1 : null">-->
+  <!--<span class="carousel-control-prev-icon" aria-hidden="true"></span>-->
+  <!--<span class="sr-only" >Previous</span>-->
+  <!--</a>-->
+  <!--<a class="carousel-control-next" href="#carouselIndicators" role="button" data-slide="next" (click)="(product['picturesUrl'].length - 1) !== selectedSlide ? selectedSlide = i + 1 : null">-->
+  <!--<span class="carousel-control-next-icon" aria-hidden="true"></span>-->
+  <!--<span class="sr-only" >Next</span>-->
+  <!--</a>-->
+  <!--</div>-->
+  <!--</div>-->

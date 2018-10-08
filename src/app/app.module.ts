@@ -30,6 +30,10 @@ import {LoadingComponent} from './general-components/loading/loading.component';
 import {StorePageComponent} from './store-page/store-page.component';
 import {AddProductPageComponent} from './add-product-page/add-product-page.component';
 import {AllProductState} from './shared/state/allproduct.state';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 // for qr code generation lib
 import {NgxKjuaModule} from 'ngx-kjua';
 // qr scanner module
@@ -96,6 +100,10 @@ import {FileSizePipe} from './shared/service/pipe/file-size-pipe/file-size.pipe'
     AngularFireAuthModule,
     AngularFirestoreModule,
     AngularFireStorageModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    BrowserAnimationsModule,
+    MatCheckboxModule,
     AngularFireModule.initializeApp(environment.firebase),
     NgxsModule.forRoot([AuthState, LoadingState, StoreState, AllProductState, InvoicesState]),
     NgxsRouterPluginModule.forRoot(),

@@ -79,7 +79,27 @@ export class SellPageComponent implements OnInit, OnDestroy {
         cartProduct.prn = resultProduct[0]['prn'];
         cartProduct.typeOfProduct = resultProduct[0]['category'];
         cartProduct.productName = resultProduct[0]['productName'];
-        cartProduct.singleUnitPrice < 1000 ? cartProduct.taxInPercentage = 5 : cartProduct.taxInPercentage = 12;
+        cartProduct.inclusiveAllTaxes = resultProduct[0]['inclusiveAllTaxes'];
+        switch (resultProduct[0]['taxType']) {
+          case 'footwear': {
+            cartProduct.singleUnitPrice < 500 ? cartProduct.taxInPercentage = 5 : cartProduct.taxInPercentage = 18;
+            break;
+          }
+          case 'textile': {
+            cartProduct.singleUnitPrice < 1000 ? cartProduct.taxInPercentage = 5 : cartProduct.taxInPercentage = 12;
+            break;
+          }
+          case 'other': {
+            cartProduct.taxInPercentage = resultProduct[0]['otherTax'];
+            break;
+          }
+          default: {
+            cartProduct.singleUnitPrice < 1000 ? cartProduct.taxInPercentage = 5 : cartProduct.taxInPercentage = 12;
+            break;
+          }
+
+        }
+
         cartProduct.totalQuantity = 1;
         this.calculateTotal(cartProduct);
         this.cartProducts.push(cartProduct);

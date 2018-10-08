@@ -24,6 +24,7 @@ export class SetupStorePageComponent implements OnInit, OnDestroy {
     contactNumber: [''],
     registerUid: [''],
     gstNumber: [''],
+    typeOfStore: ['fashion retailer'],
     address: this.fb.group({
       street: [''],
       city: [''],
@@ -31,7 +32,14 @@ export class SetupStorePageComponent implements OnInit, OnDestroy {
       pinCode: ['']
     }),
   });
-
+  typeOfStores = [
+    {value: 'fashion retailer', title: 'Fashion retailer'},
+    {value: 'footwear', title: 'Footwear'},
+    {value: 'factory outlet', title: 'Fashion outlet'},
+    {value: 'boutique', title: 'Boutique'},
+    {value: 'fashion accessories', title: 'Fashion accessories'},
+    {value: 'fashion designer', title: 'Fashion designer'},
+  ];
   constructor(private fb: FormBuilder, private store: Store) {
   }
 

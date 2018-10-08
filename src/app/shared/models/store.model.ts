@@ -17,6 +17,7 @@ export class ShopRegistrationForm {
   storeName: string;
   gstNumber: string;
   contactNo: string;
+  typeOfStore: 'boutique' | 'factory outlet' | 'fashion retailer' | 'footwear' | 'fashion accessories' | 'fashion designer';
   address: object;
   location: GeoPoint;
   locationAccuracy: number;
@@ -35,7 +36,7 @@ export class ShopRegistrationForm {
     this.address = data.address;
     this.registerUid = data.registerUid;
     this.gstNumber = data.gstNumber;
-
+    this.typeOfStore = data.typeOfStore;
   }
 
   toJson() {
@@ -43,6 +44,7 @@ export class ShopRegistrationForm {
       'registerUid': this.registerUid,
       'storeName': this.storeName,
       'contactNo': this.contactNo,
+      'typeOfStore': this.typeOfStore,
       'gstNumber': this.gstNumber,
       'address': this.address,
       'location': this.location,

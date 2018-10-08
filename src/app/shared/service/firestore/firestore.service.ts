@@ -61,6 +61,7 @@ export class FirestoreService {
     return this.db.collection(`products`).ref
       .where('storeId', '==', `${storeId}`)
       .where('isDeleted', '==', false)
+      .orderBy('createdOn', 'desc')
       .get().then((data) => {
         this.allProducts = [];
         data.forEach((product) => {

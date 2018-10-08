@@ -28,6 +28,7 @@ export class InvoiceModel {
     this.invoiceId = data['invoiceId'];
     this.storeUid = data['storeUid'];
   }
+
   cartProductsToJson(arrayOfProducts: CartProduct[]) {
     this.cartProducts = [];
     this.totalQuantity = 0;
@@ -73,6 +74,8 @@ export class CartProduct {
   totalTax: number;
   differentSizes: object[];
   selectedSize: number;
+  inclusiveAllTaxes: boolean;
+
   constructor() {
     this.maxQuantity = 0;
   }
@@ -88,11 +91,22 @@ export class CartProduct {
     this.totalPrice = data['totalPrice'];
     this.totalTax = data['totalTax'];
     this.taxInPercentage = data['taxInPercentage'];
+    this.inclusiveAllTaxes = data['inclusiveAllTaxes'];
   }
+
   calculateProductTotal() {
-    this.totalPrice = this.singleUnitPrice * this.totalQuantity;
-    this.totalTax = this.totalPrice * ( this.taxInPercentage / 100 );
+
+    if (this.inclusiveAllTaxes) {
+      this.totalPrice = this.singleUnitPrice * this.totalQuantity;
+      this.totalTax = +((this.totalPrice - (this.totalPrice / (1 + (this.taxInPercentage / 100)))).toFixed(2));
+    } else {
+      this.totalPrice = this.singleUnitPrice * this.totalQuantity;
+      this.totalTax = Math.round((this.totalPrice * (this.taxInPercentage / 100)));
+      this.totalPrice = this.totalPrice + this.totalTax;
+    }
+
   }
+
   toJson() {
     return {
       'prn': this.prn,
@@ -104,7 +118,8 @@ export class CartProduct {
       'maxQuantity': this.maxQuantity,
       'totalTax': this.totalTax,
       'typeOfProduct': this.typeOfProduct,
-      'taxInPercentage': this.taxInPercentage
+      'taxInPercentage': this.taxInPercentage,
+      'inclusiveAllTaxes': this.inclusiveAllTaxes
     };
   }
 

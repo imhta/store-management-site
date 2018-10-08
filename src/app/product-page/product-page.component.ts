@@ -16,6 +16,7 @@ export class ProductPageComponent implements OnInit, OnDestroy {
   // pageWidth = '5cm';
   // pageHeight = '5cm';
   printContents = '';
+  selectedSlide = 0;
 
   constructor(private activatedRoute: ActivatedRoute, private store: Store) {
   }

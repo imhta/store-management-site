@@ -32,6 +32,9 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
     description: [''],
     storeId: [''],
     tags: [['']],
+    taxType: ['textile'],
+    inclusiveAllTaxes: [true],
+    otherTax: ['0'],
     addedBy: [''],
     ssp: this.fb.array([this.createSspItem()])
   });
