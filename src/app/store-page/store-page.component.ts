@@ -5,7 +5,6 @@ import {Observable, Subscription} from 'rxjs';
 import {GetAllProducts, ProductFounded, SearchForProduct} from '../shared/actions/product.actions';
 import {SingleProductModel} from '../shared/models/product.model';
 import {Navigate} from '@ngxs/router-plugin';
-import {Params} from '@angular/router';
 
 @Component({
   selector: 'app-store-page',
@@ -45,8 +44,8 @@ export class StorePageComponent implements OnInit, OnDestroy {
     this.storeDataSubscription.unsubscribe();
   }
 
-  navigateToProduct(productId: Params) {
-    this.store.dispatch([new Navigate(['store/product'], productId)]);
+  navigateToProduct(productId: string) {
+    this.store.dispatch([new Navigate(['store/product'], {uid: productId})]);
   }
 
   navigateToAddProduct() {

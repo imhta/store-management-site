@@ -24,22 +24,27 @@
 </nav>
 <div class="container" *ngIf="!searchKeyword">
   <div class="card" *ngFor="let product of allProducts; let i = index "
-       (click)="navigateToProduct(product)">
+       (click)="navigateToProduct(product['productUid'])">
     <div class="card-header text-white bg-primary ">
       {{product['prn']}}
 
     </div>
     <div class="card-body">
-      <ngx-kjua class="float-left qr-code"
+      <ngx-kjua *ngIf="!product['isListable']" class="float-left qr-code"
                 [renderAsync]="true"
                 [text]=" product['storeId'] +'/'+ product['prn'] + '/' + product['productUid'] "
                 [crisp]="true"
                 [size]="250"
       ></ngx-kjua>
+      <img *ngIf="product['isListable']" class="card-img" [src]="product['picturesUrl'][0]">
       <div class="card-content float-left">
         <h5 class="card-title ">{{product['productName']}}</h5>
         <p class="card-text ">{{product['description']}}</p>
-
+        <h5>
+          <span
+            class="badge badge-primary">{{product['gender']}} / {{product['brandName']}} {{product['category']}}</span>
+          <span class="badge badge-info" *ngFor="let tag of product['tags']">{{tag | lowercase}}</span>
+        </h5>
       </div>
     </div>
 
@@ -51,7 +56,7 @@
 <div class="container"  *ngIf="searchKeyword">
 
   <div class="card" *ngFor="let product of resultProduct; let i = index "
-       (click)="navigateToProduct(product)">
+       (click)="navigateToProduct(product['productUid'])">
     <div class="card-header text-white bg-primary ">
       {{product['prn']}}
 
@@ -66,8 +71,11 @@
       <div class="card-content float-left">
         <h5 class="card-title ">{{product['productName']}}</h5>
         <p class="card-text ">{{product['description']}}</p>
-
-
+        <h5>
+          <span
+            class="badge badge-primary">{{product['gender']}} / {{product['brandName']}} {{product['category']}}</span>
+          <span class="badge badge-info" *ngFor="let tag of product['tags']">{{tag | lowercase}}</span>
+        </h5>
       </div>
     </div>
 

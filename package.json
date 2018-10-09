@@ -33,6 +33,7 @@
     "@zxing/ngx-scanner": "^1.2.1",
     "angularfire2": "^5.0.1",
     "bootstrap": "^4.1.3",
+    "chart.js": "^2.7.2",
     "core-js": "^2.5.7",
     "firebase": "^5.5.0",
     "hammerjs": "^2.0.8",

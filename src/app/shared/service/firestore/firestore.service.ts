@@ -10,7 +10,7 @@ import {
   GotLinkedStores
 } from '../../actions/store.actions';
 import {SingleProductModel} from '../../models/product.model';
-import {GetAllProductsError, GotAllProducts, ProductFounded} from '../../actions/product.actions';
+import {GetAllProductsError, GotAllProducts, GotProductByUid, ProductFounded} from '../../actions/product.actions';
 import {ExtraUser} from '../../models/auth.model';
 import {InvoiceModel} from '../../models/invoice.model';
 import {GotAllInvoiceSuccessfully} from '../../actions/invoice.actions';
@@ -84,12 +84,12 @@ export class FirestoreService {
           .orderBy('prn')
           .startAt(keyword)
           .onSnapshot((result) => {
-          this.resultProducts = [];
-          result.forEach((product) => {
-            this.resultProducts.push(product.data());
-            this.store.dispatch([new ProductFounded(this.resultProducts)]);
+            this.resultProducts = [];
+            result.forEach((product) => {
+              this.resultProducts.push(product.data());
+              this.store.dispatch([new ProductFounded(this.resultProducts)]);
+            });
           });
-        });
         break;
       case 'Product name':
         this.db.collection(`products`).ref
@@ -98,24 +98,24 @@ export class FirestoreService {
           .orderBy('productName')
           .startAt(keyword)
           .onSnapshot((result) => {
-          this.resultProducts = [];
-          result.forEach((product) => {
-            this.resultProducts.push(product.data());
-            this.store.dispatch([new ProductFounded(this.resultProducts)]);
+            this.resultProducts = [];
+            result.forEach((product) => {
+              this.resultProducts.push(product.data());
+              this.store.dispatch([new ProductFounded(this.resultProducts)]);
+            });
           });
-        });
         break;
       case 'Description':
         this.db.collection(`products`).ref
           .where('storeId', '==', `${storeUid}`)
           .where('isDeleted', '==', false).orderBy('description').startAt(keyword)
           .onSnapshot((result) => {
-          this.resultProducts = [];
-          result.forEach((product) => {
-            this.resultProducts.push(product.data());
-            this.store.dispatch([new ProductFounded(this.resultProducts)]);
+            this.resultProducts = [];
+            result.forEach((product) => {
+              this.resultProducts.push(product.data());
+              this.store.dispatch([new ProductFounded(this.resultProducts)]);
+            });
           });
-        });
         break;
 
     }
@@ -180,4 +180,12 @@ export class FirestoreService {
       this.store.dispatch([new GotAllInvoiceSuccessfully(this.allInvoice)]);
     });
   }
+
+  getProductById(productUid: string) {
+    return this.db.collection('products')
+      .doc(`${productUid}`).ref
+      .get()
+      .then((doc) => this.store.dispatch([new GotProductByUid(doc.data())]));
+  }
+
 }

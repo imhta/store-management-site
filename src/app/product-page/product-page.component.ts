@@ -1,8 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs';
-import {Store} from '@ngxs/store';
-import {DeleteAProduct} from '../shared/actions/product.actions';
+import {Actions, ofActionDispatched, Store} from '@ngxs/store';
+import {DeleteAProduct, GetProductByUid, GotProductByUid} from '../shared/actions/product.actions';
 
 @Component({
   selector: 'app-product-page',
@@ -10,6 +10,7 @@ import {DeleteAProduct} from '../shared/actions/product.actions';
   styleUrls: ['./product-page.component.css']
 })
 export class ProductPageComponent implements OnInit, OnDestroy {
+  productUid;
   product;
   paramsSubscription: Subscription;
   // requiredNumber: string;
@@ -18,14 +19,15 @@ export class ProductPageComponent implements OnInit, OnDestroy {
   printContents = '';
   selectedSlide = 0;
 
-  constructor(private activatedRoute: ActivatedRoute, private store: Store) {
+  constructor(private activatedRoute: ActivatedRoute, private store: Store, private actions$: Actions) {
   }
 
   ngOnInit() {
     this.paramsSubscription = this.activatedRoute.queryParams.subscribe(params => {
-      this.product = params;
+      this.productUid = params['uid'];
+      this.store.dispatch([new GetProductByUid(this.productUid)]);
     });
-
+    this.actions$.pipe(ofActionDispatched(GotProductByUid)).subscribe(({product}) => this.product = product);
   }
 
   ngOnDestroy() {

@@ -63,4 +63,5 @@ export class AllProductState {
   searchForProduct(cxt: StateContext<any[]>, {storeId, keyword, searchOption}: SearchForProduct) {
     this.dbService.searchForProduct(storeId, keyword, searchOption);
   }
+
 }

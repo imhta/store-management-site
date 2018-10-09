@@ -1,19 +1,23 @@
 import {Action, Selector, State, StateContext, Store} from '@ngxs/store';
 import {UserStoreState} from '../models/store.model';
 import {
-  DeleteEmployee, EmployeeDeletedSuccessfully,
+  DeleteEmployee,
+  EmployeeDeletedSuccessfully,
   GetAllEmployees,
   GetEmployeeLinkedStores,
-  GetLinkedStores, GotEmployeeLinkedStoresSuccessfully,
+  GetLinkedStores,
+  GotEmployeeLinkedStoresSuccessfully,
   GotLinkedStores,
   NewStoreSetupNotSuccessful,
-  NewStoreSetupSuccessfully, ResetSelectedStore, SelectStore,
+  NewStoreSetupSuccessfully,
+  ResetSelectedStore,
+  SelectStore,
   SetupNewStore
 } from '../actions/store.actions';
 import {FirestoreService} from '../service/firestore/firestore.service';
 import {Navigate} from '@ngxs/router-plugin';
 import {LoadingFalse} from './loading.state';
-import {UserModel} from '../models/auth.model';
+import {GetProductByUid} from '../actions/product.actions';
 
 
 @State<UserStoreState>({
@@ -105,4 +109,10 @@ export class StoreState {
     this.dbService.deleteExtraUser(email)
       .then(() => this.store.dispatch([new EmployeeDeletedSuccessfully(), new Navigate(['manage/users'])]));
   }
+
+  @Action(GetProductByUid)
+  getProductById(ctx: StateContext<any>, {productUid}: GetProductByUid) {
+    this.dbService.getProductById(productUid);
+  }
+
 }
