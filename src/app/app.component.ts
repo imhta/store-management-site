@@ -12,5 +12,9 @@ export class AppComponent {
   constructor(private  store: Store) {
     this.store.dispatch([new LoadingTrue(), new CheckAuthState()]);
   }
+
+  // installPwa(): void {
+  //   this.Pwa.promptEvent.prompt();
+  // }
 }
 
