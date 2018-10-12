@@ -11,7 +11,7 @@ export class GetOnlineProductTags {
 export class GotOnlineProductTagsSuccessfully {
   static readonly type = '[OPT] Got online product tags successfully';
 
-  constructor(public opt: object[]) {
+  constructor(public opts: object[]) {
   }
 }
 

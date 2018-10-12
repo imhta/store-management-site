@@ -3,6 +3,9 @@ import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {Actions, ofActionDispatched, Store} from '@ngxs/store';
 import {DeleteAProduct, GetProductByUid, GotProductByUid} from '../shared/actions/product.actions';
+import {OnlineProductTagModel} from '../shared/models/online-product-tag.model';
+import {AddOnlineProductTag, GetOnlineProductTags, GotOnlineProductTagsSuccessfully} from '../shared/actions/online-product-tag.actions';
+import {LoadingTrue} from '../shared/state/loading.state';
 
 
 @Component({
@@ -19,6 +22,7 @@ export class ProductPageComponent implements OnInit, OnDestroy {
   // pageHeight = '5cm';
   printContents = '';
   selectedSlide = 0;
+  opt = new OnlineProductTagModel();
 
   constructor(private activatedRoute: ActivatedRoute, private store: Store, private actions$: Actions) {
   }
@@ -26,9 +30,10 @@ export class ProductPageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.paramsSubscription = this.activatedRoute.queryParams.subscribe(params => {
       this.productUid = params['uid'];
-      this.store.dispatch([new GetProductByUid(this.productUid)]);
+      this.store.dispatch([new LoadingTrue(), new GetProductByUid(this.productUid), new GetOnlineProductTags(this.productUid)]);
     });
     this.actions$.pipe(ofActionDispatched(GotProductByUid)).subscribe(({product}) => this.product = product);
+    this.actions$.pipe(ofActionDispatched(GotOnlineProductTagsSuccessfully)).subscribe(({opts}) => console.log(opts));
   }
 
   ngOnDestroy() {
@@ -82,4 +87,9 @@ export class ProductPageComponent implements OnInit, OnDestroy {
     return this.store.dispatch([new DeleteAProduct(this.product['productUid'])]);
   }
 
+  addOpt() {
+    this.opt.productUid = this.productUid;
+    this.store.dispatch([new AddOnlineProductTag(this.opt)]);
+    this.opt = new OnlineProductTagModel();
+  }
 }

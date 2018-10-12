@@ -112,18 +112,20 @@
         <form>
           <div class="form-group">
             <label for="url" class="col-form-label">Link (Url):</label>
-            <input type="text" class="form-control" id="url">
+            <input type="text" [(ngModel)]="opt.onlineProductLink" [ngModelOptions]="{standalone: true}"
+                   class="form-control" id="url">
           </div>
           <div class="form-group">
             <label for="type" class="col-form-label">Type of Tag:</label>
-            <input type="text" class="form-control" id="type">
+            <input type="text" [(ngModel)]="opt.typeOfLink" [ngModelOptions]="{standalone: true}" class="form-control"
+                   id="type">
           </div>
 
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Add</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addOpt()">Add</button>
       </div>
     </div>
   </div>
