@@ -4,6 +4,7 @@ import {Subscription} from 'rxjs';
 import {Actions, ofActionDispatched, Store} from '@ngxs/store';
 import {DeleteAProduct, GetProductByUid, GotProductByUid} from '../shared/actions/product.actions';
 
+
 @Component({
   selector: 'app-product-page',
   templateUrl: './product-page.component.html',
@@ -31,6 +32,7 @@ export class ProductPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+
     this.paramsSubscription.unsubscribe();
   }
 

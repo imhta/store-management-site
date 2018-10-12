@@ -14,6 +14,16 @@ import {GetAllProductsError, GotAllProducts, GotProductByUid, ProductFounded} fr
 import {ExtraUser} from '../../models/auth.model';
 import {InvoiceModel} from '../../models/invoice.model';
 import {GotAllInvoiceSuccessfully} from '../../actions/invoice.actions';
+import {OnlineProductTagModel} from '../../models/online-product-tag.model';
+import {
+  ErrorInAddingOnlineProductTag,
+  ErrorInGettingOnlineProductTags,
+  ErrorInRemovingOnlineProductTag,
+  GotOnlineProductTagsSuccessfully,
+  OnlineProductTagSuccessfullyAdded,
+  RemovedOnlineProductTagSuccessfully
+} from '../../actions/online-product-tag.actions';
+import {LoadingFalse} from '../../state/loading.state';
 
 // @ts-ignore
 @Injectable({
@@ -186,6 +196,38 @@ export class FirestoreService {
       .doc(`${productUid}`).ref
       .get()
       .then((doc) => this.store.dispatch([new GotProductByUid(doc.data())]));
+  }
+
+  addOnlineProductTag(opt: OnlineProductTagModel) {
+    return this.db.collection('onlineProductTags')
+      .add(opt.toJson())
+      .then(() => this.store.dispatch([new OnlineProductTagSuccessfullyAdded(), new LoadingFalse()]))
+      .catch(err => this.store.dispatch([new ErrorInAddingOnlineProductTag(err), new LoadingFalse()]));
+  }
+
+  getOnlineProductTags(productUid: string) {
+    const opts: object[] = [];
+    return this.db.collection('onlineProductTags')
+      .ref
+      .where('productUid', '==', productUid)
+      .get()
+      .then((docs) => docs
+        .forEach(doc => opts
+          .push(doc.data())))
+      .then(() => this.store.dispatch([new GotOnlineProductTagsSuccessfully(opts), new LoadingFalse()]))
+      .catch(err => this.store.dispatch([new ErrorInGettingOnlineProductTags(err), new LoadingFalse()]));
+  }
+
+  removeOnlineProductTag(onlineProductLink: string) {
+    return this.db.collection('onlineProductTags')
+      .ref
+      .where('onlineProductLink', '==', onlineProductLink)
+      .limit(1)
+      .get()
+      .then((docs) => docs
+        .forEach(doc => doc.ref.delete()))
+      .then(() => this.store.dispatch([new RemovedOnlineProductTagSuccessfully(), new LoadingFalse()]))
+      .catch(err => this.store.dispatch([new ErrorInRemovingOnlineProductTag(err), new LoadingFalse()]));
   }
 
 }

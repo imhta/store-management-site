@@ -9,7 +9,8 @@
       {{product['prn']}}
       <a class="float-right" style="margin-left: 15px" (click)="deleteProduct()"><i
         class="material-icons">delete</i></a>
-      <!--<a class="float-right" style="margin-left: 15px"><i class="material-icons" >edit</i></a>-->
+      <a class="float-right" data-toggle="modal" data-target="#addOnlineProductTagModal" style="margin-left: 15px"><i
+        class="material-icons">bookmark</i></a>
       <a class="float-right" style="margin-left: 15px" (click)="print()"><i class="material-icons">print</i></a>
     </div>
     <div class="card-body">
@@ -67,7 +68,7 @@
 
   </div>
 </div>
-<div class="modal fade" id="ModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+<div class="modal fade" id="ModalCenter" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle"
      aria-hidden="true" *ngIf="product && product['isListable']">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content" style="width: 280px">
@@ -93,6 +94,36 @@
           <span class="carousel-control-next-icon" aria-hidden="true"></span>
           <span class="sr-only">Next</span>
         </a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="addOnlineProductTagModal" tabindex="-1" role="dialog"
+     aria-labelledby="addOnlineProductTagModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addOnlineProductTagModalLabel">Add Online Product Tag</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="url" class="col-form-label">Link (Url):</label>
+            <input type="text" class="form-control" id="url">
+          </div>
+          <div class="form-group">
+            <label for="type" class="col-form-label">Type of Tag:</label>
+            <input type="text" class="form-control" id="type">
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Add</button>
       </div>
     </div>
   </div>

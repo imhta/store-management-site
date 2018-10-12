@@ -13,6 +13,7 @@ import {
 } from '../actions/product.actions';
 import {LoadingFalse} from './loading.state';
 import {Navigate} from '@ngxs/router-plugin';
+import {AddOnlineProductTag, GetOnlineProductTags, RemoveOnlineProductTag} from '../actions/online-product-tag.actions';
 
 
 @State<any[]>({
@@ -64,4 +65,18 @@ export class AllProductState {
     this.dbService.searchForProduct(storeId, keyword, searchOption);
   }
 
+  @Action(AddOnlineProductTag)
+  addOnlineProductTag(cxt: StateContext<any>, {opt}: AddOnlineProductTag) {
+    this.dbService.addOnlineProductTag(opt);
+  }
+
+  @Action(RemoveOnlineProductTag)
+  removeOnlineProductTag(cxt: StateContext<any>, {onlineProductLink}: RemoveOnlineProductTag) {
+    this.dbService.removeOnlineProductTag(onlineProductLink);
+  }
+
+  @Action(GetOnlineProductTags)
+  getOnlineProductTags(cxt: StateContext<any>, {productUid}: GetOnlineProductTags) {
+    this.dbService.getOnlineProductTags(productUid);
+  }
 }
