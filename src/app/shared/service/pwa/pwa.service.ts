@@ -18,7 +18,7 @@ export class PwaService {
   }
 
   static askUserToUpdate() {
-    return false;
+    return true;
   }
 
 }

@@ -4,15 +4,26 @@ import {ShopRegistrationForm} from '../../models/store.model';
 import {Store} from '@ngxs/store';
 import {
   EmptyLinkedStore,
-  ErrorInGettingEmployeeLinkedStore, GotAllEmployeesSuccessfully,
+  ErrorInGettingEmployeeLinkedStore,
+  GotAllEmployeesSuccessfully,
   GotEmployeeLinkedStoresSuccessfully,
   GotLinkedStores
 } from '../../actions/store.actions';
 import {SingleProductModel} from '../../models/product.model';
-import {GetAllProductsError, GotAllProducts, ProductFounded} from '../../actions/product.actions';
+import {GetAllProductsError, GotAllProducts, GotProductByUid, ProductFounded} from '../../actions/product.actions';
 import {ExtraUser} from '../../models/auth.model';
 import {InvoiceModel} from '../../models/invoice.model';
 import {GotAllInvoiceSuccessfully} from '../../actions/invoice.actions';
+import {OnlineProductTagModel} from '../../models/online-product-tag.model';
+import {
+  ErrorInAddingOnlineProductTag,
+  ErrorInGettingOnlineProductTags,
+  ErrorInRemovingOnlineProductTag,
+  GotOnlineProductTagsSuccessfully,
+  OnlineProductTagSuccessfullyAdded,
+  RemovedOnlineProductTagSuccessfully
+} from '../../actions/online-product-tag.actions';
+import {LoadingFalse} from '../../state/loading.state';
 
 // @ts-ignore
 @Injectable({
@@ -51,14 +62,17 @@ export class FirestoreService {
   }
 
   uploadSingleProduct(product: SingleProductModel) {
-    return this.db.collection(`stores/${product.storeId}/products`)
+    return this.db.collection(`products`)
       .add(product.toJson())
       .then((docRef) => docRef.update({productUid: docRef.id}));
   }
 
   getAllProducts(storeId: string) {
-    return this.db.collection(`stores/${storeId}/products`)
-      .ref.get().then((data) => {
+    return this.db.collection(`products`).ref
+      .where('storeId', '==', `${storeId}`)
+      .where('isDeleted', '==', false)
+      .orderBy('createdOn', 'desc')
+      .get().then((data) => {
         this.allProducts = [];
         data.forEach((product) => {
           this.allProducts.push(product.data());
@@ -74,46 +88,52 @@ export class FirestoreService {
     console.log(storeUid, keyword, searchOption);
     switch (searchOption) {
       case 'Product id':
-        this.db.collection(`stores/${storeUid}/products`).ref.where('prn', '==', keyword).onSnapshot((result) => {
-          this.resultProducts = [];
-          result.forEach((product) => {
-            this.resultProducts.push(product.data());
-            this.store.dispatch([new ProductFounded(this.resultProducts)]);
+        this.db.collection(`products`).ref
+          .where('storeId', '==', `${storeUid}`)
+          .where('isDeleted', '==', false)
+          .orderBy('prn')
+          .startAt(keyword)
+          .onSnapshot((result) => {
+            this.resultProducts = [];
+            result.forEach((product) => {
+              this.resultProducts.push(product.data());
+              this.store.dispatch([new ProductFounded(this.resultProducts)]);
+            });
           });
-        });
         break;
       case 'Product name':
-        this.db.collection(`stores/${storeUid}/products`).ref.where('productName', '==', keyword).onSnapshot((result) => {
-          this.resultProducts = [];
-          result.forEach((product) => {
-            this.resultProducts.push(product.data());
-            this.store.dispatch([new ProductFounded(this.resultProducts)]);
+        this.db.collection(`products`).ref
+          .where('storeId', '==', `${storeUid}`)
+          .where('isDeleted', '==', false)
+          .orderBy('productName')
+          .startAt(keyword)
+          .onSnapshot((result) => {
+            this.resultProducts = [];
+            result.forEach((product) => {
+              this.resultProducts.push(product.data());
+              this.store.dispatch([new ProductFounded(this.resultProducts)]);
+            });
           });
-        });
         break;
       case 'Description':
-        this.db.collection(`stores/${storeUid}/products`).ref.where('description', '==', keyword).onSnapshot((result) => {
-          this.resultProducts = [];
-          result.forEach((product) => {
-            this.resultProducts.push(product.data());
-            this.store.dispatch([new ProductFounded(this.resultProducts)]);
+        this.db.collection(`products`).ref
+          .where('storeId', '==', `${storeUid}`)
+          .where('isDeleted', '==', false).orderBy('description').startAt(keyword)
+          .onSnapshot((result) => {
+            this.resultProducts = [];
+            result.forEach((product) => {
+              this.resultProducts.push(product.data());
+              this.store.dispatch([new ProductFounded(this.resultProducts)]);
+            });
           });
-        });
         break;
-      case 'Tags':
-        this.db.collection(`stores/${storeUid}/products`).ref.where('tags', 'array-contains', keyword).onSnapshot((result) => {
-          this.resultProducts = [];
-          result.forEach((product) => {
-            this.resultProducts.push(product.data());
-            this.store.dispatch([new ProductFounded(this.resultProducts)]);
-          });
-        });
-        break;
+
     }
   }
 
-  deleteProduct(storeId, productUid) {
-    return this.db.collection(`stores/${storeId}/products`).doc(`${productUid}`).delete();
+  deleteProduct(productUid) {
+    return this.db.collection(`products`).ref
+      .doc(`${productUid}`).update('isDeleted', true);
   }
 
   addingExtraUser(extraUser: ExtraUser) {
@@ -170,4 +190,44 @@ export class FirestoreService {
       this.store.dispatch([new GotAllInvoiceSuccessfully(this.allInvoice)]);
     });
   }
+
+  getProductById(productUid: string) {
+    return this.db.collection('products')
+      .doc(`${productUid}`).ref
+      .get()
+      .then((doc) => this.store.dispatch([new GotProductByUid(doc.data())]));
+  }
+
+  addOnlineProductTag(opt: OnlineProductTagModel) {
+    return this.db.collection('onlineProductTags')
+      .add(opt.toJson())
+      .then(() => this.store.dispatch([new OnlineProductTagSuccessfullyAdded(), new LoadingFalse()]))
+      .catch(err => this.store.dispatch([new ErrorInAddingOnlineProductTag(err), new LoadingFalse()]));
+  }
+
+  getOnlineProductTags(productUid: string) {
+    const opts: object[] = [];
+    return this.db.collection('onlineProductTags')
+      .ref
+      .where('productUid', '==', productUid)
+      .get()
+      .then((docs) => docs
+        .forEach(doc => opts
+          .push(doc.data())))
+      .then(() => this.store.dispatch([new GotOnlineProductTagsSuccessfully(opts), new LoadingFalse()]))
+      .catch(err => this.store.dispatch([new ErrorInGettingOnlineProductTags(err), new LoadingFalse()]));
+  }
+
+  removeOnlineProductTag(onlineProductLink: string) {
+    return this.db.collection('onlineProductTags')
+      .ref
+      .where('onlineProductLink', '==', onlineProductLink)
+      .limit(1)
+      .get()
+      .then((docs) => docs
+        .forEach(doc => doc.ref.delete()))
+      .then(() => this.store.dispatch([new RemovedOnlineProductTagSuccessfully(), new LoadingFalse()]))
+      .catch(err => this.store.dispatch([new ErrorInRemovingOnlineProductTag(err), new LoadingFalse()]));
+  }
+
 }

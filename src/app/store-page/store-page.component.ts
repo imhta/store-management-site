@@ -1,11 +1,10 @@
-import {Component, OnDestroy, OnInit, ChangeDetectionStrategy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Actions, ofActionDispatched, Select, Store} from '@ngxs/store';
 import {UserStoreState} from '../shared/models/store.model';
 import {Observable, Subscription} from 'rxjs';
 import {GetAllProducts, ProductFounded, SearchForProduct} from '../shared/actions/product.actions';
 import {SingleProductModel} from '../shared/models/product.model';
 import {Navigate} from '@ngxs/router-plugin';
-import {Params} from '@angular/router';
 
 @Component({
   selector: 'app-store-page',
@@ -21,8 +20,8 @@ export class StorePageComponent implements OnInit, OnDestroy {
   allProducts: any[];
   resultProduct: any[];
   searchKeyword = '';
-  searchOptions = ['Tags', 'Description', 'Product name', 'Product id'];
-  selectedSearchOption = 3;
+  searchOptions = ['Description', 'Product name', 'Product id'];
+  selectedSearchOption = 2;
   isWhitespace = true;
 
   constructor(private store: Store, private actions$: Actions) {
@@ -45,8 +44,8 @@ export class StorePageComponent implements OnInit, OnDestroy {
     this.storeDataSubscription.unsubscribe();
   }
 
-  navigateToProduct(productId: Params) {
-    this.store.dispatch([new Navigate(['store/product'], productId)]);
+  navigateToProduct(productId: string) {
+    this.store.dispatch([new Navigate(['store/product'], {uid: productId})]);
   }
 
   navigateToAddProduct() {

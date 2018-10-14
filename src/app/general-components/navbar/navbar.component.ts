@@ -6,6 +6,7 @@ import {LoadingTrue} from '../../shared/state/loading.state';
 import {UserStoreState} from '../../shared/models/store.model';
 import {Navigate} from '@ngxs/router-plugin';
 import {EmptyLinkedStore} from '../../shared/actions/store.actions';
+import {AuthState} from '../../shared/state/auth.state';
 
 
 @Component({
@@ -19,28 +20,32 @@ export class NavbarComponent implements OnInit {
   user: UserModel;
   storeState: UserStoreState;
   linkedStoreEmpty: boolean;
+  role = this.store.selectSnapshot(AuthState.role);
 
-  constructor(private  store: Store,  private actions$: Actions) {
+  constructor(private  store: Store, private actions$: Actions) {
   }
 
   ngOnInit() {
+
     this.linkedStoreEmpty = false;
     this.user$
       .subscribe((data) => {
         if (data !== null) {
           this.user = data.valueOf();
-        }});
+        }
+      });
     this.actions$
       .pipe(ofActionDispatched(EmptyLinkedStore))
-      .subscribe(() => this.linkedStoreEmpty = true );
+      .subscribe(() => this.linkedStoreEmpty = true);
     this.storeState$
       .subscribe((data) => this.storeState = new UserStoreState(data.valueOf()));
 
-}
+  }
 
   navigateTo(path: string) {
     return this.store.dispatch([new Navigate([path])]);
   }
+
   logout() {
     return this.store.dispatch([new LoadingTrue(), new Logout()]);
   }

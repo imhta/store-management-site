@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Select, Store} from '@ngxs/store';
 import {Observable, Subscription} from 'rxjs';
-import {ExtraUser, UserModel} from '../../shared/models/auth.model';
+import {ExtraUser} from '../../shared/models/auth.model';
 import {UserStoreState} from '../../shared/models/store.model';
 import {FormBuilder} from '@angular/forms';
 import {LoadingTrue} from '../../shared/state/loading.state';
@@ -31,7 +31,10 @@ export class AddUserComponent implements OnInit, OnDestroy {
 
   constructor(private fb: FormBuilder, private store: Store) {  }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.addStoreId();
+    this.addAddedBy();
+  }
 
   ngOnDestroy() {
     this.userDataSubscription.unsubscribe();

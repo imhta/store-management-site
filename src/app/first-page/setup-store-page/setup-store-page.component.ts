@@ -4,9 +4,9 @@ import {Select, Store} from '@ngxs/store';
 import {UserModel} from '../../shared/models/auth.model';
 import {ShopRegistrationForm} from '../../shared/models/store.model';
 import {Observable, Subscription} from 'rxjs';
-import {FirestoreService} from '../../shared/service/firestore/firestore.service';
 import {SetupNewStore} from '../../shared/actions/store.actions';
-import {LoadingFalse, LoadingTrue} from '../../shared/state/loading.state';
+import {LoadingTrue} from '../../shared/state/loading.state';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-setup-store-page',
@@ -17,11 +17,14 @@ export class SetupStorePageComponent implements OnInit, OnDestroy {
   @Select('user') user$: Observable<object>;
   userDataSubscription: Subscription;
   user: UserModel;
-
+  isLocated = false;
+  _store = new ShopRegistrationForm();
   storeForm = this.fb.group({
     storeName: [''],
     contactNumber: [''],
     registerUid: [''],
+    gstNumber: [''],
+    typeOfStore: ['fashion retailer'],
     address: this.fb.group({
       street: [''],
       city: [''],
@@ -29,22 +32,62 @@ export class SetupStorePageComponent implements OnInit, OnDestroy {
       pinCode: ['']
     }),
   });
-
-  constructor(private fb: FormBuilder, private dbService: FirestoreService, private store: Store) {
+  typeOfStores = [
+    {value: 'fashion retailer', title: 'Fashion retailer'},
+    {value: 'footwear', title: 'Footwear'},
+    {value: 'factory outlet', title: 'Fashion outlet'},
+    {value: 'boutique', title: 'Boutique'},
+    {value: 'fashion accessories', title: 'Fashion accessories'},
+    {value: 'fashion designer', title: 'Fashion designer'},
+  ];
+  constructor(private fb: FormBuilder, private store: Store) {
   }
 
   ngOnInit() {
-    this.userDataSubscription = this.user$.subscribe((data) => {this.user = data.valueOf();
+    this.userDataSubscription = this.user$.subscribe((data) => {
+      this.user = data.valueOf();
       this.storeForm.patchValue({registerUid: this.user.uid});
     });
 
   }
+
   ngOnDestroy() {
     this.userDataSubscription.unsubscribe();
   }
 
   onSubmit() {
-    const store = new ShopRegistrationForm(this.storeForm.value);
-    return this.store.dispatch([new LoadingTrue(), new SetupNewStore(store)]);
+    this._store.fromJson(this.storeForm.value);
+    return this.store.dispatch([new LoadingTrue(), new SetupNewStore(this._store)]);
+  }
+
+  locateStore() {
+    this.getGeoLocation().then(() => {
+      this.isLocated = true;
+    });
+  }
+
+  getGeoLocation() {
+    return new Promise((resolve, reject) => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          position => {
+            this._store.location = new firebase.firestore.GeoPoint(position.coords.latitude, position.coords.longitude);
+            this._store.locationAccuracy = position.coords.accuracy;
+            this._store.locationTimeStamp = position.timestamp;
+            console.log(this._store.location, this._store.locationTimeStamp);
+            resolve();
+          },
+          (err) => {
+            alert('Please enable your GPS position future.');
+            reject();
+          }, {maximumAge: 1, timeout: 10000, enableHighAccuracy: true}
+        );
+      } else {
+        console.log('Geo location not supported');
+        reject();
+      }
+
+
+    });
   }
 }

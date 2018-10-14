@@ -16,3 +16,21 @@
   margin: 15px;
 }
 
+.location-btn {
+  float: none;
+  margin: 0 auto;
+}
+
+.location-msg {
+  margin-bottom: 20px;
+}
+
+::ng-deep .mat-form-field-appearance-legacy .mat-form-field-underline,
+.mat-form-field-appearance-legacy .mat-form-field-underline:active,
+.mat-form-field-appearance-legacy .mat-form-field-underline:focus {
+  background-color: transparent;
+}
+
+::ng-deep .mat-select-content {
+  border-radius: 10px;
+}

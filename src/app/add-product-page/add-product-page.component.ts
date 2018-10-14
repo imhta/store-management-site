@@ -1,12 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import { Select, Store} from '@ngxs/store';
+import {Select, Store} from '@ngxs/store';
 import {Observable, Subscription} from 'rxjs';
 import {UserModel} from '../shared/models/auth.model';
-import {FormBuilder} from '@angular/forms';
-import { UserStoreState} from '../shared/models/store.model';
-import {LoadingTrue} from '../shared/state/loading.state';
+import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import {UserStoreState} from '../shared/models/store.model';
 import {SingleProductModel} from '../shared/models/product.model';
-import { UploadSingleProduct} from '../shared/actions/product.actions';
+import {LoadingTrue} from '../shared/state/loading.state';
+import {UploadSingleProduct} from '../shared/actions/product.actions';
 
 
 @Component({
@@ -21,24 +21,31 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
   storeDataSubscription: Subscription;
   user: UserModel;
   storeState: UserStoreState;
+  sspItems: FormArray;
   tagVal: string;
   tagsArray = [];
   productForm = this.fb.group({
+    gender: ['Men'],
+    brandName: [''],
     productName: [''],
-    type: [''],
+    category: [''],
     description: [''],
-    stock: [''],
-    price: [''],
-    tags: [['']],
     storeId: [''],
+    tags: [['']],
+    taxType: ['textile'],
+    inclusiveAllTaxes: [true],
+    otherTax: ['0'],
     addedBy: [''],
-
+    ssp: this.fb.array([this.createSspItem()])
   });
+  product = new SingleProductModel();
 
+  constructor(private fb: FormBuilder, private store: Store) {
 
-  constructor(private fb: FormBuilder, private store: Store) {  }
+  }
 
   ngOnInit() {
+    this.sspItems = this.productForm.get('ssp') as FormArray;
     this.addStoreId();
     this.addAddedBy();
   }
@@ -49,17 +56,17 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+
     this.addStoreId();
     this.addAddedBy();
-    this.productForm.patchValue({tags: this.tagsArray});
-    const product = new SingleProductModel(this.productForm.value);
-
-    this.store.dispatch([new LoadingTrue(), new UploadSingleProduct(product)]);
+    this.product.fromFromData(this.productForm.value);
+    this.product.picturesUrls.length > 0 ? this.product.isListable = true : this.product.isListable = false;
+    this.store.dispatch([new LoadingTrue(), new UploadSingleProduct(this.product)]);
     this.productForm.reset();
     this.tagsArray = [];
     this.tagVal = '';
-
   }
+
   addStoreId() {
     this.storeDataSubscription = this.storeState$.subscribe((data) => {
       this.storeState = new UserStoreState(data.valueOf());
@@ -67,18 +74,52 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
       this.productForm.patchValue({storeId: currentStore['storeUid']});
     });
   }
+
   addAddedBy() {
     this.userDataSubscription = this.user$.subscribe((data) => {
       this.user = data.valueOf();
       this.productForm.patchValue({addedBy: this.user.uid});
     });
   }
+
+  createSspItem(): FormGroup {
+    return this.fb.group({
+      size: [''],
+      stock: [''],
+      price: ['']
+    });
+  }
+
+  addItem(): void {
+    this.sspItems.push(this.createSspItem());
+  }
+
+  removeItem(i): void {
+    if (i !== 0) {
+      this.sspItems.removeAt(i);
+    }
+  }
+
+  selectGender(selectedGender): void {
+    this.productForm.patchValue({gender: selectedGender});
+  }
+
+  getDownloadUrls(downloadUrls: string[]) {
+    this.product.picturesUrls = downloadUrls;
+
+  }
+
+  getPicturePath(picturePath: string[]) {
+    this.product.picturesPaths = picturePath;
+  }
+
   addTag() {
     const isWhitespace = (this.tagVal || '').trim().length === 0;
     if (!isWhitespace) {
       if (this.tagsArray.length < 5) {
         this.tagsArray.push(this.tagVal);
         this.tagVal = '';
+        this.productForm.patchValue({tags: this.tagsArray});
       } else {
         console.log('tag is full');
       }
@@ -90,6 +131,8 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
   removeTag(index: number) {
     if (index > -1) {
       this.tagsArray.splice(index, 1);
+      this.productForm.patchValue({tags: this.tagsArray});
     }
   }
+
 }

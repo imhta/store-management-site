@@ -7,7 +7,7 @@ export const environment = {
 
   firebase : {
     apiKey: 'AIzaSyBTQfUTHpA5ys_XnEJQewr6FehlDZhDe9I',
-    authDomain: 'clothxnet.firebaseapp.com',
+    authDomain: 'console.clothx.net',
     databaseURL: 'https://clothxnet.firebaseio.com',
     projectId: 'clothxnet',
     storageBucket: 'clothxnet.appspot.com',

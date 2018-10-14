@@ -1,0 +1,17 @@
+{
+  "hosting": {
+    "target": "console",
+    "public": "dist/store-website",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

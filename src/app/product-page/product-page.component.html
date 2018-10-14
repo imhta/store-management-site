@@ -1,35 +1,132 @@
 <app-navbar></app-navbar>
 <nav class="bg-dark navbar toolbar">
   <div></div>
-  <!--<div class="form-inline">-->
-    <!--<input class="form-control" id="required-qr" placeholder="Number of QR" [(ngModel)]="requiredNumber"-->
-           <!--[ngModelOptions]="{standalone: true}">-->
-    <!--<div class="button" (click)="generateQr()">Generate</div>-->
-  <!--</div>-->
 </nav>
-<div class="container">
+<div class="container" *ngIf="product">
+
   <div class="card">
     <div class="card-header text-white bg-primary ">
       {{product['prn']}}
-      <a class="float-right" (click)="deleteProduct()"><i class="material-icons" style="margin-left: 5px">delete</i></a>
-      <!--<a class="float-right"><i class="material-icons" style="margin-left: 5px">edit</i></a>-->
+      <a class="float-right" style="margin-left: 15px" (click)="deleteProduct()"><i
+        class="material-icons">delete</i></a>
+      <a class="float-right" data-toggle="modal" data-target="#addOnlineProductTagModal" style="margin-left: 15px"><i
+        class="material-icons">bookmark</i></a>
+      <a class="float-right" style="margin-left: 15px" (click)="print()"><i class="material-icons">print</i></a>
     </div>
     <div class="card-body">
-      <ngx-kjua class="float-left qr-code"
+
+      <div *ngIf="product['isListable']" class="float-right carousel-wrapper">
+        <a data-toggle="modal" data-target="#ModalCenter"><img width="280" [src]="product['picturesUrl'][0]"></a>
+      </div>
+      <ngx-kjua *ngIf="!product['isListable']" class="float-right qr-code"
                 [renderAsync]="true"
-                [text]="product['prn']"
+                [text]=" product['storeId'] +'/'+ product['prn'] + '/' + product['productUid'] "
                 [crisp]="true"
                 [size]="250"
       ></ngx-kjua>
-      <div class="card-content float-left">
+
+      <div class="card-content">
+        <h5>
+          <span
+            class="badge badge-primary">{{product['gender']}} / {{product['brandName']}} {{product['category']}}</span>
+        </h5>
+        <h5 class="card-title ">{{product['brandName']}}</h5>
         <h5 class="card-title ">{{product['productName']}}</h5>
         <p class="card-text ">{{product['description']}}</p>
-        <p class="card-text "> Stock: {{product['stock']}}</p>
-        <p class="card-text ">Price: {{product['price']}} Rs</p>
-        <span class="badge badge-primary" *ngFor="let tag of product['tags'];"> {{tag}}</span>
+        <h5 *ngFor="let ssp of product['ssp']">
+          <span class="badge badge-primary">{{ssp['stock']}} </span>
+          <span class="badge badge-primary">{{ssp['size']}} </span>
+          <span class="badge badge-primary">&#8377; {{ssp['price']}} </span>
+        </h5>
+        <h5>
+          <span class="badge badge-info" *ngFor="let tag of product['tags']">{{tag | lowercase}}</span>
+        </h5>
+
       </div>
+
+
     </div>
+
 
   </div>
 
+
+</div>
+
+
+<div style="display: none" *ngIf="product">
+  <div id="print-section">
+    <div style="text-align: center; width: 100px; height: 125px;">
+      <ngx-kjua class=" qr-code"
+                [renderAsync]="true"
+                [text]=" product['storeId'] +'/'+ product['prn'] + '/' + product['productUid'] "
+                [crisp]="true"
+                [size]="100"
+      ></ngx-kjua>
+      <strong>{{ product['prn'] }}</strong>
+    </div>
+
+  </div>
+</div>
+<div class="modal fade" id="ModalCenter" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle"
+     aria-hidden="true" *ngIf="product && product['isListable']">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content" style="width: 280px">
+      <div id="carouselIndicators" class="carousel slide " data-ride="carousel"
+           *ngFor="let pic of product['picturesUrl']; let i = index;"
+           style="width: 320px;background-color: #464646; margin: 0 auto">
+        <ol class="carousel-indicators">
+          <li data-target="#carouselIndicators" [data-slide-to]="i" (click)="selectedSlide = i"
+              [ngClass]="selectedSlide === i ? 'active' : ''"></li>
+        </ol>
+        <div class="carousel-inner">
+          <div class="carousel-item" [ngClass]="selectedSlide === i ? 'active' : ''">
+            <img style="width: 320px;" [src]="pic" [alt]="product['productName'] + i">
+          </div>
+        </div>
+        <a class="carousel-control-prev" href="#carouselIndicators" role="button" data-slide="prev"
+           (click)="selectedSlide !== 0 ? selectedSlide = i - 1 : null">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselIndicators" role="button" data-slide="next"
+           (click)="(product['picturesUrl'].length - 1) !== selectedSlide ? selectedSlide = i + 1 : null">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="addOnlineProductTagModal" tabindex="-1" role="dialog"
+     aria-labelledby="addOnlineProductTagModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addOnlineProductTagModalLabel">Add Online Product Tag</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="url" class="col-form-label">Link (Url):</label>
+            <input type="text" [(ngModel)]="opt.onlineProductLink" [ngModelOptions]="{standalone: true}"
+                   class="form-control" id="url">
+          </div>
+          <div class="form-group">
+            <label for="type" class="col-form-label">Type of Tag:</label>
+            <input type="text" [(ngModel)]="opt.typeOfLink" [ngModelOptions]="{standalone: true}" class="form-control"
+                   id="type">
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addOpt()">Add</button>
+      </div>
+    </div>
+  </div>
 </div>

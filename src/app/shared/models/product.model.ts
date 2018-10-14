@@ -1,38 +1,63 @@
-export class  SingleProductModel {
+export class SingleProductModel {
   productUid: string;
   productName: string;
-  productType: string;
+  brandName: string;
+  category: string;
   description: string;
-  stock: number;
-  price: number;
-  tags: string[];
+  gender: 'Male' | 'Female' | 'Boy' | 'Girl';
+  picturesUrls: string[] = [];
+  picturesPaths: string[] = [];
+  isDeleted: boolean;
+  ssp: { size: string, stock: number, price: number }[];
   addedBy: string;
   storeId: string;
-  createdOn: Date = new Date();
+  tags: string[];
+  taxType: 'footwear' | 'textile' | 'other';
+  otherTax: number;
+  inclusiveAllTaxes: boolean;
+  createdOn: Date;
+  isListable: boolean;
+  lastModified: Date;
 
-  constructor(data) {
+  constructor() {
+    this.isListable = false;
+  }
+
+  fromFromData(data) {
+    this.gender = data.gender;
+    this.brandName = data.brandName;
     this.productName = data.productName;
-    this.productType = data.type;
+    this.category = data.category;
     this.description = data.description;
-    this.stock = data.stock;
-    this.price = data.price;
-    this.tags = data.tags;
+    this.ssp = data.ssp;
     this.addedBy = data.addedBy;
     this.storeId = data.storeId;
+    this.tags = data.tags;
+    this.taxType = data.taxType;
+    this.otherTax = +data.otherTax;
+    this.inclusiveAllTaxes = data.inclusiveAllTaxes;
   }
+
 
   toJson() {
     return {
+      'brandName': this.brandName,
       'productName': this.productName,
       'description': this.description,
-      'productType': this.productType,
-      'stock': this.stock,
-      'price': this.price,
+      'category': this.category,
+      'gender': this.gender,
+      'ssp': this.ssp,
+      'picturesPath': this.picturesPaths,
+      'picturesUrl': this.picturesUrls,
       'tags': this.tags,
+      'taxType': this.taxType,
+      'otherTax': this.otherTax,
+      'inclusiveAllTaxes': this.inclusiveAllTaxes,
       'addedBy': this.addedBy,
       'storeId': this.storeId,
-      'createdOn': this.createdOn,
-      'isUnlistable': true
+      'createdOn': Date.now(),
+      'isListable': this.isListable,
+      'isDeleted': false
     };
   }
 }

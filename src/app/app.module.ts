@@ -17,22 +17,23 @@ import {LoginPageComponent} from './login-page/login-page.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {AuthGuard} from './shared/service/guard/auth/auth.guard';
-import {NgxsModule, Store} from '@ngxs/store';
+import {NgxsModule} from '@ngxs/store';
 import {NgxsRouterPluginModule} from '@ngxs/router-plugin';
-import {NgxsLoggerPluginModule} from '@ngxs/logger-plugin';
-import {NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
 import {AuthState} from './shared/state/auth.state';
-import {CheckAuthState} from './shared/actions/auth.actions';
 import {ManageStorePageComponent} from './first-page/manage-store-page/manage-store-page.component';
 import {SetupStorePageComponent} from './first-page/setup-store-page/setup-store-page.component';
 import {LinkedStoreComponent} from './first-page/linked-store/linked-store.component';
-import {LoadingState, LoadingTrue} from './shared/state/loading.state';
+import {LoadingState} from './shared/state/loading.state';
 import {FirestoreService} from './shared/service/firestore/firestore.service';
 import {StoreState} from './shared/state/store.state';
 import {LoadingComponent} from './general-components/loading/loading.component';
 import {StorePageComponent} from './store-page/store-page.component';
 import {AddProductPageComponent} from './add-product-page/add-product-page.component';
 import {AllProductState} from './shared/state/allproduct.state';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 // for qr code generation lib
 import {NgxKjuaModule} from 'ngx-kjua';
 // qr scanner module
@@ -50,6 +51,14 @@ import {DashboardPageComponent} from './dashboard-page/dashboard-page.component'
 import {BillingPageComponent} from './billing-page/billing-page.component';
 import {ServiceWorkerModule} from '@angular/service-worker';
 import {PwaService} from './shared/service/pwa/pwa.service';
+import {RegisterGuard} from './shared/service/guard/role/register-guard/register-guard';
+import {SellingGuard} from './shared/service/guard/feature-guard/selling-guard/selling.guard';
+import {AddProductGuard} from './shared/service/guard/feature-guard/add-product-guard/add-product.guard';
+import {ManagerGuard} from './shared/service/guard/role/manager-guard/manager.guard';
+import {StoreCreatorGuard} from './shared/service/guard/feature-guard/store-creator-guard/store-creator.guard';
+import {FileUploadComponent} from './add-product-page/file-upload/file-upload.component';
+import {FileSizePipe} from './shared/service/pipe/file-size-pipe/file-size.pipe';
+
 
 @NgModule({
   declarations: [
@@ -74,8 +83,9 @@ import {PwaService} from './shared/service/pwa/pwa.service';
     InvoicePageComponent,
     CustomerPageComponent,
     DashboardPageComponent,
-    BillingPageComponent
-
+    BillingPageComponent,
+    FileUploadComponent,
+    FileSizePipe,
 
 
   ],
@@ -90,18 +100,32 @@ import {PwaService} from './shared/service/pwa/pwa.service';
     AngularFireAuthModule,
     AngularFirestoreModule,
     AngularFireStorageModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    BrowserAnimationsModule,
+    MatCheckboxModule,
     AngularFireModule.initializeApp(environment.firebase),
     NgxsModule.forRoot([AuthState, LoadingState, StoreState, AllProductState, InvoicesState]),
     NgxsRouterPluginModule.forRoot(),
-    NgxsLoggerPluginModule.forRoot(),
-    NgxsReduxDevtoolsPluginModule.forRoot(),
+    // NgxsLoggerPluginModule.forRoot(),
+    // NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxKjuaModule,
     ZXingScannerModule,
     ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
 
   ],
   exports: [],
-  providers: [AuthService, AuthGuard, FirestoreService, PwaService],
+  providers: [
+    AuthService,
+    FirestoreService,
+    AuthGuard,
+    PwaService,
+    RegisterGuard,
+    ManagerGuard,
+    SellingGuard,
+    AddProductGuard,
+    StoreCreatorGuard
+  ],
   bootstrap: [AppComponent],
   schemas: [
     NO_ERRORS_SCHEMA,
@@ -109,8 +133,4 @@ import {PwaService} from './shared/service/pwa/pwa.service';
   ]
 })
 export class AppModule {
-  constructor(private  store: Store) {
-    this.store.dispatch([new LoadingTrue(), new CheckAuthState()]);
-  }
-
 }

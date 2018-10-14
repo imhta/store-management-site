@@ -54,37 +54,73 @@ export class SellPageComponent implements OnInit, OnDestroy {
     });
   }
 
-  getPrn(prn) {
-    this.prn = prn;
+  getProduct(product: string) {
+    this.prn = product.split('/')[1];
   }
 
   addToCart(prn) {
 
-    if (this.checkProduct(prn)) {
-      const resultProduct = this.findProduct(prn);
-      if (resultProduct.length !== 0 && parseFloat(resultProduct[0]['stock']) > 0) {
+
+    const resultProduct = this.findProduct(prn);
+    const cartProduct = new CartProduct();
+    cartProduct.differentSizes = resultProduct[0]['ssp'];
+    const lengthOfAvailableSize = cartProduct.differentSizes.length;
+    if (lengthOfAvailableSize > 0) {
+      if (parseFloat(resultProduct[0]['stock']) === 0 || parseFloat(resultProduct[0]['stock']) < 0) {
+        console.log('out of stock');
+      } else {
+        // default selection of size
+        cartProduct.selectedSize = 0;
+        cartProduct.size = cartProduct.differentSizes[cartProduct.selectedSize]['size'];
+        cartProduct.singleUnitPrice = parseFloat(cartProduct.differentSizes[cartProduct.selectedSize]['price']);
+        cartProduct.maxQuantity = parseFloat(cartProduct.differentSizes[cartProduct.selectedSize]['stock']);
+
         console.log(resultProduct);
-        const cartProduct = new CartProduct();
         cartProduct.prn = resultProduct[0]['prn'];
-        cartProduct.typeOfProduct = resultProduct[0]['productType'];
-        cartProduct.singleUnitPrice = parseFloat(resultProduct[0]['price']);
+        cartProduct.typeOfProduct = resultProduct[0]['category'];
         cartProduct.productName = resultProduct[0]['productName'];
-        cartProduct.maxQuantity = parseFloat(resultProduct[0]['stock']);
-        cartProduct.singleUnitPrice < 1000 ? cartProduct.taxInPercentage = 5 : cartProduct.taxInPercentage = 12;
+        cartProduct.inclusiveAllTaxes = resultProduct[0]['inclusiveAllTaxes'];
+        switch (resultProduct[0]['taxType']) {
+          case 'footwear': {
+            cartProduct.singleUnitPrice < 500 ? cartProduct.taxInPercentage = 5 : cartProduct.taxInPercentage = 18;
+            break;
+          }
+          case 'textile': {
+            cartProduct.singleUnitPrice < 1000 ? cartProduct.taxInPercentage = 5 : cartProduct.taxInPercentage = 12;
+            break;
+          }
+          case 'other': {
+            cartProduct.taxInPercentage = resultProduct[0]['otherTax'];
+            break;
+          }
+          default: {
+            cartProduct.singleUnitPrice < 1000 ? cartProduct.taxInPercentage = 5 : cartProduct.taxInPercentage = 12;
+            break;
+          }
+
+        }
+
         cartProduct.totalQuantity = 1;
         this.calculateTotal(cartProduct);
         this.cartProducts.push(cartProduct);
         this.calculateInvoiceTotal();
         console.log(this.invoice);
-      } else {
-        console.log('Product does not  exits');
       }
 
     } else {
-      console.log('Product already exits');
+      return console.log('Product does not exits');
     }
+
     this.refreshAllProduct();
 
+  }
+
+  selectSize(cartProduct: CartProduct, index: number) {
+    cartProduct.selectedSize = index;
+    cartProduct.size = cartProduct.differentSizes[cartProduct.selectedSize]['size'];
+    cartProduct.singleUnitPrice = parseFloat(cartProduct.differentSizes[cartProduct.selectedSize]['price']);
+    cartProduct.maxQuantity = parseFloat(cartProduct.differentSizes[cartProduct.selectedSize]['stock']);
+    this.calculateTotal(cartProduct);
   }
 
   calculateTotal(product) {
@@ -97,9 +133,10 @@ export class SellPageComponent implements OnInit, OnDestroy {
     console.log(this.invoice);
   }
 
-  checkProduct(prn) {
-    return this.cartProducts.filter(product => product.prn === prn).length === 0;
-  }
+// this function for check whether product exits, disabled for add same product of multiple size
+  // checkProduct(prn) {
+  //   return this.cartProducts.filter(product => product.prn === prn).length === 0;
+  // }
 
   findProduct(prn) {
     return this.allProducts.filter(product => product['prn'] === prn);

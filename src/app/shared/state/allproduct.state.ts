@@ -1,15 +1,19 @@
 import {Action, State, StateContext, Store} from '@ngxs/store';
 import {FirestoreService} from '../service/firestore/firestore.service';
 import {
+  DeleteAProduct,
+  ErrorInDeletingProduct,
   GetAllProducts,
+  GotAllProducts,
+  ProductDeletedSuccessfully,
+  SearchForProduct,
   SingleProductNotUploaded,
   SingleProductUploadedSuccessfully,
-  UploadSingleProduct,
-  GotAllProducts, DeleteAProduct, ProductDeletedSuccessfully, ErrorInDeletingProduct, SearchForProduct
+  UploadSingleProduct
 } from '../actions/product.actions';
 import {LoadingFalse} from './loading.state';
 import {Navigate} from '@ngxs/router-plugin';
-import {SingleProductModel} from '../models/product.model';
+import {AddOnlineProductTag, GetOnlineProductTags, RemoveOnlineProductTag} from '../actions/online-product-tag.actions';
 
 
 @State<any[]>({
@@ -30,7 +34,7 @@ export class AllProductState {
 
   @Action(SingleProductUploadedSuccessfully)
   uploadSingleProductSuccessfully() {
-    this.store.dispatch([new LoadingFalse(), new Navigate(['add/product'])]);
+    this.store.dispatch([new LoadingFalse(), new Navigate(['store'])]);
   }
 
   @Action(GetAllProducts)
@@ -44,18 +48,35 @@ export class AllProductState {
   }
 
   @Action(DeleteAProduct)
-  deleteProduct(cxt: StateContext<any[]>, {productUid, storeId}: DeleteAProduct) {
+  deleteProduct(cxt: StateContext<any[]>, {productUid}: DeleteAProduct) {
     this.dbService
-      .deleteProduct(storeId, productUid)
+      .deleteProduct(productUid)
       .then(() => this.store.dispatch([new ProductDeletedSuccessfully()]))
       .catch((err) => this.store.dispatch([new ErrorInDeletingProduct(err)]));
   }
+
   @Action(ProductDeletedSuccessfully)
   productDeletedSuccessfully() {
     return this.store.dispatch([new Navigate(['store'])]);
   }
+
   @Action(SearchForProduct)
-  searchForProduct(cxt: StateContext<any[]>, {storeId, keyword, searchOption }: SearchForProduct) {
+  searchForProduct(cxt: StateContext<any[]>, {storeId, keyword, searchOption}: SearchForProduct) {
     this.dbService.searchForProduct(storeId, keyword, searchOption);
+  }
+
+  @Action(AddOnlineProductTag)
+  addOnlineProductTag(cxt: StateContext<any>, {opt}: AddOnlineProductTag) {
+    this.dbService.addOnlineProductTag(opt);
+  }
+
+  @Action(RemoveOnlineProductTag)
+  removeOnlineProductTag(cxt: StateContext<any>, {onlineProductLink}: RemoveOnlineProductTag) {
+    this.dbService.removeOnlineProductTag(onlineProductLink);
+  }
+
+  @Action(GetOnlineProductTags)
+  getOnlineProductTags(cxt: StateContext<any>, {productUid}: GetOnlineProductTags) {
+    this.dbService.getOnlineProductTags(productUid);
   }
 }
