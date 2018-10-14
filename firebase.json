@@ -1,7 +1,7 @@
 {
   "hosting": {
     "target": "console",
-    "public": "dist/store-website",
+    "public": "dist/",
     "ignore": [
       "firebase.json",
       "**/.*",
