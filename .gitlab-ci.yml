@@ -17,7 +17,7 @@ stages:
 pages:
     stage: gitlab_page_deploy
     script:
-       - npm run prod_build
+       - npm run gitlab_page_build
        - npm run deploy_gitlab_page
     artifacts:
        paths:
