@@ -7,7 +7,10 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "prod_build": "ng build --prod",
+    "deploy_gitlab_page": "mkdir public && mv dist/store-website/* public",
+    "deploy_to_firebase": "firebase deploy --non-interactive --token $FIREBASE_TOKEN "
   },
   "private": true,
   "dependencies": {
