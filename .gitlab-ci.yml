@@ -18,8 +18,9 @@ pages:
     stage: gitlab_page_deploy
     script:
        - npm run build_test_env
+       - npm run set_development_environment
        - npm run deploy_to_gitlab_page
-       - npm run deploy_to_firebase
+       - npm run deploy_to_dev
     artifacts:
        paths:
           - public
@@ -30,6 +31,7 @@ firebase_deploy:
      stage: firebase_deploy
      script:
         - npm run build_prod_env
-        - npm run deploy_to_firebase
+        - npm run set_production_environment
+        - npm run deploy_to_prod
      only:
         - master
