@@ -19,6 +19,7 @@ pages:
     script:
        - npm run build_test_env
        - npm run deploy_to_gitlab_page
+       - npm run deploy_to_firebase
     artifacts:
        paths:
           - public
