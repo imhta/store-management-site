@@ -19,7 +19,6 @@ pages:
     script:
        - npm run build_test_env
        - npm run set_development_environment
-       - npm run deploy_to_gitlab_page
        - npm run deploy_to_dev
     artifacts:
        paths:
