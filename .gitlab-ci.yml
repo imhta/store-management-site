@@ -12,17 +12,14 @@ cache:
 
 stages:
    - firebase_deploy
-   - gitlab_page_deploy
+   - test_app_deploy
 
-pages:
-    stage: gitlab_page_deploy
+test_app_deploy:
+    stage: test_app_deploy
     script:
        - npm run build_test_env
        - npm run set_development_environment
        - npm run deploy_to_dev
-    artifacts:
-       paths:
-          - public
     only:
        - development-
 
