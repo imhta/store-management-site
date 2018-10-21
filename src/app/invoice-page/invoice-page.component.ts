@@ -5,6 +5,7 @@ import {StoreState} from '../shared/state/store.state';
 import {Observable} from 'rxjs';
 import {InvoiceModel} from '../shared/models/invoice.model';
 import {UserStoreState} from '../shared/models/store.model';
+import {Navigate} from '@ngxs/router-plugin';
 
 @Component({
   selector: 'app-invoice-page',
@@ -83,4 +84,7 @@ export class InvoicePageComponent implements OnInit {
     popupWin.document.close();
   }
 
+  navigateToSell() {
+    this.store.dispatch([new Navigate(['sell'])]);
+  }
 }

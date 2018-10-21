@@ -5,6 +5,7 @@ import {InvoiceModel} from '../shared/models/invoice.model';
 import {GetAllInvoice} from '../shared/actions/invoice.actions';
 import {StoreState} from '../shared/state/store.state';
 import {first} from 'rxjs/operators';
+import {Navigate} from '@ngxs/router-plugin';
 
 
 @Component({
@@ -54,5 +55,9 @@ export class CustomerPageComponent implements OnInit {
   }
   filterCustomerData() {
    return this.allInvoices.filter((invoice) => invoice.customerNumber === this.selectedCustomerValue);
+  }
+
+  navigateToSell() {
+    this.store.dispatch([new Navigate(['sell'])]);
   }
 }

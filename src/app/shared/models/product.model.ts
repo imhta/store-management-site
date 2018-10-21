@@ -2,7 +2,7 @@ export class SingleProductModel {
   productUid: string;
   productName: string;
   brandName: string;
-  category: string;
+  categories: { category1: string, category2: string, category3: string };
   description: string;
   gender: 'Male' | 'Female' | 'Boy' | 'Girl';
   picturesUrls: string[] = [];
@@ -27,7 +27,7 @@ export class SingleProductModel {
     this.gender = data.gender;
     this.brandName = data.brandName;
     this.productName = data.productName;
-    this.category = data.category;
+    this.categories = data.categories;
     this.description = data.description;
     this.ssp = data.ssp;
     this.addedBy = data.addedBy;
@@ -44,7 +44,7 @@ export class SingleProductModel {
       'brandName': this.brandName,
       'productName': this.productName,
       'description': this.description,
-      'category': this.category,
+      'categories': this.categories,
       'gender': this.gender,
       'ssp': this.ssp,
       'picturesPath': this.picturesPaths,

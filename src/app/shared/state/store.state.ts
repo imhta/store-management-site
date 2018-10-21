@@ -73,7 +73,7 @@ export class StoreState {
     const state = ctx.getState();
     state.selectedStore = action.index;
     ctx.setState({...state});
-    return this.store.dispatch([new LoadingFalse(), new Navigate(['store'])]);
+    return this.store.dispatch([new Navigate(['store'])]);
   }
 
   @Action(ResetSelectedStore)

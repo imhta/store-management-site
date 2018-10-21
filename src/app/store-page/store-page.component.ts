@@ -5,6 +5,7 @@ import {Observable, Subscription} from 'rxjs';
 import {GetAllProducts, ProductFounded, SearchForProduct} from '../shared/actions/product.actions';
 import {SingleProductModel} from '../shared/models/product.model';
 import {Navigate} from '@ngxs/router-plugin';
+import {LoadingTrue} from '../shared/state/loading.state';
 
 @Component({
   selector: 'app-store-page',
@@ -14,6 +15,8 @@ import {Navigate} from '@ngxs/router-plugin';
 export class StorePageComponent implements OnInit, OnDestroy {
   @Select('storeState') storeState$: Observable<object>;
   @Select('allProducts') allProducts$: Observable<SingleProductModel[]>;
+  @Select('loading') loading$: Observable<boolean>;
+  loading = true;
   storeDataSubscription: Subscription;
   storeState: UserStoreState;
   currentStore;
@@ -23,21 +26,22 @@ export class StorePageComponent implements OnInit, OnDestroy {
   searchOptions = ['Description', 'Product name', 'Product id'];
   selectedSearchOption = 2;
   isWhitespace = true;
-
+  isEmpty: boolean;
   constructor(private store: Store, private actions$: Actions) {
-
+    this.loading$.subscribe((loading) => this.loading = loading.valueOf());
+    this.storeDataSubscription = this.storeState$.subscribe((data) => {
+      this.storeState = new UserStoreState(data.valueOf());
+      this.currentStore = this.storeState.linkedStores[this.storeState.selectedStore];
+      this.store.dispatch([new GetAllProducts(this.currentStore['storeUid']), new LoadingTrue()]);
+    });
+    this.allProducts$.subscribe((data: any[]) => {
+      this.allProducts = data;
+      this.isEmpty = this.allProducts.length <= 0;
+    });
   }
 
   ngOnInit() {
 
-    this.storeDataSubscription = this.storeState$.subscribe((data) => {
-      this.storeState = new UserStoreState(data.valueOf());
-      this.currentStore = this.storeState.linkedStores[this.storeState.selectedStore];
-      this.store.dispatch([new GetAllProducts(this.currentStore['storeUid'])]);
-    });
-    this.allProducts$.subscribe((data: any[]) => {
-      this.allProducts = data;
-    });
   }
 
   ngOnDestroy() {

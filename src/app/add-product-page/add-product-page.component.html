@@ -1,5 +1,7 @@
 <app-navbar></app-navbar>
-
+<nav class="bg-dark navbar toolbar">
+  <div></div>
+</nav>
 
 <div class="container">
   <div class="card">
@@ -7,16 +9,16 @@
     <form [formGroup]="productForm">
       <div class="btn-center">
         <div class="btn-group btn-group-toggle" data-toggle="buttons">
-          <label class="btn btn-primary active" (click)="selectGender('Men')">
+          <label class="btn btn-light active" (click)="selectGender('Men')">
             <input type="radio" id="option1" value="Men" autocomplete="off" checked> Men
           </label>
-          <label class="btn btn-primary" (click)="selectGender('Female')">
+          <label class="btn btn-light" (click)="selectGender('Female')">
             <input type="radio" id="option2" value="Women" autocomplete="off"> Female
           </label>
-          <label class="btn btn-primary" (click)="selectGender('Boy')">
+          <label class="btn btn-light" (click)="selectGender('Boy')">
             <input type="radio" id="option3" value="Boy" autocomplete="off"> Boy
           </label>
-          <label class="btn btn-primary" (click)="selectGender('Girl')">
+          <label class="btn btn-light" (click)="selectGender('Girl')">
             <input type="radio" id="option4" value="Girl" autocomplete="off"> Girl
           </label>
         </div>
@@ -24,25 +26,34 @@
 
       <div class="form-group ">
         <label for="brand-name">Brand Name</label>
-        <input class="form-control form-control-lg " id="brand-name" type="text" formControlName="brandName">
+        <input class="form-control form-control-lg " id="brand-name" type="text" placeholder="Nike, Polo, U.S Polo"
+               required formControlName="brandName">
       </div>
       <div class="form-group ">
         <label for="product-name">Product Name</label>
-        <input class="form-control form-control-lg " id="product-name" type="text" formControlName="productName">
+        <input class="form-control form-control-lg " id="product-name" type="text"
+               placeholder="Nike sports T-shirt, Casual check shirt" required formControlName="productName">
       </div>
       <div class="form-group ">
         <label for="description">Description</label>
-        <input type="text" class="form-control form-control-lg" id="description" formControlName="description">
+        <input type="text" class="form-control form-control-lg" id="description" placeholder="White sports T-shirt"
+               formControlName="description">
       </div>
-      <div class="form-group">
-        <label for="category">Category</label>
-        <input type="text" class="form-control form-control-lg" id="category" aria-describedby="type"
-               formControlName="category">
+
+      <div class="form-group" formGroupName="categories">
+        <label for="category">Categories</label>
+        <div class="input-group" id="category">
+          <input placeholder="Category 1" class="form-control  form-control-lg" formControlName="category1"
+                 [ngbTypeahead]="search">
+          <input placeholder="Category 2" class="form-control  form-control-lg" formControlName="category2"
+                 [ngbTypeahead]="search">
+          <input placeholder="Category 3" class="form-control  form-control-lg" formControlName="category3"
+                 [ngbTypeahead]="search">
+
+        </div>
       </div>
       <div formArrayName="ssp"
            *ngFor="let sspItem of sspItems.controls; let i = index;" class="form-group">
-        <a (click)="addItem()" class="float-right text-success add-btn" *ngIf="i === 0">add ssp</a>
-
         <label for="ssp"> SSP <sup>{{i + 1}}</sup></label>
         <div [formGroupName]="i" class="input-group" id="ssp">
           <input formControlName="size" placeholder="Size" class="form-control  form-control-lg">
@@ -52,12 +63,23 @@
         </div>
         <a (click)="removeItem(i)" *ngIf="i !== 0" class="float-right text-danger remove-btn">remove</a>
       </div>
+      <div class="form-group add-btn" id="add-ssp" (click)="addItem()">
+        <i class="material-icons position-absolute"> add_circle </i>
+        <div class="input-group">
+          <input placeholder="Size" class="form-control  form-control-lg " disabled>
+          <input placeholder="Stock " class="form-control  form-control-lg " disabled>
+          <input placeholder="Price" class="form-control  form-control-lg " disabled>
+
+        </div>
+      </div>
+
       <div class="form-group">
         <label for="tags">Tags: </label>
         <span class="badge badge-primary" *ngFor="let tag of tagsArray;let i = index" (click)="removeTag(i)"
               data-toggle="tooltip" data-placement="top" title="Click tag delete"> {{tag}}</span>
         <input type="text" class="form-control form-control-lg" aria-describedby="tags" id="tags"
                [(ngModel)]="this.tagVal" [ngModelOptions]="{standalone: true}" (keyup.enter)="addTag()">
+        <small id="tagHelp" class="form-text text-muted">Press ENTER to add tag to your product.</small>
       </div>
       <div class="form-group card">
         <label for="type">Tax Type</label>

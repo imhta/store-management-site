@@ -1,7 +1,12 @@
 <app-navbar></app-navbar>
+<nav class="bg-dark text-white navbar toolbar">
+  <diV><h5><b>{{currentStore['storeName']}}</b></h5></diV>
 
-<div class="form-group">
-  <h5><b>{{currentStore['storeName']}}</b></h5>
+  <!--<div>-->
+  <!--<a><i class="material-icons">settings</i></a>-->
+  <!--</div>-->
+</nav>
+<div class="form-group ">
   <div class="input-group">
     <input type="text" class="form-control form-control-lg " id="search" aria-describedby="button-addon4"
           (ngModelChange)="onChange()"   [(ngModel)]="searchKeyword" (keyup.enter)="search()">
@@ -11,18 +16,8 @@
   </div>
   <span class="badge search-option" [ngClass]="selectedSearchOption == i?'badge-primary': 'badge-light'" (click)="selectSearchOption(i)" *ngFor="let searchOption of searchOptions;let i = index">{{searchOption}}</span>
 </div>
-<nav class="bg-dark navbar toolbar">
-  <!--<diV></diV>-->
-  <!--<div>-->
-    <!--<a  class="text-white" (click)="navigateToAddProduct()" data-toggle="tooltip" data-placement="bottom" title="Add new product"><i class="material-icons">add_circle</i> </a>-->
-    <!--<a class="text-white upload-csv" data-toggle="tooltip" data-placement="bottom" title="Bulk upload (.csv)"><i-->
-      <!--class="material-icons">library_add</i></a>-->
-    <!--<a class="text-white"-->
-       <!--href="https://firebasestorage.googleapis.com/v0/b/clothxnet.appspot.com/o/csv%2Fproduct-template.csv?alt=media&token=b0c53609-2700-4e09-8d80-9e79ff2c8e0b"-->
-       <!--data-toggle="tooltip" data-placement="bottom" title="Download product template"><i class="material-icons">cloud_download </i></a>-->
-  <!--</div>-->
-</nav>
-<div class="container" *ngIf="!searchKeyword">
+
+<div class="container" *ngIf="!searchKeyword && !isEmpty && !loading">
   <div class="card" *ngFor="let product of allProducts; let i = index "
        (click)="navigateToProduct(product['productUid'])">
     <div class="card-header text-white bg-primary ">
@@ -42,16 +37,25 @@
         <p class="card-text ">{{product['description']}}</p>
         <h5>
           <span
-            class="badge badge-primary">{{product['gender']}} / {{product['brandName']}} {{product['category']}}</span>
+            class="badge badge-primary">{{product['gender']}} / {{product['brandName']}} </span>
           <span class="badge badge-info" *ngFor="let tag of product['tags']">{{tag | lowercase}}</span>
         </h5>
       </div>
     </div>
 
   </div>
-
-
 </div>
+
+<div class="grid-wrapper" *ngIf="isEmpty && !loading">
+  <div class="card">
+
+    <img src="../../../assets/logo/logo.png" class="grey-icon" alt="">
+    <div class="content">Your store has no product yet</div>
+    <div class="setup-link" (click)="  navigateToAddProduct()">ADD PRODUCT</div>
+  </div>
+</div>
+
+
 <h3  *ngIf="searchKeyword">See all search results for {{searchKeyword}}</h3>
 <div class="container"  *ngIf="searchKeyword">
 
@@ -73,7 +77,7 @@
         <p class="card-text ">{{product['description']}}</p>
         <h5>
           <span
-            class="badge badge-primary">{{product['gender']}} / {{product['brandName']}} {{product['category']}}</span>
+            class="badge badge-primary">{{product['gender']}} / {{product['brandName']}} </span>
           <span class="badge badge-info" *ngFor="let tag of product['tags']">{{tag | lowercase}}</span>
         </h5>
       </div>

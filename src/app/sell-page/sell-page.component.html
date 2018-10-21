@@ -1,21 +1,22 @@
 <app-navbar></app-navbar>
+<nav class="bg-dark text-white navbar toolbar ">
+  <div class=" total-detail">
+    <a>TQ: {{invoice.totalQuantity}}</a>
+    <a>Total Price: &#8377; {{invoice.totalPrice}}</a>
+    <!--<a>Total Tax: &#8377; {{invoice.totalTax}}</a>-->
+  </div>
+  <div>
+
+    <a class="icon-button" (click)="saveInvoice()"> <i class="material-icons">save_alt</i></a>
+  </div>
+</nav>
 <div class="page">
   <div class=" qr-scanner-preview">
     <div class="card">
       <app-qr-scanner (product)="getProduct($event)"></app-qr-scanner>
     </div>
   </div>
-  <nav class="bg-dark text-white navbar toolbar ">
-    <div class=" total-detail">
-      <a>Total Quantity: {{invoice.totalQuantity}}</a>
-      <a>Total Price: &#8377; {{invoice.totalPrice}}</a>
-      <a>Total Tax: &#8377; {{invoice.totalTax}}</a>
-    </div>
-    <div>
 
-      <a class="icon-button" (click)="saveInvoice()"> <i class="material-icons">save_alt</i></a>
-    </div>
-  </nav>
 
   <div class="container">
     <h3>Create invoice</h3>
@@ -26,7 +27,7 @@
                                     (click)="selectPayment(payment)"
                                     *ngFor="let payment of typeOfPayment">{{payment}}</span></h6>
       <div class="input-group">
-        <input type="text" class="form-control form-control-md " id="customer-number"
+        <input type="text" class="form-control form-control-md " id="customer-number" placeholder="Phone number"
                [(ngModel)]="invoice.customerNumber ">
       </div>
     </div>
@@ -35,6 +36,7 @@
       <label for="add-cart">Product Id :</label>
       <div class="input-group">
         <input type="text" class="form-control form-control-md " id="add-cart" aria-describedby="button-addon4"
+               placeholder="Product reference number (PRN)"
                [(ngModel)]="prn" (keyup.enter)="addToCart(prn)">
         <div class="input-group-append" id="button-addon4">
           <button class="btn btn-primary" type="button" (click)="addToCart(prn)">Add</button>

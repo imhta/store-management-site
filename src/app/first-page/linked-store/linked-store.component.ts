@@ -77,7 +77,6 @@ export class LinkedStoreComponent implements OnInit, OnDestroy {
   }
 
   selectStore(index: number) {
-    console.log(index);
     return this.store.dispatch([new LoadingTrue(), new SelectStore(index)]);
   }
 

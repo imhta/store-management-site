@@ -3,7 +3,15 @@
   <div></div>
   <a class="text-white icon-button" (click)="navigateToAddUser()"><i class="material-icons">person_add</i></a>
 </nav>
-<div class="container">
+<div class="grid-wrapper" *ngIf="!(employees.length > 0)">
+  <div class="card">
+
+    <img src="../../assets/logo/logo.png" class="grey-icon" alt="">
+    <div class="content">There is no employee yet</div>
+    <div class="setup-link" (click)="navigateToAddUser()">Add Employee</div>
+  </div>
+</div>
+<div class="container" *ngIf="employees.length > 0">
   <h3>Manage users</h3>
 
   <div class="card ">

@@ -10,16 +10,16 @@
 @media only screen and (max-width: 600px) {
   .qr-scanner-preview {
     position: static;
-    max-width: 100vw;
+    max-width: 100vh;
     max-height: 100vh;
     z-index: 0 !important;
   }
 
   .toolbar {
-    position: fixed;
-    bottom: 0;
-    height: 50px;
+    position: sticky;
+    top: 0px;
     width: 100vw;
+    height: 80px;
     z-index: 25;
   }
 

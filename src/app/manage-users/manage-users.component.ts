@@ -1,14 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Select, Store, Actions, ofActionDispatched} from '@ngxs/store';
+import {Actions, ofActionDispatched, Select, Store} from '@ngxs/store';
 import {Observable, Subscription} from 'rxjs';
 import {UserStoreState} from '../shared/models/store.model';
-import {
-  DeleteEmployee,
-  EmptyLinkedStore,
-  GetAllEmployees,
-  GotAllEmployeesSuccessfully,
-  GotEmployeeLinkedStoresSuccessfully
-} from '../shared/actions/store.actions';
+import {DeleteEmployee, GetAllEmployees, GotAllEmployeesSuccessfully} from '../shared/actions/store.actions';
 import {Navigate} from '@ngxs/router-plugin';
 
 @Component({
@@ -20,7 +14,7 @@ export class ManageUsersComponent implements OnInit, OnDestroy {
 @Select('storeState') storeState$: Observable<object>;
   storeDataSubscription: Subscription;
   currentStore;
-  employees: any[] ;
+  employees: any[] = [];
   constructor(private store: Store, private actions$: Actions) { }
 
   ngOnInit() {

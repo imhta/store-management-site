@@ -54,7 +54,7 @@
 
 .menu .material-icons {
   margin: 0 auto;
-  color: grey;
+  color: white;
   font-size: 25px;
 
 }
@@ -113,7 +113,7 @@
 
 .container > * {
   background-color: #444;
-  color: #fff;
+  color: white;
   border-radius: 5px;
   padding: 20px;
   font-size: 15px;

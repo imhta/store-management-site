@@ -5,7 +5,7 @@ import {CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA} from '@angular/core'
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {AppComponent} from './app.component';
-import {AppRoutingModule, routingComponent} from './routing-module/app-routing.module';
+import {AppRoutingModule, routingComponent} from './shared/routing-module/app-routing.module';
 import {AngularFireAuthModule} from 'angularfire2/auth';
 import {AngularFireModule} from 'angularfire2';
 import {AngularFirestoreModule} from 'angularfire2/firestore';
@@ -58,7 +58,9 @@ import {ManagerGuard} from './shared/service/guard/role/manager-guard/manager.gu
 import {StoreCreatorGuard} from './shared/service/guard/feature-guard/store-creator-guard/store-creator.guard';
 import {FileUploadComponent} from './add-product-page/file-upload/file-upload.component';
 import {FileSizePipe} from './shared/service/pipe/file-size-pipe/file-size.pipe';
+import {StoreResolver} from './shared/service/resolver/store.resolver';
 
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -111,6 +113,7 @@ import {FileSizePipe} from './shared/service/pipe/file-size-pipe/file-size.pipe'
     // NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxKjuaModule,
     ZXingScannerModule,
+    NgbModule,
     ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
 
   ],
@@ -124,7 +127,8 @@ import {FileSizePipe} from './shared/service/pipe/file-size-pipe/file-size.pipe'
     ManagerGuard,
     SellingGuard,
     AddProductGuard,
-    StoreCreatorGuard
+    StoreCreatorGuard,
+    StoreResolver
   ],
   bootstrap: [AppComponent],
   schemas: [

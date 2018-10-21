@@ -45,6 +45,7 @@ export class AllProductState {
   @Action(GotAllProducts)
   gotAllProducts(cxt: StateContext<any[]>, {allProduct}: GotAllProducts) {
     cxt.setState(allProduct);
+    this.store.dispatch([new LoadingFalse()]);
   }
 
   @Action(DeleteAProduct)

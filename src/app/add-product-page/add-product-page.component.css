@@ -4,10 +4,19 @@
   box-sizing: border-box;
 }
 
+.toolbar {
+  height: 50px;
+  width: 100%;
+  margin-bottom: 20px;
+}
 .container {
   max-width: 800px;
 }
 
+#add-ssp, #add-ssp input {
+  cursor: pointer;
+  opacity: 0.5;
+}
 .card {
   -webkit-box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.12);
   -moz-box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.12);
@@ -26,6 +35,12 @@
   margin: 15px;
 }
 
+.material-icons {
+  z-index: 5;
+  left: 30px;
+  font-size: 45px;
+  color: green;
+}
 .badge {
   cursor: pointer;
   margin-left: 5px;

@@ -25,6 +25,7 @@
     "@angular/pwa": "^0.8.2",
     "@angular/router": "^6.1.7",
     "@angular/service-worker": "^6.1.7",
+    "@ng-bootstrap/ng-bootstrap": "^3.3.1",
     "@ngxs/devtools-plugin": "^3.2.0",
     "@ngxs/logger-plugin": "^3.2.0",
     "@ngxs/router-plugin": "^3.2.0",

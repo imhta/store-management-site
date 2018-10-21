@@ -7,6 +7,14 @@ import {Observable, Subscription} from 'rxjs';
 import {SetupNewStore} from '../../shared/actions/store.actions';
 import {LoadingTrue} from '../../shared/state/loading.state';
 import * as firebase from 'firebase';
+import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
+
+const indianStates = ['Arunachal Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa',
+  'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jammu and Kashmir', 'Jharkhand', 'Karnataka', 'Kerala',
+  'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab',
+  'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh',
+  'Uttarakhand', 'West Bengal', 'Andaman and Nicobar Islands', 'Chandigarh',
+  'Dadra and Nagar Haveli', 'Daman and Diu', 'Lakshadweep', 'National Capital Territory of Delhi', 'Puducherry'];
 
 @Component({
   selector: 'app-setup-store-page',
@@ -24,7 +32,7 @@ export class SetupStorePageComponent implements OnInit, OnDestroy {
     contactNumber: [''],
     registerUid: [''],
     gstNumber: [''],
-    typeOfStore: ['fashion retailer'],
+    typeOfStore: ['fashion brand'],
     address: this.fb.group({
       street: [''],
       city: [''],
@@ -33,13 +41,23 @@ export class SetupStorePageComponent implements OnInit, OnDestroy {
     }),
   });
   typeOfStores = [
-    {value: 'fashion retailer', title: 'Fashion retailer'},
-    {value: 'footwear', title: 'Footwear'},
+    {value: 'fashion brand', title: 'Fashion brand'},
     {value: 'factory outlet', title: 'Fashion outlet'},
+    {value: 'fashion retailer', title: 'Fashion retailer'},
+    {value: 'fashion designer', title: 'Fashion designer'},
     {value: 'boutique', title: 'Boutique'},
     {value: 'fashion accessories', title: 'Fashion accessories'},
-    {value: 'fashion designer', title: 'Fashion designer'},
+    {value: 'footwear', title: 'Footwear'},
+
   ];
+  stateSearch = (text$: Observable<string>) =>
+    text$.pipe(
+      debounceTime(200),
+      distinctUntilChanged(),
+      map(term => term.length < 2 ? []
+        : indianStates.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+    );
+
   constructor(private fb: FormBuilder, private store: Store) {
   }
 

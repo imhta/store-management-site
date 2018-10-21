@@ -26,7 +26,7 @@ a{
 
 .search-option {
   float: right;
-  margin: 5px 5px 10px;
+  margin: 5px 5px 20px;
 }
 
 .search-option:hover {
@@ -61,7 +61,7 @@ a{
   height: 50px;
   width: 100%;
   margin-bottom: 20px;
-  margin-top: 50px;
+
 }
 
 .container {
@@ -77,7 +77,7 @@ a{
   user-select: none;
 }
 
-.card {
+.container .card {
   -webkit-box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.12);
   -moz-box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.12);
   box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.12);
@@ -89,11 +89,11 @@ a{
   border: solid 2px transparent;
 }
 
-.card:hover {
+.container .card:hover {
   border: solid 2px #007bff;
 }
 
-.card:active {
+.container .card:active {
   border: solid 2px #007bff;
 }
 
@@ -116,3 +116,66 @@ a{
     display: none;
   }
 }
+
+.grid-wrapper {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+}
+
+.grid-wrapper .card {
+  grid-row: 2/6;
+  grid-column: 2/6;
+  z-index: 1;
+  border: none;
+}
+
+.grid-wrapper .card {
+  z-index: 1;
+  border: none;
+  width: 100%;
+}
+
+.grey-icon {
+  -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+  filter: grayscale(100%);
+  width: 120px;
+  margin: 0 auto;
+}
+
+.content {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  font-weight: 900;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 30px;
+  color: grey;
+}
+
+.setup-link {
+  border-radius: 30px;
+  text-align: center;
+  cursor: pointer;
+  margin: 0 auto;
+  padding: 15px 20px;
+  border: solid 4px aquamarine;
+  color: #214c3f;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+  letter-spacing: 2px;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.setup-link:hover {
+  border: solid 5px aquamarine;
+}
+
+.setup-link:active {
+  border: solid 3px aquamarine;
+}
+

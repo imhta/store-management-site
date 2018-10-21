@@ -2,7 +2,15 @@
 <nav class="bg-dark navbar toolbar">
   <div></div>
 </nav>
-<div class="container" *ngIf="changeCustomer">
+<div class="grid-wrapper" *ngIf="!(uniqueCustomers.length > 0)">
+  <div class="card">
+
+    <img src="../../../assets/logo/logo.png" class="grey-icon" alt="">
+    <div class="content">There is no customer yet</div>
+    <div class="setup-link" (click)="navigateToSell()">START SELLING</div>
+  </div>
+</div>
+<div class="container" *ngIf="changeCustomer && uniqueCustomers.length > 0">
 
   <h3 *ngIf="changeCustomer">Customers</h3>
 
@@ -13,7 +21,7 @@
 </div>
 
 </div>
-<div class="container"  *ngIf="!changeCustomer">
+<div class="container" *ngIf="!changeCustomer  && uniqueCustomers.length > 0">
   <a class="menu float-right"  (click)="toggleCustomer()"><i class="material-icons">view_list</i></a>
   <h3>{{selectedCustomerValue}} History</h3>
   <div class="card" *ngFor="let invoice of selectedCustomerData">
