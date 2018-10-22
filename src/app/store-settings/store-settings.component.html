@@ -1,0 +1,34 @@
+<app-navbar></app-navbar>
+<nav class="bg-dark navbar toolbar">
+  <div><a (click)="navigateToStore()"><i class="material-icons">arrow_back</i></a></div>
+</nav>
+
+<div class="container">
+  <div class="card">
+    <h2>Store profile</h2>
+    <div class="form-group ">
+      <span class="badge badge-primary float-right" (click)="checkUniqueness()"
+            data-toggle="tooltip" data-placement="top" title="Click to check and save">Check and Save</span>
+      <a class="float-right "><i class="material-icons done" *ngIf="isAvailable">
+        done
+      </i><i class="material-icons not-done" *ngIf="!isAvailable">
+        clear
+      </i></a>
+      <label for="product-name">Unique Store Name</label>
+      <input class="form-control form-control-lg " id="product-name" type="text" [(ngModel)]="uniqueStoreName"
+             placeholder="clothxshopping" required>
+    </div>
+    <div class="form-group ">
+              <span class="badge badge-primary float-right" (click)="saveStoreDescription()"
+                    data-toggle="tooltip" data-placement="top" title="Click to save description">Save</span>
+      <label for="description">Description</label>
+      <textarea type="text" class="form-control" id="description" [(ngModel)]="storeDescription"
+                placeholder="Establishments primarily engaged in the retail sale of a general line of women's ready-to-wear clothing."
+      ></textarea>
+    </div>
+    <app-logo-upload [storeId]="currentStore['storeUid']" [inData]="logo"
+                     (outData)="getLogoData($event)"></app-logo-upload>
+    <app-store-pics-upload [storeId]="currentStore['storeUid']" [inData]="storePictures"
+                           (outData)="getStorePicturesData($event)"></app-store-pics-upload>
+  </div>
+</div>

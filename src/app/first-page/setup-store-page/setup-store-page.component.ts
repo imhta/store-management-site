@@ -54,9 +54,9 @@ export class SetupStorePageComponent implements OnInit, OnDestroy {
     text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
-      map(term => term.length < 2 ? []
-        : indianStates.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-    );
+      map(term => term.length < 1 ? []
+        : indianStates.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).reverse().slice(0, 10))
+    )
 
   constructor(private fb: FormBuilder, private store: Store) {
   }

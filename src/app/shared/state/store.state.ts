@@ -12,7 +12,11 @@ import {
   NewStoreSetupSuccessfully,
   ResetSelectedStore,
   SelectStore,
-  SetupNewStore
+  SetupNewStore,
+  UpdateStoreDescription,
+  UpdateUniqueStoreName,
+  UploadStoreLogo,
+  UploadStorePictures
 } from '../actions/store.actions';
 import {FirestoreService} from '../service/firestore/firestore.service';
 import {Navigate} from '@ngxs/router-plugin';
@@ -28,12 +32,12 @@ import {GetProductByUid} from '../actions/product.actions';
   }
 })
 export class StoreState {
+  constructor(private dbService: FirestoreService, private  store: Store) {
+  }
+
   @Selector()
   static uid(state: UserStoreState) {
     return state.linkedStores[state.selectedStore]['storeUid'];
-  }
-
-  constructor(private dbService: FirestoreService, private  store: Store) {
   }
 
   @Action(GetLinkedStores)
@@ -115,4 +119,25 @@ export class StoreState {
     this.dbService.getProductById(productUid);
   }
 
+  @Action(UploadStoreLogo)
+  uploadStoreLogo(ctx: StateContext<any>, {storeUid, data}: UploadStoreLogo) {
+    this.dbService.uploadStoreLogo(storeUid, data);
+  }
+
+  @Action(UploadStorePictures)
+  uploadStorePictures(ctx: StateContext<any>, {storeUid, data}: UploadStorePictures) {
+    this.dbService.uploadStorePictures(storeUid, data);
+  }
+
+  @Action(UpdateStoreDescription)
+  updateStoreDescription(ctx: StateContext<any>, {storeUid, description}: UpdateStoreDescription) {
+    this.dbService.updateStoreDescription(storeUid, description);
+
+  }
+
+  @Action(UpdateUniqueStoreName)
+  updateUniqueStoreName(ctx: StateContext<any>, {storeUid, usn}: UpdateUniqueStoreName) {
+    this.dbService.updateUniqueStoreName(storeUid, usn);
+
+  }
 }

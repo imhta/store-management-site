@@ -37,7 +37,7 @@
       <div class="input-group">
         <input type="text" class="form-control form-control-md " id="add-cart" aria-describedby="button-addon4"
                placeholder="Product reference number (PRN)"
-               [(ngModel)]="prn" (keyup.enter)="addToCart(prn)">
+               [(ngModel)]="prn" [ngbTypeahead]="prnSearch" (keyup.enter)="addToCart(prn)">
         <div class="input-group-append" id="button-addon4">
           <button class="btn btn-primary" type="button" (click)="addToCart(prn)">Add</button>
         </div>

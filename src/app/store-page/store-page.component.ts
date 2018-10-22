@@ -6,6 +6,7 @@ import {GetAllProducts, ProductFounded, SearchForProduct} from '../shared/action
 import {SingleProductModel} from '../shared/models/product.model';
 import {Navigate} from '@ngxs/router-plugin';
 import {LoadingTrue} from '../shared/state/loading.state';
+import {AuthState} from '../shared/state/auth.state';
 
 @Component({
   selector: 'app-store-page',
@@ -13,6 +14,7 @@ import {LoadingTrue} from '../shared/state/loading.state';
   styleUrls: ['./store-page.component.css']
 })
 export class StorePageComponent implements OnInit, OnDestroy {
+
   @Select('storeState') storeState$: Observable<object>;
   @Select('allProducts') allProducts$: Observable<SingleProductModel[]>;
   @Select('loading') loading$: Observable<boolean>;
@@ -27,7 +29,13 @@ export class StorePageComponent implements OnInit, OnDestroy {
   selectedSearchOption = 2;
   isWhitespace = true;
   isEmpty: boolean;
+  role;
+  isEmployee;
+  isRegister;
   constructor(private store: Store, private actions$: Actions) {
+    this.role = this.store.selectSnapshot(AuthState.role);
+    this.isEmployee = this.store.selectSnapshot(AuthState.isEmployee);
+    this.isRegister = this.store.selectSnapshot(AuthState.isRegister);
     this.loading$.subscribe((loading) => this.loading = loading.valueOf());
     this.storeDataSubscription = this.storeState$.subscribe((data) => {
       this.storeState = new UserStoreState(data.valueOf());
@@ -41,7 +49,6 @@ export class StorePageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
   }
 
   ngOnDestroy() {

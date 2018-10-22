@@ -5,9 +5,17 @@ import {Store} from '@ngxs/store';
 import {
   EmptyLinkedStore,
   ErrorInGettingEmployeeLinkedStore,
+  ErrorInStoreLogoUpload,
+  ErrorInStorePicturesUpload,
+  ErrorInUpdateStoreDescription,
+  ErrorInUpdateUniqueStoreName,
   GotAllEmployeesSuccessfully,
   GotEmployeeLinkedStoresSuccessfully,
-  GotLinkedStores
+  GotLinkedStores,
+  StoreLogoUploadedSuccessfully,
+  StorePicturesUploadedSuccessfully,
+  UpdatedStoreDescriptionSuccessfully,
+  UpdateUniqueStoreNameSuccessful
 } from '../../actions/store.actions';
 import {SingleProductModel} from '../../models/product.model';
 import {GetAllProductsError, GotAllProducts, GotProductByUid, ProductFounded} from '../../actions/product.actions';
@@ -24,6 +32,7 @@ import {
   RemovedOnlineProductTagSuccessfully
 } from '../../actions/online-product-tag.actions';
 import {LoadingFalse} from '../../state/loading.state';
+
 
 // @ts-ignore
 @Injectable({
@@ -230,4 +239,43 @@ export class FirestoreService {
       .catch(err => this.store.dispatch([new ErrorInRemovingOnlineProductTag(err), new LoadingFalse()]));
   }
 
+  uploadStoreLogo(storeUid: string, data: { localDownloadUrl: string, localPictureRef: string }) {
+    this.db.collection('stores')
+      .doc(`${storeUid}`)
+      .set({'storeLogo': data}, {merge: true})
+      .then(() => this.store.dispatch([new StoreLogoUploadedSuccessfully()]))
+      .catch((err) => this.store.dispatch([new ErrorInStoreLogoUpload(err)]));
+  }
+
+  uploadStorePictures(storeUid: string, data: { localDownloadUrls: string[], localPictureRefs: string[] }) {
+    this.db.collection('stores')
+      .doc(`${storeUid}`)
+      .set({'storePictures': data}, {merge: true})
+      .then(() => this.store.dispatch([new StorePicturesUploadedSuccessfully()]))
+      .catch((err) => this.store.dispatch([new ErrorInStorePicturesUpload(err)]));
+  }
+
+
+  updateStoreDescription(storeUid: string, description: string) {
+    this.db.collection('stores')
+      .doc(`${storeUid}`)
+      .set({'description': description}, {merge: true})
+      .then(() => this.store.dispatch([new UpdatedStoreDescriptionSuccessfully()]))
+      .catch((err) => this.store.dispatch([new ErrorInUpdateStoreDescription(err)]));
+  }
+
+  updateUniqueStoreName(storeUid: string, usn: string) {
+    const stores = this.db.collection('stores').ref;
+    stores.where('usn', '==', `${usn}`)
+      .get()
+      .then((data) => {
+        if (data.empty) {
+          stores.doc(`${storeUid}`).set({'usn': usn}, {merge: true})
+            .then(() => this.store.dispatch([new UpdateUniqueStoreNameSuccessful(true), new LoadingFalse()]))
+            .catch((err) => this.store.dispatch([new ErrorInUpdateUniqueStoreName(err), new LoadingFalse()]));
+        } else {
+          this.store.dispatch([new UpdateUniqueStoreNameSuccessful(false), new LoadingFalse()]);
+        }
+      }).catch((err) => this.store.dispatch([new ErrorInUpdateUniqueStoreName(err), new LoadingFalse()]));
+  }
 }

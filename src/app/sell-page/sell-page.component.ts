@@ -7,6 +7,7 @@ import {CartProduct, InvoiceModel} from '../shared/models/invoice.model';
 import {AuthState} from '../shared/state/auth.state';
 import {LoadingTrue} from '../shared/state/loading.state';
 import {SaveInvoice} from '../shared/actions/invoice.actions';
+import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-billing-page',
@@ -25,10 +26,17 @@ export class SellPageComponent implements OnInit, OnDestroy {
   prn: string;
   cartProducts: CartProduct[] = [];
   invoice = new InvoiceModel();
-
+  prnSearch = (text$: Observable<string>) =>
+    text$.pipe(
+      debounceTime(200),
+      distinctUntilChanged(),
+      map(term => term.length < 1 ? []
+        : this.allProducts.map(v => v['prn']).filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).reverse().slice(0, 10))
+    );
 
   constructor(private store: Store) {
     this.invoice.typeOfPayment = 'Cash';
+
   }
 
   ngOnInit() {
@@ -50,8 +58,8 @@ export class SellPageComponent implements OnInit, OnDestroy {
     });
     this.allProducts$.subscribe((data: any[]) => {
       this.allProducts = data;
-      console.log(this.allProducts);
     });
+
   }
 
   getProduct(product: string) {

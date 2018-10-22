@@ -61,6 +61,10 @@ import {FileSizePipe} from './shared/service/pipe/file-size-pipe/file-size.pipe'
 import {StoreResolver} from './shared/service/resolver/store.resolver';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {StoreSettingsComponent} from './store-settings/store-settings.component';
+import {LogoUploadComponent} from './store-settings/logo-upload/logo-upload.component';
+import {StorePicsUploadComponent} from './store-settings/store-pics-upload/store-pics-upload.component';
+import {NotFoundPageComponent} from './general-components/not-found-page/not-found-page.component';
 
 @NgModule({
   declarations: [
@@ -88,6 +92,10 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     BillingPageComponent,
     FileUploadComponent,
     FileSizePipe,
+    StoreSettingsComponent,
+    LogoUploadComponent,
+    StorePicsUploadComponent,
+    NotFoundPageComponent,
 
 
   ],

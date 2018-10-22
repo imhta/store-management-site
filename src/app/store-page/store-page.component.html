@@ -2,9 +2,9 @@
 <nav class="bg-dark text-white navbar toolbar">
   <diV><h5><b>{{currentStore['storeName']}}</b></h5></diV>
 
-  <!--<div>-->
-  <!--<a><i class="material-icons">settings</i></a>-->
-  <!--</div>-->
+  <div>
+    <a routerLink="profile" *ngIf="((role === 'Register' && isRegister) || !isEmployee)"><i class="material-icons">settings</i></a>
+  </div>
 </nav>
 <div class="form-group ">
   <div class="input-group">
