@@ -6,6 +6,7 @@ import {GetAllInvoice} from '../shared/actions/invoice.actions';
 import {StoreState} from '../shared/state/store.state';
 import {first} from 'rxjs/operators';
 import {Navigate} from '@ngxs/router-plugin';
+import {ReturnModel} from '../shared/models/return.model';
 
 
 @Component({
@@ -15,7 +16,7 @@ import {Navigate} from '@ngxs/router-plugin';
 })
 export class CustomerPageComponent implements OnInit {
   @Select(StoreState.uid) storeUid$: Observable<string>;
-  @Select('invoices') allInvoice$: Observable<InvoiceModel[]>;
+  @Select('bills') allInvoice$: Observable<{ invoices: InvoiceModel[], returnBills: ReturnModel[] }>;
   allInvoices: InvoiceModel[] = [];
   uniqueCustomers: string[];
   selectedCustomer;
@@ -28,7 +29,7 @@ export class CustomerPageComponent implements OnInit {
   ngOnInit() {
     this.storeUid$.pipe(first()).subscribe((storeUid) => this.store.dispatch([new GetAllInvoice(storeUid)]));
     this.allInvoice$.subscribe((allInvoices) => {
-      this.allInvoices = allInvoices;
+      this.allInvoices = allInvoices.invoices;
       this.findUniqueCustomers();
     });
 

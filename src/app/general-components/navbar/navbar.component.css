@@ -50,17 +50,18 @@
   -webkit-user-select: none;
   -ms-user-select:none;
   user-select:none;
+  background-color: white;
+  border: solid 2px white;
 }
 
 .menu .material-icons {
   margin: 0 auto;
-  color: white;
+  color: #343a40;
   font-size: 25px;
-
 }
 
 .menu:hover {
-  border: solid 1px transparent;
+  border: solid 2px aquamarine;
 }
 
 .menu:active {
@@ -120,6 +121,9 @@
   margin-bottom: 10px;
 }
 
+.navbar {
+  z-index: 30;
+}
 @supports (display: grid) {
   .container > * {
     margin: 0;

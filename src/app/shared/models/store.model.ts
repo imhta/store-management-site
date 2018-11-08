@@ -1,5 +1,6 @@
-import * as firebase from 'firebase/firestore';
 import GeoPoint = firebase.firestore.GeoPoint;
+import Timestamp = firebase.firestore.Timestamp;
+import * as firebase from 'firebase';
 
 
 export class UserStoreState {
@@ -16,7 +17,9 @@ export class ShopRegistrationForm {
   registerUid: string;
   storeName: string;
   gstNumber: string;
-  contactNo: string;
+  hasNoGstNumber: boolean;
+  mobileNumber: string;
+  contactNumber: string;
   typeOfStore: 'boutique' |
     'factory outlet' |
     'fashion retailer' |
@@ -29,7 +32,7 @@ export class ShopRegistrationForm {
   locationAccuracy: number;
   locationTimeStamp: number;
   verificationStatus?: string;
-  createdAt?: Date;
+  createdAt?: Timestamp;
   uploads?: object;
 
   constructor() {
@@ -38,24 +41,28 @@ export class ShopRegistrationForm {
 
   fromJson(data) {
     this.storeName = data.storeName;
-    this.contactNo = data.contactNumber;
+    this.mobileNumber = data.mobileNumber;
+    this.contactNumber = data.contactNumber;
     this.address = data.address;
     this.registerUid = data.registerUid;
     this.gstNumber = data.gstNumber;
     this.typeOfStore = data.typeOfStore;
+    this.hasNoGstNumber = data.hasNoGstNumber;
   }
 
   toJson() {
     return {
       'registerUid': this.registerUid,
       'storeName': this.storeName,
-      'contactNo': this.contactNo,
+      'mobileNumber': this.mobileNumber,
+      'contactNumber': this.contactNumber,
       'typeOfStore': this.typeOfStore,
       'gstNumber': this.gstNumber,
+      'hasNoGstNumber': this.hasNoGstNumber,
       'address': this.address,
       'location': this.location,
       'locationTimeStamp': this.locationTimeStamp,
-      'createdAt': new Date().toLocaleString(),
+      'createdAt': Timestamp.now(),
     };
   }
 

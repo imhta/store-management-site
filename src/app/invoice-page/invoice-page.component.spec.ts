@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { InvoicePageComponent } from './invoice-page.component';
+import {InvoicePageComponent} from './invoice-page.component';
 
 describe('InvoicePageComponent', () => {
   let component: InvoicePageComponent;

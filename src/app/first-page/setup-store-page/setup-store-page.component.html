@@ -15,6 +15,29 @@
       <div class="form-group">
         <label for="store-name">Store Name</label>
         <input class="form-control form-control-lg" id="store-name" type="text" formControlName="storeName">
+        <div
+          *ngIf="storeName.invalid && (storeName.dirty || storeName.touched)">
+          <small class="form-text text-danger" *ngIf="storeName.errors.required">
+            Store name is required.
+          </small>
+          <small class="form-text text-danger" *ngIf="storeName.errors.minlength">
+            Store name should contain minimum {{storeName.errors.minlength.requiredLength}} characters.
+          </small>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="Inputmobilenumber">Mobile Number</label>
+        <input type="number" class="form-control form-control-lg" id="Inputmobilenumber" aria-describedby="mobileNumber"
+               formControlName="mobileNumber">
+        <div
+          *ngIf="mobileNumber.invalid && (mobileNumber.dirty || mobileNumber.touched)">
+          <small class="form-text text-danger" *ngIf="mobileNumber.errors.required">
+            Mobile number is required and it should contains 10 digits number.
+          </small>
+          <small class="form-text text-danger" *ngIf="mobileNumber.errors.minlength">
+            Mobile number should contains {{mobileNumber.errors.minlength.requiredLength}} digits number.
+          </small>
+        </div>
       </div>
 
 
@@ -22,33 +45,82 @@
         <label for="InputPhonenumber">Contact Number</label>
         <input type="number" class="form-control form-control-lg" id="InputPhonenumber" aria-describedby="contactNumber"
                formControlName="contactNumber">
+        <div
+          *ngIf="contactNumber.invalid && (contactNumber.dirty || contactNumber.touched)">
+          <small class="form-text text-danger" *ngIf="contactNumber.errors.required">
+            Contact number is required.
+          </small>
+          <small class="form-text text-danger" *ngIf="contactNumber.errors.minlength">
+            Contact number should contains minimum of {{contactNumber.errors.minlength.requiredLength}} digits number.
+            digits number.
+          </small>
+
+        </div>
       </div>
 
       <div class="form-group">
+        <mat-checkbox class="m-1 float-right" formControlName="hasNoGstNumber">I don't have GST Number</mat-checkbox>
         <label for="InputGSTnumber">GST Number</label>
-        <input type="number" class="form-control form-control-lg" id="InputGSTnumber" aria-describedby="GSTNumber"
-               formControlName="gstNumber">
+        <input type="text" class="form-control form-control-lg" id="InputGSTnumber" style="text-transform:uppercase"
+               aria-describedby="GSTNumber"
+               formControlName="gstNumber" [attr.disabled]="storeForm.get('hasNoGstNumber').value ? '' : null">
+        <div
+          *ngIf="gstNumber.invalid && (gstNumber.dirty || gstNumber.touched)">
+          <small class="form-text text-danger" *ngIf="gstNumber.errors.pattern">
+            Enter a valid GST number.
+          </small>
+        </div>
       </div>
       <div formGroupName="address">
         <div class="form-group">
           <label for="address">Street Address</label>
           <input type="email" class="form-control form-control-lg" id="address" formControlName="street">
+          <div
+            *ngIf="street.invalid && (street.dirty || street.touched)">
+            <small class="form-text text-danger" *ngIf="street.errors.required">
+              Street is required.
+            </small>
+          </div>
         </div>
         <div class="form-row ">
           <div class="form-group col">
             <label for="inputCity">City</label>
             <input type="text" class="form-control form-control-lg" id="inputCity" formControlName="city">
+            <div
+              *ngIf="city.invalid && (city.dirty || city.touched)">
+              <small class="form-text text-danger" *ngIf="city.errors.required">
+                City is required.
+              </small>
+              <small class="form-text text-danger" *ngIf="city.errors.pattern">
+                City should not contains number.
+              </small>
+            </div>
           </div>
           <div class="form-group col">
             <label for="inputState">State</label>
             <input type="text" class="form-control form-control-lg" id="inputState" formControlName="state"
                    [ngbTypeahead]="stateSearch">
+            <div
+              *ngIf="state.invalid && (state.dirty || state.touched)">
+              <small class="form-text text-danger" *ngIf="state.errors.required">
+                State is required.
+              </small>
+              <small class="form-text text-danger" *ngIf="state.errors.pattern">
+                State should not contains number .
+              </small>
+            </div>
           </div>
 
         </div>
         <div class="form-group ">
           <label for="inputPin">Pin Code</label>
           <input type="number" class="form-control form-control-lg" id="inputPin" formControlName="pinCode">
+          <div
+            *ngIf="pinCode.invalid && (pinCode.dirty || pinCode.touched)">
+            <small class="form-text text-danger" *ngIf="pinCode.errors.required || pinCode.errors.pattern">
+              Pin code is required and it should contains minimum of 6 digits of number.
+            </small>
+          </div>
         </div>
       </div>
 
@@ -56,7 +128,7 @@
         <div class="location-msg">To setup your store, we require gps location</div>
         <div class="button location-btn" (click)="locateStore()"> Locate store</div>
       </div>
-
+      <div class="text-success text-center" *ngIf="isLocated">We got your location</div>
       <a><p>*By signing up you agree to our store privacy policy and store terms of use.</p></a>
       <div class="button" (click)="isLocated? onSubmit() : null"> Setup</div>
     </form>

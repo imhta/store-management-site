@@ -11,6 +11,12 @@
       <div class="form-group ">
         <label for="description">Email address</label>
         <input type="email" class="form-control form-control-lg" id="description" formControlName="email">
+        <div
+          *ngIf="userAddingForm.get('email').invalid && (userAddingForm.get('email').dirty || userAddingForm.get('email').touched)">
+          <small class="form-text text-danger" *ngIf="userAddingForm.get('email').errors.required">
+            Email is required.
+          </small>
+        </div>
       </div>
       <div class="form-group">
         <label for="role">Role</label>

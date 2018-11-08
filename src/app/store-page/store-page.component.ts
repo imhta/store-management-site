@@ -60,7 +60,7 @@ export class StorePageComponent implements OnInit, OnDestroy {
   }
 
   navigateToAddProduct() {
-    this.store.dispatch([new Navigate(['add/product'])]);
+    this.store.dispatch([new Navigate(['add'])]);
   }
 
   selectSearchOption(index) {

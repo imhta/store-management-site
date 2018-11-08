@@ -6,6 +6,9 @@ import {Observable} from 'rxjs';
 import {InvoiceModel} from '../shared/models/invoice.model';
 import {UserStoreState} from '../shared/models/store.model';
 import {Navigate} from '@ngxs/router-plugin';
+import {GetAllReturns} from '../shared/actions/return.actions';
+import {ReturnModel} from '../shared/models/return.model';
+import {LoadingTrue} from '../shared/state/loading.state';
 
 @Component({
   selector: 'app-invoice-page',
@@ -15,18 +18,24 @@ import {Navigate} from '@ngxs/router-plugin';
 export class InvoicePageComponent implements OnInit {
   @Select(StoreState.uid) storeUid$: Observable<string>;
   @Select('storeState') storeState$: Observable<UserStoreState>;
-  @Select('invoices') allInvoice$: Observable<InvoiceModel[]>;
+  @Select('bills') allBills$: Observable<{ invoices: InvoiceModel[], returnBills: [] }>;
   allInvoices: InvoiceModel[] = [];
+  allReturns: ReturnModel[] = [];
   printContents;
   currentStore;
-
+  showReturn = false;
   constructor(private store: Store) {
+    this.storeUid$
+      .subscribe((storeUid) => this.store.dispatch([new LoadingTrue(), new GetAllInvoice(storeUid), new GetAllReturns(storeUid)]));
+    this.allBills$.subscribe((allBills) => {
+      this.allInvoices = allBills.invoices;
+      this.allReturns = allBills.returnBills;
+    });
+    this.storeState$.subscribe((storeState) => this.currentStore = storeState.linkedStores[storeState.selectedStore]);
   }
 
   ngOnInit() {
-    this.storeUid$.subscribe((storeUid) => this.store.dispatch([new GetAllInvoice(storeUid)]));
-    this.allInvoice$.subscribe((allInvoices) => this.allInvoices = allInvoices);
-    this.storeState$.subscribe((storeState) => this.currentStore = storeState.linkedStores[storeState.selectedStore]);
+
   }
 
   print(): void {
@@ -85,6 +94,6 @@ export class InvoicePageComponent implements OnInit {
   }
 
   navigateToSell() {
-    this.store.dispatch([new Navigate(['sell'])]);
+    this.store.dispatch([new Navigate(['sales'])]);
   }
 }

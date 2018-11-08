@@ -32,6 +32,24 @@ import {
   RemovedOnlineProductTagSuccessfully
 } from '../../actions/online-product-tag.actions';
 import {LoadingFalse} from '../../state/loading.state';
+import {
+  ErrorInGettingInvoice,
+  ErrorInReturningInvoice,
+  GotAllReturnsSuccessfully,
+  GotInvoiceSuccessfully,
+  InvoiceNotFound,
+  ReturnedInvoiceSuccessfully
+} from '../../actions/return.actions';
+import {ReturnModel} from '../../models/return.model';
+import {DiscountModel} from '../../models/discount.model';
+import {
+  DiscountDeletedSuccessfully,
+  DiscountNotUploaded,
+  DiscountUploadedSuccessfully,
+  ErrorInDeletingDiscount,
+  GotAllDiscountsSuccessfully
+} from '../../actions/discount.actions';
+import {CustomerExits, CustomerNotExits, NewCustomerOfStore, OldCustomerOfStore} from '../../actions/customers.actions';
 
 
 // @ts-ignore
@@ -44,6 +62,7 @@ export class FirestoreService {
   allProducts: any[];
   resultProducts: any[];
   allInvoice: InvoiceModel[];
+  allReturns: ReturnModel[];
 
   constructor(private db: AngularFirestore, private  store: Store) {
   }
@@ -182,22 +201,79 @@ export class FirestoreService {
   }
 
   saveInvoice(invoice: InvoiceModel) {
+    console.log(invoice.toJson());
     return this.db
-      .collection(`stores/${invoice.storeUid}/invoices`)
+      .collection(`invoices`)
       .add(invoice.toJson())
       .then((docRef) => docRef.update({invoiceId: docRef.id}));
   }
 
   async getAllInvoice(storeUid: string) {
-    return this.db.collection(`stores/${storeUid}/invoices`).ref.get().then((invoices) => {
-      this.allInvoice = [];
-      invoices.forEach((data) => {
-        const invoice = new InvoiceModel();
-        invoice.fromJson(data.data());
-        this.allInvoice.push(invoice);
+    return this.db.collection(`invoices`).ref
+      .where('storeUid', '==', storeUid)
+      .orderBy('createdOn', 'desc')
+      .get()
+      .then((invoices) => {
+        this.allInvoice = [];
+        invoices.forEach((data) => {
+          const invoice = new InvoiceModel();
+          invoice.fromJson(data.data());
+          this.allInvoice.push(invoice);
+        });
+        this.store.dispatch([new GotAllInvoiceSuccessfully(this.allInvoice)]);
       });
-      this.store.dispatch([new GotAllInvoiceSuccessfully(this.allInvoice)]);
-    });
+  }
+
+  getInvoice(invoiceId: string) {
+    return this.db.collection(`invoices`).doc(`${invoiceId}`).ref.get().then((doc) => {
+      const invoice = new InvoiceModel();
+      if (doc.exists) {
+        invoice.fromJson(doc.data());
+        return this.store.dispatch([new GotInvoiceSuccessfully(invoice), new LoadingFalse()]);
+      } else {
+        return this.store.dispatch([new InvoiceNotFound(), new LoadingFalse()]);
+      }
+    }).catch((err) => this.store.dispatch([new LoadingFalse(), new ErrorInGettingInvoice(err)]));
+  }
+
+  getAllReturns(storeUid: string) {
+    return this.db.collection(`stores/${storeUid}/returns`).ref
+      .get()
+      .then((invoices) => {
+        this.allReturns = [];
+        invoices.forEach((data) => {
+          this.allReturns.push(new ReturnModel(data.data()));
+        });
+        this.store.dispatch([new GotAllReturnsSuccessfully(this.allReturns)]);
+      });
+  }
+
+  returnInvoice(returnInvoice: ReturnModel) {
+    this.db.collection(`stores/${returnInvoice.storeUid}/returns`).ref
+      .where('invoiceId', '==', returnInvoice.invoiceId)
+      .limit(1)
+      .get()
+      .then((data) =>
+        data.size === 0
+          ? this.newReturnInvoice(returnInvoice)
+          : this.updateReturnInvoice(returnInvoice, data.forEach((doc) => doc.id)))
+      .catch((err) => this.store.dispatch([new ErrorInReturningInvoice(err), new LoadingFalse()]));
+
+  }
+
+  newReturnInvoice(returnInvoice: ReturnModel) {
+    this.db.collection(`stores/${returnInvoice.storeUid}/returns`)
+      .add(returnInvoice.toJson())
+      .then(() => this.store.dispatch([new ReturnedInvoiceSuccessfully(), new LoadingFalse()]))
+      .catch((err) => this.store.dispatch([new ErrorInReturningInvoice(err), new LoadingFalse()]));
+  }
+
+  updateReturnInvoice(returnInvoice: ReturnModel, docId) {
+    console.log(docId);
+    this.db.collection(`stores/${returnInvoice.storeUid}/returns`).doc(docId)
+      .set(returnInvoice.toJson(), {merge: true, mergeFields: ['cartProducts']})
+      .then(() => this.store.dispatch([new ReturnedInvoiceSuccessfully(), new LoadingFalse()]))
+      .catch((err) => this.store.dispatch([new ErrorInReturningInvoice(err), new LoadingFalse()]));
   }
 
   getProductById(productUid: string) {
@@ -277,5 +353,58 @@ export class FirestoreService {
           this.store.dispatch([new UpdateUniqueStoreNameSuccessful(false), new LoadingFalse()]);
         }
       }).catch((err) => this.store.dispatch([new ErrorInUpdateUniqueStoreName(err), new LoadingFalse()]));
+  }
+
+  uploadDiscount(discount: DiscountModel) {
+    console.log(discount.toJson());
+    return this.db.collection(`discounts`)
+      .add(discount.toJson())
+      .then((docRef) => docRef.update({discountUid: docRef.id}))
+      .then(() => this.store.dispatch([new DiscountUploadedSuccessfully()]))
+      .catch((err) => this.store.dispatch([new DiscountNotUploaded(err)]));
+  }
+
+  deleteDiscount(discountUid: string) {
+    return this.db.collection(`discounts`)
+      .doc(`${discountUid}`)
+      .delete()
+      .then(() => this.store.dispatch([new DiscountDeletedSuccessfully()]))
+      .catch((err) => this.store.dispatch([new ErrorInDeletingDiscount(err)]));
+  }
+
+  getAllDiscount(storeUid: string) {
+    const discounts: any[] = [];
+    return this.db.collection(`discounts`).ref
+      .where('storeUid', '==', storeUid)
+      .get()
+      .then(async (docs) => {
+        await docs.forEach((doc) => discounts.push(doc.data()));
+        this.store.dispatch([new GotAllDiscountsSuccessfully(discounts)]);
+      });
+  }
+
+  checkCustomerExitsOrNot(customerNumber) {
+    return this.db.doc(`customers/${customerNumber}`).ref
+      .get()
+      .then((customer) => {
+        if (customer.exists) {
+          this.store.dispatch([new CustomerExits(customer.data()['customerName']), new LoadingFalse()]);
+        } else {
+          this.store.dispatch([new CustomerNotExits(), new LoadingFalse()]);
+        }
+      });
+  }
+
+  checkCustomerNewToStore(storeId, customerNumber) {
+    return this.db
+      .doc(`customers/${customerNumber}/storeRewards/${storeId}`).ref
+      .get()
+      .then((rewardDetails) => {
+        if (rewardDetails.exists) {
+          this.store.dispatch([new OldCustomerOfStore(rewardDetails.data())]);
+        } else {
+          this.store.dispatch([new NewCustomerOfStore()]);
+        }
+      });
   }
 }

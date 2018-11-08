@@ -22,6 +22,7 @@ import {FirestoreService} from '../service/firestore/firestore.service';
 import {Navigate} from '@ngxs/router-plugin';
 import {LoadingFalse} from './loading.state';
 import {GetProductByUid} from '../actions/product.actions';
+import {DeleteADiscount, GetAllDiscounts, UploadDiscount} from '../actions/discount.actions';
 
 
 @State<UserStoreState>({
@@ -40,6 +41,10 @@ export class StoreState {
     return state.linkedStores[state.selectedStore]['storeUid'];
   }
 
+  @Selector()
+  static hasNoGstNumber(state: UserStoreState) {
+    return state.linkedStores[state.selectedStore]['hasNoGstNumber'];
+  }
   @Action(GetLinkedStores)
   getLinkedStores(ctx: StateContext<any>, {uid}: GetLinkedStores) {
     this.dbService.getLinkedStore(uid).then().catch((err) => console.log(err));
@@ -139,5 +144,20 @@ export class StoreState {
   updateUniqueStoreName(ctx: StateContext<any>, {storeUid, usn}: UpdateUniqueStoreName) {
     this.dbService.updateUniqueStoreName(storeUid, usn);
 
+  }
+
+  @Action(UploadDiscount)
+  uploadDiscount(ctx: StateContext<any>, {discount}: UploadDiscount) {
+    this.dbService.uploadDiscount(discount);
+  }
+
+  @Action(GetAllDiscounts)
+  getAllDiscounts(ctx: StateContext<any>, {storeId}: GetAllDiscounts) {
+    this.dbService.getAllDiscount(storeId);
+  }
+
+  @Action(DeleteADiscount)
+  deleteADiscount(ctx: StateContext<any>, {discountUid}: DeleteADiscount) {
+    this.dbService.deleteDiscount(discountUid);
   }
 }

@@ -39,7 +39,7 @@
 
     </div>
     <div class="card-footer bg-dark text-white">
-      {{invoice.createdOn | date: 'short'}}
+      {{invoice.createdOn.toDate()}}
     </div>
   </div>
 </div>

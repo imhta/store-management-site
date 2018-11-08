@@ -73,15 +73,16 @@ export class StoreSettingsComponent implements OnInit, OnDestroy {
     this.store.dispatch([new UploadStorePictures(this.currentStore['storeUid'], data)]);
   }
 
+  noSpecialCharacters() {
+    return !/[^a-zA-Z0-9 ]/.test(this.uniqueStoreName);
+  }
   checkUniqueness() {
-    if (this.uniqueStoreName.length > 5) {
+    if (this.uniqueStoreName.length >= 5 && this.uniqueStoreName.split(' ').length === 1 && this.noSpecialCharacters()) {
       this.store
         .dispatch([new LoadingTrue(), new UpdateUniqueStoreName(this.currentStore['storeUid'], this.uniqueStoreName.toLowerCase())]);
       this.actions$
         .pipe(ofActionDispatched(UpdateUniqueStoreNameSuccessful))
         .subscribe(({result}) => this.isAvailable = result);
-    } else {
-      console.log('minimum 5 characters required');
     }
   }
 

@@ -6,45 +6,15 @@
     <a routerLink="profile" *ngIf="((role === 'Register' && isRegister) || !isEmployee)"><i class="material-icons">settings</i></a>
   </div>
 </nav>
-<div class="form-group ">
-  <div class="input-group">
-    <input type="text" class="form-control form-control-lg " id="search" aria-describedby="button-addon4"
-          (ngModelChange)="onChange()"   [(ngModel)]="searchKeyword" (keyup.enter)="search()">
-    <div class="input-group-append" id="button-addon4">
-      <button class="btn btn-primary" type="button" (click)="search()" >Search</button>
-    </div>
-  </div>
-  <span class="badge search-option" [ngClass]="selectedSearchOption == i?'badge-primary': 'badge-light'" (click)="selectSearchOption(i)" *ngFor="let searchOption of searchOptions;let i = index">{{searchOption}}</span>
-</div>
 
-<div class="container" *ngIf="!searchKeyword && !isEmpty && !loading">
-  <div class="card" *ngFor="let product of allProducts; let i = index "
-       (click)="navigateToProduct(product['productUid'])">
-    <div class="card-header text-white bg-primary ">
-      {{product['prn']}}
+<app-store-table-view
+  *ngIf="!searchKeyword && !isEmpty && !loading"
+  [allProducts]="allProducts"
+  (goToProduct)="navigateToProduct($event)"
+  (goToAddProduct)="navigateToAddProduct()">
+</app-store-table-view>
 
-    </div>
-    <div class="card-body">
-      <ngx-kjua *ngIf="!product['isListable']" class="float-left qr-code"
-                [renderAsync]="true"
-                [text]=" product['storeId'] +'/'+ product['prn'] + '/' + product['productUid'] "
-                [crisp]="true"
-                [size]="250"
-      ></ngx-kjua>
-      <img *ngIf="product['isListable']" class="card-img" [src]="product['picturesUrl'][0]">
-      <div class="card-content float-left">
-        <h5 class="card-title ">{{product['productName']}}</h5>
-        <p class="card-text ">{{product['description']}}</p>
-        <h5>
-          <span
-            class="badge badge-primary">{{product['gender']}} / {{product['brandName']}} </span>
-          <span class="badge badge-info" *ngFor="let tag of product['tags']">{{tag | lowercase}}</span>
-        </h5>
-      </div>
-    </div>
 
-  </div>
-</div>
 
 <div class="grid-wrapper" *ngIf="isEmpty && !loading">
   <div class="card">
@@ -56,33 +26,47 @@
 </div>
 
 
-<h3  *ngIf="searchKeyword">See all search results for {{searchKeyword}}</h3>
-<div class="container"  *ngIf="searchKeyword">
+<!--<div class="form-group ">-->
+<!--<div class="input-group">-->
+<!--<label for="search"></label>-->
+<!--<input type="text" class="form-control form-control-lg " id="search" aria-describedby="button-addon4"-->
+<!--(ngModelChange)="onChange()" [(ngModel)]="searchKeyword" (keyup.enter)="search()">-->
+<!--<div class="input-group-append" id="button-addon4">-->
+<!--<button class="btn btn-primary" type="button" (click)="search()" >Search</button>-->
+<!--</div>-->
+<!--</div>-->
+<!--<span class="badge search-option" [ngClass]="selectedSearchOption == i?'badge-primary': 'badge-light'" (click)="selectSearchOption(i)" *ngFor="let searchOption of searchOptions;let i = index">{{searchOption}}</span>-->
+<!--</div>-->
 
-  <div class="card" *ngFor="let product of resultProduct; let i = index "
-       (click)="navigateToProduct(product['productUid'])">
-    <div class="card-header text-white bg-primary ">
-      {{product['prn']}}
+<!--<app-store-grid-view *ngIf="!searchKeyword && !isEmpty && !loading" [allProducts]="allProducts"  (goToProduct)="navigateToProduct($event)"></app-store-grid-view>-->
 
-    </div>
-    <div class="card-body">
-      <ngx-kjua class="float-left qr-code"
-                [renderAsync]="true"
-                [text]="product['prn']"
-                [crisp]="true"
-                [size]="250"
-      ></ngx-kjua>
-      <div class="card-content float-left">
-        <h5 class="card-title ">{{product['productName']}}</h5>
-        <p class="card-text ">{{product['description']}}</p>
-        <h5>
-          <span
-            class="badge badge-primary">{{product['gender']}} / {{product['brandName']}} </span>
-          <span class="badge badge-info" *ngFor="let tag of product['tags']">{{tag | lowercase}}</span>
-        </h5>
-      </div>
-    </div>
+<!--<h3  *ngIf="searchKeyword">See all search results for {{searchKeyword}}</h3>-->
+<!--<div class="container"  *ngIf="searchKeyword">-->
 
-  </div>
+<!--<div class="card" *ngFor="let product of resultProduct; let i = index "-->
+<!--(click)="navigateToProduct(product['productUid'])">-->
+<!--<div class="card-header text-white bg-primary ">-->
+<!--{{product['prn']}}-->
 
-</div>
+<!--</div>-->
+<!--<div class="card-body">-->
+<!--<ngx-kjua class="float-left qr-code"-->
+<!--[renderAsync]="true"-->
+<!--[text]="product['prn']"-->
+<!--[crisp]="true"-->
+<!--[size]="250"-->
+<!--&gt;</ngx-kjua>-->
+<!--<div class="card-content float-left">-->
+<!--<h5 class="card-title ">{{product['productName']}}</h5>-->
+<!--<p class="card-text ">{{product['description']}}</p>-->
+<!--<h5>-->
+<!--<span-->
+<!--class="badge badge-primary">{{product['gender']}} / {{product['brandName']}} </span>-->
+<!--<span class="badge badge-info" *ngFor="let tag of product['tags']">{{tag | lowercase}}</span>-->
+<!--</h5>-->
+<!--</div>-->
+<!--</div>-->
+
+<!--</div>-->
+
+<!--</div>-->

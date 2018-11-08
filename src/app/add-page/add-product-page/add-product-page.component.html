@@ -1,8 +1,3 @@
-<app-navbar></app-navbar>
-<nav class="bg-dark navbar toolbar">
-  <div></div>
-</nav>
-
 <div class="container">
   <div class="card">
     <h2>Add new product</h2>
@@ -27,12 +22,24 @@
       <div class="form-group ">
         <label for="brand-name">Brand Name</label>
         <input class="form-control form-control-lg " id="brand-name" type="text" placeholder="Nike, Polo, U.S Polo"
-               required formControlName="brandName">
+               formControlName="brandName">
+        <div
+          *ngIf="productForm.get('brandName').invalid && (productForm.get('brandName').dirty || productForm.get('brandName').touched)">
+          <small class="form-text text-danger" *ngIf="productForm.get('brandName').errors.required">
+            Brand name is required.
+          </small>
+        </div>
       </div>
       <div class="form-group ">
         <label for="product-name">Product Name</label>
         <input class="form-control form-control-lg " id="product-name" type="text"
                placeholder="Nike sports T-shirt, Casual check shirt" required formControlName="productName">
+        <div
+          *ngIf="productForm.get('productName').invalid && (productForm.get('productName').dirty || productForm.get('productName').touched)">
+          <small class="form-text text-danger" *ngIf="productForm.get('productName').errors.required">
+            Product name is required.
+          </small>
+        </div>
       </div>
       <div class="form-group ">
         <label for="description">Description</label>
@@ -44,22 +51,48 @@
         <label for="category">Categories</label>
         <div class="input-group" id="category">
           <input placeholder="Category 1" class="form-control  form-control-lg" formControlName="category1"
-                 [ngbTypeahead]="search">
-          <input placeholder="Category 2" class="form-control  form-control-lg" formControlName="category2"
-                 [ngbTypeahead]="search">
-          <input placeholder="Category 3" class="form-control  form-control-lg" formControlName="category3"
-                 [ngbTypeahead]="search">
+                 [ngbTypeahead]="categories">
 
+          <input placeholder="Category 2" class="form-control  form-control-lg" formControlName="category2"
+                 [ngbTypeahead]="categories">
+          <input placeholder="Color Category" class="form-control  form-control-lg"
+
+                 formControlName="colorCategory"
+                 [ngbTypeahead]="colors">
+        </div>
+        <hr style="height: 4px; width: 100%"
+            [style.background-color]="productForm.get('categories').get('colorCategory').value">
+        <div>
+          <small class="form-text text-info">
+            Categories is required.
+          </small>
         </div>
       </div>
-      <div formArrayName="ssp"
-           *ngFor="let sspItem of sspItems.controls; let i = index;" class="form-group">
-        <label for="ssp"> SSP <sup>{{i + 1}}</sup></label>
-        <div [formGroupName]="i" class="input-group" id="ssp">
-          <input formControlName="size" placeholder="Size" class="form-control  form-control-lg">
-          <input formControlName="stock" placeholder="Stock " class="form-control  form-control-lg">
-          <input formControlName="price" placeholder="Price" class="form-control  form-control-lg">
+      <mat-checkbox class="float-right m-2" formControlName="isVariantsWithSamePrice">Variants with same price
+      </mat-checkbox>
+      <div formArrayName="variants"
+           *ngFor="let variant of variants.controls; let i = index;" class="form-group">
+        <label for="variant"> Variant <sup>{{i + 1}}</sup></label>
+        <div [formGroupName]="i" class="input-group" id="variant">
 
+          <input formControlName="size" placeholder="Size" class="form-control  form-control-lg text-uppercase">
+
+          <input formControlName="stock" placeholder="Stock " class="form-control  form-control-lg">
+
+          <input formControlName="purchasedPrice" placeholder="Purchased Price"
+                 [attr.readonly]="productForm.get('isVariantsWithSamePrice').value ? i!==0 ? '' : null : null"
+                 [value]="productForm.get('isVariantsWithSamePrice').value ? variants.at(0).get('purchasedPrice').value: ''"
+                 class="form-control  form-control-lg">
+
+          <input formControlName="sellingPrice" placeholder="Selling Price"
+                 [attr.readonly]="productForm.get('isVariantsWithSamePrice').value ? i!==0 ? '' : null : null"
+                 [value]="productForm.get('isVariantsWithSamePrice').value ? variants.at(0).get('sellingPrice').value : ''"
+                 class="form-control  form-control-lg">
+        </div>
+        <div>
+          <small class="form-text text-info">
+            Variant<sup>{{i + 1}}</sup> is required.
+          </small>
         </div>
         <a (click)="removeItem(i)" *ngIf="i !== 0" class="float-right text-danger remove-btn">remove</a>
       </div>
@@ -68,7 +101,8 @@
         <div class="input-group">
           <input placeholder="Size" class="form-control  form-control-lg " disabled>
           <input placeholder="Stock " class="form-control  form-control-lg " disabled>
-          <input placeholder="Price" class="form-control  form-control-lg " disabled>
+          <input placeholder="Purchased Price" class="form-control  form-control-lg " disabled>
+          <input placeholder="Selling Price" class="form-control  form-control-lg " disabled>
 
         </div>
       </div>
@@ -81,7 +115,7 @@
                [(ngModel)]="this.tagVal" [ngModelOptions]="{standalone: true}" (keyup.enter)="addTag()">
         <small id="tagHelp" class="form-text text-muted">Press ENTER to add tag to your product.</small>
       </div>
-      <div class="form-group card">
+      <div class="form-group card" *ngIf="!currentStore.hasNoGstNumber">
         <label for="type">Tax Type</label>
         <mat-form-field>
           <mat-select formControlName="taxType" id="type">
@@ -92,6 +126,12 @@
         </mat-form-field>
         <mat-checkbox formControlName="inclusiveAllTaxes">Inclusive all taxes</mat-checkbox>
       </div>
+
+      <div class="form-group " *ngIf="productForm.get('taxType').value === 'other'">
+        <label for="other-tax">HSN Code</label>
+        <input class="form-control form-control-lg " id="hsn-code" type="number" formControlName="hsnCode">
+        <small>Not sure about HSN code ? <a href="https://bit.ly/2JPJxLu" download>lookup here</a></small>
+      </div>
       <div class="form-group " *ngIf="productForm.get('taxType').value === 'other'">
         <label for="other-tax">Other Tax (%)</label>
         <input class="form-control form-control-lg " id="other-tax" type="number" formControlName="otherTax">
@@ -99,7 +139,6 @@
       <!--{{productForm.value | json}}-->
       <app-file-upload [storeId]="productForm.get('storeId').value" (downloadUrls)="getDownloadUrls($event)"
                        (pictureRefs)="getPicturePath($event)"></app-file-upload>
-
       <div class="button" (click)="onSubmit()"> Add</div>
     </form>
 

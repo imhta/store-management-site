@@ -28,7 +28,7 @@ import {FirestoreService} from './shared/service/firestore/firestore.service';
 import {StoreState} from './shared/state/store.state';
 import {LoadingComponent} from './general-components/loading/loading.component';
 import {StorePageComponent} from './store-page/store-page.component';
-import {AddProductPageComponent} from './add-product-page/add-product-page.component';
+import {AddProductPageComponent} from './add-page/add-product-page/add-product-page.component';
 import {AllProductState} from './shared/state/allproduct.state';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -42,7 +42,7 @@ import {ProductPageComponent} from './product-page/product-page.component';
 import {QrPageComponent} from './qr-page/qr-page.component';
 import {ManageUsersComponent} from './manage-users/manage-users.component';
 import {AddUserComponent} from './manage-users/add-user/add-user.component';
-import {SellPageComponent} from './sell-page/sell-page.component';
+import {SalesPageComponent} from './sales-page/sales-page.component';
 import {QrScannerComponent} from './general-components/qr-scanner/qr-scanner.component';
 import {InvoicesState} from './shared/state/invoice.state';
 import {InvoicePageComponent} from './invoice-page/invoice-page.component';
@@ -56,7 +56,7 @@ import {SellingGuard} from './shared/service/guard/feature-guard/selling-guard/s
 import {AddProductGuard} from './shared/service/guard/feature-guard/add-product-guard/add-product.guard';
 import {ManagerGuard} from './shared/service/guard/role/manager-guard/manager.guard';
 import {StoreCreatorGuard} from './shared/service/guard/feature-guard/store-creator-guard/store-creator.guard';
-import {FileUploadComponent} from './add-product-page/file-upload/file-upload.component';
+import {FileUploadComponent} from './add-page/add-product-page/file-upload/file-upload.component';
 import {FileSizePipe} from './shared/service/pipe/file-size-pipe/file-size.pipe';
 import {StoreResolver} from './shared/service/resolver/store.resolver';
 
@@ -65,6 +65,19 @@ import {StoreSettingsComponent} from './store-settings/store-settings.component'
 import {LogoUploadComponent} from './store-settings/logo-upload/logo-upload.component';
 import {StorePicsUploadComponent} from './store-settings/store-pics-upload/store-pics-upload.component';
 import {NotFoundPageComponent} from './general-components/not-found-page/not-found-page.component';
+import {ReturnProductsComponent} from './sales-page/return-products/return-products.component';
+import {AddPageComponent} from './add-page/add-page.component';
+import {DiscountsManagerComponent} from './add-page/discounts-manager/discounts-manager.component';
+import {StoreTableViewComponent} from './store-page/store-table-view/store-table-view.component';
+import {StoreGridViewComponent} from './store-page/store-grid-view/store-grid-view.component';
+// material module
+import {MatChipsModule} from '@angular/material/chips';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {MatMenuModule} from '@angular/material/menu';
+
+import {NgxsLoggerPluginModule} from '@ngxs/logger-plugin';
+import {NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
 
 @NgModule({
   declarations: [
@@ -84,7 +97,7 @@ import {NotFoundPageComponent} from './general-components/not-found-page/not-fou
     QrPageComponent,
     ManageUsersComponent,
     AddUserComponent,
-    SellPageComponent,
+    SalesPageComponent,
     QrScannerComponent,
     InvoicePageComponent,
     CustomerPageComponent,
@@ -96,6 +109,11 @@ import {NotFoundPageComponent} from './general-components/not-found-page/not-fou
     LogoUploadComponent,
     StorePicsUploadComponent,
     NotFoundPageComponent,
+    ReturnProductsComponent,
+    AddPageComponent,
+    DiscountsManagerComponent,
+    StoreTableViewComponent,
+    StoreGridViewComponent,
 
 
   ],
@@ -117,11 +135,15 @@ import {NotFoundPageComponent} from './general-components/not-found-page/not-fou
     AngularFireModule.initializeApp(environment.firebase),
     NgxsModule.forRoot([AuthState, LoadingState, StoreState, AllProductState, InvoicesState]),
     NgxsRouterPluginModule.forRoot(),
-    // NgxsLoggerPluginModule.forRoot(),
-    // NgxsReduxDevtoolsPluginModule.forRoot(),
+    NgxsLoggerPluginModule.forRoot(),
+    NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxKjuaModule,
     ZXingScannerModule,
     NgbModule,
+    MatChipsModule,
+    MatButtonModule,
+    MatIconModule,
+    MatMenuModule,
     ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
 
   ],

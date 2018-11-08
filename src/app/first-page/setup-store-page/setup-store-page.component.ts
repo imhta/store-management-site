@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder} from '@angular/forms';
+import {FormBuilder, Validators} from '@angular/forms';
 import {Select, Store} from '@ngxs/store';
 import {UserModel} from '../../shared/models/auth.model';
 import {ShopRegistrationForm} from '../../shared/models/store.model';
@@ -28,16 +28,24 @@ export class SetupStorePageComponent implements OnInit, OnDestroy {
   isLocated = false;
   _store = new ShopRegistrationForm();
   storeForm = this.fb.group({
-    storeName: [''],
-    contactNumber: [''],
-    registerUid: [''],
-    gstNumber: [''],
-    typeOfStore: ['fashion brand'],
+    storeName: ['', Validators.compose([Validators.required, Validators.minLength(5)])],
+    mobileNumber: ['', Validators.compose([Validators.required, Validators.minLength(10), Validators.pattern('^[0-9]{10}$')])],
+    contactNumber: ['', Validators.compose([Validators.required, Validators.minLength(5), Validators.pattern('^[0-9]{5,15}$')])],
+    registerUid: ['', Validators.compose([Validators.required])],
+    gstNumber: [
+      '',
+      Validators.compose([
+        Validators
+          .pattern('^([0]{1}[1-9]{1}|[1-2]{1}[0-9]{1}|[3]{1}[0-7]{1})([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$')
+      ])
+    ],
+    hasNoGstNumber: [false, Validators.compose([Validators.required])],
+    typeOfStore: ['fashion brand', [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
     address: this.fb.group({
-      street: [''],
-      city: [''],
-      state: [''],
-      pinCode: ['']
+      street: ['', Validators.compose([Validators.required])],
+      city: ['', Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z ]*$')])],
+      state: ['', Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z ]*$')])],
+      pinCode: ['', Validators.compose([Validators.required, Validators.pattern('[0-9]{6}')])]
     }),
   });
   typeOfStores = [
@@ -56,9 +64,41 @@ export class SetupStorePageComponent implements OnInit, OnDestroy {
       distinctUntilChanged(),
       map(term => term.length < 1 ? []
         : indianStates.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).reverse().slice(0, 10))
-    )
+    );
 
   constructor(private fb: FormBuilder, private store: Store) {
+  }
+
+  get storeName() {
+    return this.storeForm.get('storeName');
+  }
+
+  get mobileNumber() {
+    return this.storeForm.get('mobileNumber');
+  }
+
+  get contactNumber() {
+    return this.storeForm.get('contactNumber');
+  }
+
+  get gstNumber() {
+    return this.storeForm.get('gstNumber');
+  }
+
+  get street() {
+    return this.storeForm.get('address').get('street');
+  }
+
+  get city() {
+    return this.storeForm.get('address').get('city');
+  }
+
+  get state() {
+    return this.storeForm.get('address').get('state');
+  }
+
+  get pinCode() {
+    return this.storeForm.get('address').get('pinCode');
   }
 
   ngOnInit() {
@@ -74,8 +114,21 @@ export class SetupStorePageComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    this._store.fromJson(this.storeForm.value);
-    return this.store.dispatch([new LoadingTrue(), new SetupNewStore(this._store)]);
+    if (!this.gstNumber.touched && this.storeForm.get('hasNoGstNumber').value === false) {
+      this.storeForm.patchValue({hasNoGstNumber: true});
+    }
+    if (this.storeForm.valid) {
+      this._store.fromJson(this.storeForm.value);
+      return this.store.dispatch([new LoadingTrue(), new SetupNewStore(this._store)]);
+    } else {
+      Object.keys(this.storeForm.controls).forEach(key => {
+        this.storeForm.controls[key].markAsDirty();
+      });
+      this.street.markAsDirty();
+      this.city.markAsDirty();
+      this.state.markAsDirty();
+      this.pinCode.markAsDirty();
+    }
   }
 
   locateStore() {

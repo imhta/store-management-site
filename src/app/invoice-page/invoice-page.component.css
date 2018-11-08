@@ -142,3 +142,22 @@
 .grid-wrapper .setup-link:active {
   border: solid 3px aquamarine;
 }
+
+.toolbar .btn {
+  margin-right: 15px;
+  border-radius: 50px;
+  border-color: #06bca9;
+  background-color: #06bca9;
+
+}
+
+.toolbar .btn:hover {
+  background-color: #06bca9;
+  color: white;
+}
+
+.toolbar .btn:focus {
+  border-color: #06bca9;
+  box-shadow: 0 1px 1px #06bca9 inset, 0 0 8px #06bca9;
+  outline: 0 none;
+}

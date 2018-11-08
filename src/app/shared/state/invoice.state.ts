@@ -12,11 +12,16 @@ import {
   InvoiceSavedSuccessfully,
   SaveInvoice
 } from '../actions/invoice.actions';
+import {ErrorInGettingAllReturns, GetAllReturns, GetInvoice, GotAllReturnsSuccessfully, ReturnInvoice} from '../actions/return.actions';
+import {ReturnModel} from '../models/return.model';
 
 
-@State<InvoiceModel[]>({
-  name: 'invoices',
-  defaults: []
+@State<{ invoices: InvoiceModel[], returnBills: ReturnModel[] }>({
+  name: 'bills',
+  defaults: {
+    invoices: [],
+    returnBills: []
+  }
 })
 export class InvoicesState {
   constructor(private dbService: FirestoreService, private  store: Store) {
@@ -33,7 +38,7 @@ export class InvoicesState {
 
   @Action(InvoiceSavedSuccessfully)
   invoiceSavedSuccessfully() {
-    this.store.dispatch([new LoadingFalse(), new Navigate(['store'])]);
+    this.store.dispatch([new LoadingFalse(), new Navigate(['invoice'])]);
   }
 
   @Action(ErrorInSavingInvoice)
@@ -49,8 +54,10 @@ export class InvoicesState {
   }
 
   @Action(GotAllInvoiceSuccessfully)
-  gotAllInvoiceSuccessfully(cxt: StateContext<InvoiceModel[]>, {allInvoices}: GotAllInvoiceSuccessfully) {
-    cxt.setState(allInvoices);
+  gotAllInvoiceSuccessfully(cxt: StateContext<any>, {allInvoices}: GotAllInvoiceSuccessfully) {
+    const state = cxt.getState();
+    state.invoices = allInvoices;
+    cxt.setState({...state});
     this.store.dispatch([new LoadingFalse()]);
   }
 
@@ -58,4 +65,31 @@ export class InvoicesState {
   errorInGettingAllInvoice(cxt: StateContext<any[]>, {err}: ErrorInGettingAllInvoice) {
     console.log(err);
   }
+
+  @Action(GetInvoice)
+  getInvoice(cxt: StateContext<any[]>, {invoiceId}: GetInvoice) {
+    this.dbService.getInvoice(invoiceId);
+  }
+
+  @Action(ReturnInvoice)
+  returnInvoice(cxt: StateContext<any[]>, {returnInvoice}: ReturnInvoice) {
+    this.dbService.returnInvoice(returnInvoice);
+  }
+
+  @Action(GetAllReturns)
+  getAllReturns(cxt: StateContext<any>, {storeUid}: GetAllReturns) {
+    this.dbService.getAllReturns(storeUid)
+      .then()
+      .catch((err) => this.store.dispatch([new LoadingFalse(), new ErrorInGettingAllReturns(err)]));
+  }
+
+  @Action(GotAllReturnsSuccessfully)
+  gotAllReturnsSuccessfully(
+    cxt: StateContext<{ invoices: InvoiceModel[], returnBills: ReturnModel[] }>, {allReturns}: GotAllReturnsSuccessfully) {
+    const state = cxt.getState();
+    state.returnBills = allReturns;
+    cxt.setState({...state});
+    this.store.dispatch([new LoadingFalse()]);
+  }
+
 }

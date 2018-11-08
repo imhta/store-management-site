@@ -2,10 +2,9 @@
   <div class="container">
 
     <div class="app" (click)="navigateTo('/dashboard')"><i class="material-icons">trending_up</i> Dashboard</div>
-    <div class="app" (click)="navigateTo('/sell')" *ngIf="!(role === 'Data entry')"><i class="material-icons">shopping_cart</i>Sell
+    <div class="app" (click)="navigateTo('/sales')" *ngIf="!(role === 'Data entry')"><i class="material-icons">shopping_cart</i>Sales
     </div>
-    <div class="app" (click)="navigateTo('/add/product')" *ngIf="!(role === 'Billing')"><i class="material-icons">add_circle</i>Add
-      product
+    <div class="app" (click)="navigateTo('/add')" *ngIf="!(role === 'Billing')"><i class="material-icons">add_circle</i>Add
     </div>
     <div class="app" (click)="navigateTo('/store')"><i class="material-icons">store</i>Store</div>
     <div class="app" (click)="navigateTo('/invoice')" *ngIf="!(role === 'Data entry')"><i

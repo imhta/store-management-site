@@ -8,7 +8,7 @@ import {ZXingScannerComponent} from '@zxing/ngx-scanner';
 })
 export class QrScannerComponent implements OnInit {
 
-  @Output() product = new EventEmitter<string>();
+  @Output() data = new EventEmitter<string>();
   @ViewChild('scanner')
   scanner: ZXingScannerComponent;
 
@@ -51,12 +51,12 @@ export class QrScannerComponent implements OnInit {
 
   }
 
-  getProduct(product: string) {
-    this.product.emit(product);
+  getData(data: string) {
+    this.data.emit(data);
   }
   handleQrCodeResult(resultString: string) {
     QrScannerComponent.playAudio();
-    this.getProduct(resultString);
+    this.getData(resultString);
   }
 
   onDeviceSelectChange(selectedValue: string) {

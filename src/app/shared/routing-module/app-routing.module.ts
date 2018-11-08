@@ -7,13 +7,12 @@ import {AuthGuard} from '../service/guard/auth/auth.guard';
 import {ManageStorePageComponent} from '../../first-page/manage-store-page/manage-store-page.component';
 import {SetupStorePageComponent} from '../../first-page/setup-store-page/setup-store-page.component';
 import {StorePageComponent} from '../../store-page/store-page.component';
-import {AddProductPageComponent} from '../../add-product-page/add-product-page.component';
 import {ProductPageComponent} from '../../product-page/product-page.component';
 import {QrPageComponent} from '../../qr-page/qr-page.component';
 import {ManageUsersComponent} from '../../manage-users/manage-users.component';
 import {AddUserComponent} from '../../manage-users/add-user/add-user.component';
 import {RegisterGuard} from '../service/guard/role/register-guard/register-guard';
-import {SellPageComponent} from '../../sell-page/sell-page.component';
+import {SalesPageComponent} from '../../sales-page/sales-page.component';
 import {InvoicePageComponent} from '../../invoice-page/invoice-page.component';
 import {CustomerPageComponent} from '../../customer-page/customer-page.component';
 import {DashboardPageComponent} from '../../dashboard-page/dashboard-page.component';
@@ -23,6 +22,7 @@ import {StoreCreatorGuard} from '../service/guard/feature-guard/store-creator-gu
 import {StoreResolver} from '../service/resolver/store.resolver';
 import {StoreSettingsComponent} from '../../store-settings/store-settings.component';
 import {NotFoundPageComponent} from '../../general-components/not-found-page/not-found-page.component';
+import {AddPageComponent} from '../../add-page/add-page.component';
 
 
 const routes: Routes = [
@@ -63,8 +63,8 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'sell',
-    component: SellPageComponent,
+    path: 'sales',
+    component: SalesPageComponent,
     canActivate: [AuthGuard, SellingGuard]
   },
   {
@@ -73,8 +73,8 @@ const routes: Routes = [
     canActivate: [AuthGuard, RegisterGuard]
   },
   {
-    path: 'add/product',
-    component: AddProductPageComponent,
+    path: 'add',
+    component: AddPageComponent,
     canActivate: [AuthGuard]
   },
   {
