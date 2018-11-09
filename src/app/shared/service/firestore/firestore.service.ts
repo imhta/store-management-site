@@ -397,7 +397,7 @@ export class FirestoreService {
 
   checkCustomerNewToStore(storeId, customerNumber) {
     return this.db
-      .doc(`customers/${customerNumber}/storeRewards/${storeId}`).ref
+      .doc(`stores/${storeId}/customers/${customerNumber}`).ref
       .get()
       .then((rewardDetails) => {
         if (rewardDetails.exists) {

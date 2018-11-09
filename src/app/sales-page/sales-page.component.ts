@@ -1,14 +1,23 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UserStoreState} from '../shared/models/store.model';
 import {GetAllProducts} from '../shared/actions/product.actions';
-import {Actions, Select, Store} from '@ngxs/store';
+import {Actions, ofActionDispatched, Select, Store} from '@ngxs/store';
 import {Observable, Subscription} from 'rxjs';
 import {CartProduct, InvoiceModel} from '../shared/models/invoice.model';
 import {AuthState} from '../shared/state/auth.state';
 import {LoadingTrue} from '../shared/state/loading.state';
 import {SaveInvoice} from '../shared/actions/invoice.actions';
-import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, first, map} from 'rxjs/operators';
 import {SingleProductModel} from '../shared/models/product.model';
+import {
+  CheckCustomerExitsOrNot,
+  CheckCustomerNewToStore,
+  CustomerExits,
+  CustomerNotExits,
+  OldCustomerOfStore
+} from '../shared/actions/customers.actions';
+import {GetAllDiscounts, GotAllDiscountsSuccessfully} from '../shared/actions/discount.actions';
+import {DiscountModel} from '../shared/models/discount.model';
 
 @Component({
   selector: 'app-billing-page',
@@ -28,6 +37,11 @@ export class SalesPageComponent implements OnInit, OnDestroy {
   cartProducts: CartProduct[] = [];
   invoice = new InvoiceModel();
   outStockedProducts = [];
+  rewardDetail = {};
+  allDiscounts: DiscountModel[];
+  selectedDiscountIndex: number;
+  isOldCustomer = false;
+  customerNotExit = false;
   isErrorInSavingInvoice = false;
   prnSearch = (text$: Observable<string>) =>
     text$.pipe(
@@ -44,6 +58,8 @@ export class SalesPageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.uid$.subscribe((uid) => this.invoice.billedBy = uid);
     this.refreshAllProduct();
+    this.action$
+      .pipe(ofActionDispatched(GotAllDiscountsSuccessfully)).subscribe(({allDiscount}) => this.allDiscounts = allDiscount);
     this.invoice.storeUid = this.currentStore.storeUid;
     this.invoice.hasNoGstNumber = this.currentStore.hasNoGstNumber;
     this.invoice.gstNumber = this.currentStore.gstNumber;
@@ -58,12 +74,54 @@ export class SalesPageComponent implements OnInit, OnDestroy {
     this.storeDataSubscription = this.storeState$.subscribe((data) => {
       this.storeState = new UserStoreState(data.valueOf());
       this.currentStore = this.storeState.linkedStores[this.storeState.selectedStore];
-      this.store.dispatch([new GetAllProducts(this.currentStore.storeUid)]);
+      this.store.dispatch([new GetAllProducts(this.currentStore.storeUid), new GetAllDiscounts(this.currentStore.storeUid)]);
     });
     this.allProducts$.subscribe((data: any[]) => {
       this.allProducts = data;
     });
+  }
 
+  addDiscount(index) {
+    if (!this.invoice.isDiscountApplied && this.cartProducts.length > 0) {
+      this.selectedDiscountIndex = index;
+      this.invoice.discount = this.allDiscounts[index];
+      this.invoice.isDiscountApplied = true;
+      if (this.allDiscounts[index].amountType === 'percentage') {
+        this.invoice.discountPrice =
+          this.invoice.totalPrice - (this.invoice.totalPrice * (parseFloat(this.allDiscounts[index].amount) / 100));
+      } else {
+        this.invoice.discountPrice = this.invoice.totalPrice - parseFloat(this.allDiscounts[index].amount);
+      }
+    } else {
+      this.removeDiscount();
+    }
+  }
+
+  removeDiscount() {
+    this.invoice.discount = {};
+    this.invoice.isDiscountApplied = false;
+    this.invoice.discountPrice = 0;
+    this.selectedDiscountIndex = null;
+  }
+
+  phoneNoChanged(phoneNo) {
+    if (String(phoneNo).length === 10) {
+      this.store.dispatch([new LoadingTrue(), new CheckCustomerExitsOrNot(phoneNo)]);
+      this.action$.pipe(ofActionDispatched(CustomerExits), first()).subscribe(({customerName}) => {
+        this.invoice.customerName = customerName;
+        this.store.dispatch([new LoadingTrue(), new CheckCustomerNewToStore(phoneNo, this.currentStore.storeUid)]);
+      });
+      this.action$.pipe(ofActionDispatched(CustomerNotExits), first()).subscribe(() => this.customerNotExit = true);
+      this.action$.pipe(ofActionDispatched(OldCustomerOfStore), first()).subscribe(({rewardDetail}) => {
+        this.isOldCustomer = true;
+        this.rewardDetail = rewardDetail;
+      });
+    } else {
+      this.invoice.customerName = '';
+      this.customerNotExit = false;
+      this.isOldCustomer = false;
+      this.rewardDetail = {};
+    }
   }
 
   getProduct(product: string) {
@@ -80,8 +138,6 @@ export class SalesPageComponent implements OnInit, OnDestroy {
   }
 
   addToCart(prn) {
-
-
     const resultProduct: SingleProductModel[] = this.findProduct(prn);
     if (resultProduct.length > 0) {
       const cartProduct = new CartProduct();
@@ -153,6 +209,7 @@ export class SalesPageComponent implements OnInit, OnDestroy {
       ? parseFloat(String(cartProduct.variants[0].sellingPrice))
       : parseFloat(String(cartProduct.variants[cartProduct.selectedSize].sellingPrice));
     cartProduct.maxQuantity = parseFloat(String(cartProduct.variants[cartProduct.selectedSize].stock));
+    this.removeDiscount();
     this.calculateTotal(cartProduct);
   }
 

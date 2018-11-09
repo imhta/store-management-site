@@ -35,7 +35,8 @@
             <div class="input-group">
               <input type="number" class="form-control form-control-md " id="customer-number" placeholder="Phone number"
                      required
-                     [(ngModel)]="invoice.customerNumber">
+                     [(ngModel)]="invoice.customerNumber"
+                     (ngModelChange)="phoneNoChanged($event)">
             </div>
             <div>
               <small class="form-text text-info">
@@ -43,7 +44,25 @@
               </small>
             </div>
           </div>
-
+          <div class="form-group">
+            <label for="customer-number">Customer Name :</label>
+            <div class="input-group">
+              <input type="text" class="form-control form-control-md " id="customer-name" placeholder="Customer name"
+                     required
+                     [attr.readonly]="customerNotExit ? null : ''"
+                     [(ngModel)]="invoice.customerName">
+            </div>
+            <div>
+              <small class="form-text text-info float-right" style="cursor: pointer" placement="right"
+                     [ngbPopover]="!customerNotExit && isOldCustomer ? 'Old Customer' : 'New Customer'"
+                     popoverTitle="Customer Insight">
+                Mini insights
+              </small>
+              <small class="form-text text-info">
+                Name is required.
+              </small>
+            </div>
+          </div>
           <div class="form-group">
             <label for="add-cart">Product Id :</label>
             <div class="input-group">
@@ -55,7 +74,25 @@
               </div>
             </div>
           </div>
-
+          <div class="scrolling-wrapper">
+            <div class="card" *ngFor="let discount of allDiscounts; let i = index">
+              <div class="card-header">{{discount.discountName}}
+                <a class="float-right text-success"
+                   (click)="!invoice.isDiscountApplied ? addDiscount(i) : removeDiscount(i)">
+                  <i class="material-icons" *ngIf="selectedDiscountIndex !== i">add_circle</i>
+                  <i class="material-icons" *ngIf="selectedDiscountIndex === i">delete</i>
+                </a>
+              </div>
+              <div class="card-body">
+                {{discount.discountConditionalNote}}<br>
+                <span>
+                  <span *ngIf="discount.amountType === 'rupees'">&#8377;</span>
+                  {{discount.amount}}
+                  <span *ngIf="discount.amountType === 'percentage'">%</span>
+                </span>
+              </div>
+            </div>
+          </div>
           <div class="grid-wrapper" *ngIf="!(cartProducts.length > 0)">
             <div class="card">
 
@@ -95,7 +132,8 @@
       <nav class="bg-dark text-white navbar toolbar ">
         <div class=" total-detail">
           <a>TQ: {{invoice.totalQuantity}}</a>
-          <a>Total Price: &#8377; {{invoice.totalPrice}}</a>
+          <a *ngIf="!invoice.isDiscountApplied">Total Price: &#8377; {{invoice.totalPrice}}</a>
+          <a *ngIf="invoice.isDiscountApplied">Total Discount price: &#8377; {{invoice.discountPrice}}</a>
           <!--<a>Total Tax: &#8377; {{invoice.totalTax}}</a>-->
         </div>
         <div>

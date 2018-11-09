@@ -14,6 +14,7 @@ import {
 } from '../actions/invoice.actions';
 import {ErrorInGettingAllReturns, GetAllReturns, GetInvoice, GotAllReturnsSuccessfully, ReturnInvoice} from '../actions/return.actions';
 import {ReturnModel} from '../models/return.model';
+import {CheckCustomerExitsOrNot, CheckCustomerNewToStore} from '../actions/customers.actions';
 
 
 @State<{ invoices: InvoiceModel[], returnBills: ReturnModel[] }>({
@@ -92,4 +93,13 @@ export class InvoicesState {
     this.store.dispatch([new LoadingFalse()]);
   }
 
+  @Action(CheckCustomerExitsOrNot)
+  checkCustomerExitsOrNot(cxt: StateContext<any>, {customerNumber}: CheckCustomerExitsOrNot) {
+    this.dbService.checkCustomerExitsOrNot(customerNumber);
+  }
+
+  @Action(CheckCustomerNewToStore)
+  checkCustomerNewToStore(cxt: StateContext<any>, {customerNumber, storeId}: CheckCustomerNewToStore) {
+    this.dbService.checkCustomerNewToStore(storeId, customerNumber);
+  }
 }

@@ -1,3 +1,35 @@
+.input-group .btn{
+  border-top-right-radius: 50px ;
+  border-bottom-right-radius: 50px;
+  border-color: #06bca9;
+  background-color: #06bca9;
+}
+.input-group .btn:hover{
+  background-color: #06bca9;
+  color: white;
+}
+.input-group .btn:focus{
+  border-color: #06bca9;
+  box-shadow: 0 1px 1px #06bca9 inset, 0 0 8px #06bca9;
+  outline: 0 none;
+}
+.toolbar .btn{
+  margin-right: 15px;
+  border-radius: 50px;
+  border-color: #06bca9;
+  background-color: #06bca9;
+
+}
+
+.toolbar .btn:hover{
+  background-color: #06bca9;
+  color: white;
+}
+.toolbar .btn:focus{
+  border-color: #06bca9;
+  box-shadow: 0 1px 1px #06bca9 inset, 0 0 8px #06bca9;
+  outline: 0 none;
+}
 .qr-scanner-preview {
   max-width: 250px;
   max-height: 250px;
@@ -19,7 +51,6 @@
     position: fixed;
     bottom: 0px;
     width: 100vw;
-    height: 80px;
     z-index: 25;
   }
 
@@ -32,7 +63,6 @@
   position: fixed;
   bottom: 0px;
   width: 100vw;
-  height: 50px;
   z-index: 25;
 }
 
@@ -117,27 +147,6 @@
 .material-icons:active {
   color: aquamarine;
 }
-
-::ng-deep #tab .nav-tabs {
-  background-color: #343a40;
-  position: sticky;
-  top: 0;
-  z-index: 25;
-}
-
-::ng-deep #tab .nav-link {
-  color: white;
-}
-
-::ng-deep #tab .nav-link:hover {
-  border-radius: 0;
-}
-
-::ng-deep #tab .nav-link.active {
-  color: #343a40;
-  border-radius: 0;
-}
-
 /*empty message style*/
 
 .grid-wrapper {
@@ -175,36 +184,4 @@
   font-size: 30px;
   color: grey;
 }
-.scrolling-wrapper {
-  cursor: pointer;
-  height: 150px;
-  overflow-x: scroll;
-  overflow-y: hidden;
-  white-space: nowrap;
-  -webkit-overflow-scrolling: touch;
 
-}
-.scrolling-wrapper .card {
-  display: inline-block;
-  width: 200px;
-  height: 130px;
-  margin: 5px;
-  border: none;
-  -webkit-box-shadow: 0px 0px 50px 0px rgba(0,0,0,0.12);
-  -moz-box-shadow: 0px 0px 50px 0px rgba(0,0,0,0.12);
-  box-shadow: 0px 0px 50px 0px rgba(0,0,0,0.12);
-  border-radius:10px;
-
-}
-
-.scrolling-wrapper::-webkit-scrollbar {
-  height: 5px;
-}
-.scrolling-wrapper::-webkit-scrollbar-track {
- height: 5px;
-  border-radius: 10px;
-}
-.scrolling-wrapper::-webkit-scrollbar-thumb {
-  background-color: grey;
-  border-radius: 10px;
-}

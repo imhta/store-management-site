@@ -1,0 +1,118 @@
+<div class="grid-wrapper" *ngIf="false">
+  <div class="card">
+
+    <img src="../../assets/logo/logo.png" class="grey-icon" alt="">
+    <div class="content">There is no discount added yet</div>
+    <div class="setup-link" (click)="openAddDiscountModel(content)">ADD DISCOUNT</div>
+  </div>
+</div>
+<div class="container">
+  <button class="btn btn-primary float-right" type="button" (click)="openAddDiscountModel(content)">Add Discount
+  </button>
+  <h3>Discounts</h3>
+  <table class="table table-responsive-lg ">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Discount Name</th>
+      <th scope="col">Amount</th>
+      <th scope="col">Applied Type</th>
+      <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let discount of allDiscounts; let i = index">
+      <th scope="row">{{i + 1}}</th>
+      <td>{{discount.discountName}}<br><span class="text-muted small">{{discount.discountConditionalNote}}</span></td>
+      <td><span *ngIf="discount.amountType === 'rupees'">&#8377;</span>{{discount.amount}}<span *ngIf="discount.amountType === 'percentage'">%</span></td>
+      <td>{{discount.discountType}}</td>
+      <td>
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon aria-label="more">more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="deleteDiscount(discount.discountUid)">
+            <mat-icon>delete</mat-icon>
+            <span>Delete</span>
+          </button>
+        </mat-menu>
+      </td>
+    </tr>
+
+    </tbody>
+  </table>
+
+</div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Add New Discount</h4>
+  </div>
+  <div class="modal-body" [formGroup]="discountForm">
+    <div class="form-group">
+
+    </div>
+    <div class="form-group">
+      <label for="discount-name">Discount Name</label>
+      <div class="input-group">
+        <input type="text" id="discount-name" class="form-control" placeholder="Name of the discount" formControlName="discountName">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="discount-name">Conditional Note</label>
+      <div class="input-group">
+        <input type="text" id="conditional-note" class="form-control" placeholder="Conditional note for discount" formControlName="discountConditionalNote">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="amount">Amount</label>
+      <div class="input-group">
+        <input type="number" class="form-control" placeholder="Amount" aria-label="Amount of discount"
+               aria-describedby="button-addon4" id="amount" formControlName="amount">
+        <div class="input-group-append btn-group-toggle" data-toggle="buttons">
+          <label class="btn btn-light active" (click)="selectAmountType('percentage')">
+            <input type="radio" id="option1" value="percentage" autocomplete="off" checked> %
+          </label>
+          <label class="btn btn-light" (click)="selectAmountType('rupees')">
+            <input type="radio" id="option2" value="rupees" autocomplete="off"> &#8377;
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="applied-for">Applied for</label>
+
+      <div class="float-right m-2">
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+          <label class="btn btn-light active" (click)="selectDiscountType('All')">
+            <input type="radio" id="all" value="all" autocomplete="off" checked> All
+          </label>
+          <!--<label class="btn btn-light "  (click)="selectDiscountType('Specific')">-->
+            <!--<input type="radio" id="specific" value="specific" autocomplete="off"> Specific-->
+          <!--</label>-->
+        </div>
+      </div>
+      <mat-chip-list #chipList class="m-2" *ngIf="discountForm.get('discountType').value === 'Specific'">
+        <mat-chip *ngFor="let tag of tagsArray; let i = index" [selectable]="selectable"
+                  [removable]="removable" >
+          {{tag}}
+          <mat-icon matChipRemove (click)="removeTag(i)">cancel</mat-icon>
+        </mat-chip>
+      </mat-chip-list>
+      <div class="input-group" *ngIf="discountForm.get('discountType').value === 'Specific'">
+        <input type="text" id="applied-for" class="form-control" placeholder="Add cloth using prn"
+               [(ngModel)]="tagVal"
+               [ngbTypeahead]="tagSearch"
+               [ngModelOptions]="{standalone: true}"
+               (keyup.enter)="addTag()"
+               (keyup.backspace)="tagVal.length === 0 ? tagsArray.pop() : null">
+        <button class=" btn btn-primary input-group-append" id="add-cloth" (click)="addTag()">Add</button>
+      </div>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="modal.close()">Close</button>
+    <button type="button" class="btn btn-primary" (click)="saveDiscount()">Save</button>
+  </div>
+</ng-template>

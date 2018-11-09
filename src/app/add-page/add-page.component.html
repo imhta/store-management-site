@@ -1,0 +1,18 @@
+<app-navbar></app-navbar>
+
+<ngb-tabset id="tab" [justify]="'start'">
+  <ngb-tab >
+    <ng-template ngbTabTitle>Products</ng-template>
+    <ng-template ngbTabContent>
+
+<app-add-product-page></app-add-product-page>
+    </ng-template>
+  </ngb-tab>
+  <ngb-tab>
+    <ng-template ngbTabTitle>Discounts</ng-template>
+    <ng-template ngbTabContent>
+      <app-discounts-manager></app-discounts-manager>
+    </ng-template>
+  </ngb-tab>
+
+</ngb-tabset>

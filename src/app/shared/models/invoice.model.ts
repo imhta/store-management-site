@@ -4,8 +4,12 @@ import * as firebase from 'firebase';
 export class InvoiceModel {
   invoiceId: string;
   customerNumber: string;
+  customerName: string;
   cartProducts: object[] = [];
   typeOfPayment: 'Card' | 'Cash' | 'Cash & Card';
+  isDiscountApplied = false;
+  discount: object = {};
+  discountPrice = 0;
   totalPrice: number;
   totalQuantity: number;
   gstNumber: string;
@@ -24,6 +28,7 @@ export class InvoiceModel {
 
   fromJson(data) {
     this.customerNumber = data.customerNumber;
+    this.customerName = data.customerName;
     this.cartProducts = data.cartProducts;
     this.typeOfPayment = data.typeOfPayment;
     this.billedBy = data.billedBy;
@@ -34,6 +39,9 @@ export class InvoiceModel {
     this.invoiceId = data.invoiceId;
     this.storeUid = data.storeUid;
     this.hasNoGstNumber = data.hasNoGstNumber;
+    this.discount = data.discount;
+    this.isDiscountApplied = data.isDiscountApplied;
+    this.discountPrice = data.discountPrice;
   }
 
   cartProductsToJson(arrayOfProducts: CartProduct[]) {
@@ -52,11 +60,15 @@ export class InvoiceModel {
   toJson() {
     return {
       'customerNumber': this.customerNumber,
+      'customerName': this.customerName,
       'cartProducts': this.cartProducts,
+      'discount': this.discount,
+      'isDiscountApplied': this.isDiscountApplied,
       'typeOfPayment': this.typeOfPayment,
       'billedBy': this.billedBy,
       'gstNumber': this.gstNumber,
       'hasNoGstNumber': this.hasNoGstNumber,
+      'discountPrice': this.discountPrice,
       'totalPrice': this.totalPrice,
       'totalQuantity': this.totalQuantity,
       'totalTax': this.totalTax,
