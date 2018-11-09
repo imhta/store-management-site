@@ -177,7 +177,6 @@
 }
 .scrolling-wrapper {
   cursor: pointer;
-  height: 150px;
   overflow-x: scroll;
   overflow-y: hidden;
   white-space: nowrap;
