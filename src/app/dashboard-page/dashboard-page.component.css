@@ -81,3 +81,39 @@
   font-size: 30px;
   color: grey;
 }
+.charts{
+  width: 100%;
+  margin: 10px;
+  height: 400px;
+}
+.btn {
+  border-radius: 50px;
+  border-color: #06bca9;
+  background-color: #06bca9;
+  margin: 20px;
+}
+
+.btn:hover {
+  background-color: #06bca9;
+  color: white;
+}
+
+.btn:focus {
+  border-color: #06bca9;
+  box-shadow: 0 1px 1px #06bca9 inset, 0 0 8px #06bca9;
+  outline: 0 none;
+}
+
+
+@media only screen and (max-width: 500px) {
+.container{
+  width: 100vw;
+}
+  .btn{
+    margin: 5px;
+  }
+  .charts{
+    margin: 0;
+    height: auto;
+  }
+}

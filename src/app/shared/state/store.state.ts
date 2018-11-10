@@ -82,7 +82,7 @@ export class StoreState {
     const state = ctx.getState();
     state.selectedStore = action.index;
     ctx.setState({...state});
-    return this.store.dispatch([new Navigate(['store'])]);
+    return this.store.dispatch([new Navigate(['dashboard'])]);
   }
 
   @Action(ResetSelectedStore)

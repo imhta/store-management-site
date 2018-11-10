@@ -49,12 +49,14 @@
     "html2canvas": "^1.0.0-alpha.12",
     "jquery": "^3.3.1",
     "jspdf": "^1.4.1",
+    "moment": "^2.22.2",
     "ngx-kjua": "^1.2.0",
     "popper": "^1.0.1",
     "popper.js": "^1.14.4",
     "rxjs": "^6.3.3",
     "rxjs-compat": "^6.3.3",
     "tether": "^1.4.5",
+    "underscore": "^1.9.1",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {

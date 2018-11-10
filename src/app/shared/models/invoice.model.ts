@@ -1,5 +1,11 @@
 import Timestamp = firebase.firestore.Timestamp;
+import {ReturnModel} from './return.model';
 import * as firebase from 'firebase';
+
+export class BillsModel {
+  invoices: InvoiceModel[];
+  returnBills: ReturnModel[];
+}
 
 export class InvoiceModel {
   invoiceId: string;

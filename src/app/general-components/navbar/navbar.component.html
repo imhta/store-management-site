@@ -1,7 +1,9 @@
 <div class="bg-dark collapse  " id="navbarHeader">
   <div class="container">
 
-    <div class="app" (click)="navigateTo('/dashboard')"><i class="material-icons">trending_up</i> Dashboard</div>
+    <div class="app" (click)="navigateTo('/dashboard')" *ngIf="role === 'Register'">
+      <i class="material-icons">trending_up</i> Dashboard
+    </div>
     <div class="app" (click)="navigateTo('/sales')" *ngIf="!(role === 'Data entry')"><i class="material-icons">shopping_cart</i>Sales
     </div>
     <div class="app" (click)="navigateTo('/add')" *ngIf="!(role === 'Billing')"><i class="material-icons">add_circle</i>Add

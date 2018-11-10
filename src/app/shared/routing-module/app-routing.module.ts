@@ -44,7 +44,7 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardPageComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard, RegisterGuard]
   },
   {
     path: 'store',
