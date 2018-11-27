@@ -14,6 +14,7 @@ import {
 import {LoadingFalse} from './loading.state';
 import {Navigate} from '@ngxs/router-plugin';
 import {AddOnlineProductTag, GetOnlineProductTags, RemoveOnlineProductTag} from '../actions/online-product-tag.actions';
+import {HttpService} from '../service/http/http.service';
 
 
 @State<any[]>({
@@ -21,7 +22,7 @@ import {AddOnlineProductTag, GetOnlineProductTags, RemoveOnlineProductTag} from 
   defaults: []
 })
 export class AllProductState {
-  constructor(private dbService: FirestoreService, private  store: Store) {
+  constructor(private dbService: FirestoreService, private  store: Store, private httpService: HttpService) {
   }
 
 
@@ -62,8 +63,8 @@ export class AllProductState {
   }
 
   @Action(SearchForProduct)
-  searchForProduct(cxt: StateContext<any[]>, {storeId, keyword, searchOption}: SearchForProduct) {
-    this.dbService.searchForProduct(storeId, keyword, searchOption);
+  searchForProduct(cxt: StateContext<any[]>, {searchQuery}: SearchForProduct) {
+    this.httpService.searchForProduct(searchQuery);
   }
 
   @Action(AddOnlineProductTag)

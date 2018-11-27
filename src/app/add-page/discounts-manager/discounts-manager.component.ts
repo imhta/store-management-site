@@ -39,8 +39,8 @@ export class DiscountsManagerComponent implements OnInit, OnDestroy {
   });
   private tagsArray: string[] = [];
   private tagVal: string;
-  private allDiscounts: DiscountModel[];
   private storeUid: string;
+  allDiscounts: DiscountModel[];
   tagSearch = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),

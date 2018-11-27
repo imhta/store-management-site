@@ -60,7 +60,7 @@ export class ErrorInDeletingProduct {
 export class SearchForProduct {
   static readonly type = '[Product] Search for product';
 
-  constructor(public  storeId: string, public keyword: string, public searchOption: string) {
+  constructor(public  searchQuery: {storeId: string, query: string}) {
   }
 }
 

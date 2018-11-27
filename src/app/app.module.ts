@@ -1,3 +1,4 @@
+
 import {AuthService} from './shared/service/auth/auth.service';
 import {LogoComponent} from './general-components/logo/logo.component';
 import {BrowserModule} from '@angular/platform-browser';
@@ -57,7 +58,6 @@ import {AddProductGuard} from './shared/service/guard/feature-guard/add-product-
 import {ManagerGuard} from './shared/service/guard/role/manager-guard/manager.guard';
 import {StoreCreatorGuard} from './shared/service/guard/feature-guard/store-creator-guard/store-creator.guard';
 import {FileUploadComponent} from './add-page/add-product-page/file-upload/file-upload.component';
-import {FileSizePipe} from './shared/service/pipe/file-size-pipe/file-size.pipe';
 import {StoreResolver} from './shared/service/resolver/store.resolver';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -75,9 +75,10 @@ import {MatChipsModule} from '@angular/material/chips';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
+import {HttpService} from './shared/service/http/http.service';
+import {PipesModule} from './shared/pipes/pipes.module';
+import {CommonModule} from '@angular/common';
 
-import {NgxsLoggerPluginModule} from '@ngxs/logger-plugin';
-import {NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
 
 @NgModule({
   declarations: [
@@ -104,7 +105,6 @@ import {NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
     DashboardPageComponent,
     BillingPageComponent,
     FileUploadComponent,
-    FileSizePipe,
     StoreSettingsComponent,
     LogoUploadComponent,
     StorePicsUploadComponent,
@@ -114,10 +114,9 @@ import {NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
     DiscountsManagerComponent,
     StoreTableViewComponent,
     StoreGridViewComponent,
-
-
   ],
   imports: [
+    CommonModule,
     HttpClientModule,
     BrowserModule,
     ReactiveFormsModule,
@@ -135,8 +134,8 @@ import {NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
     AngularFireModule.initializeApp(environment.firebase),
     NgxsModule.forRoot([AuthState, LoadingState, StoreState, AllProductState, InvoicesState]),
     NgxsRouterPluginModule.forRoot(),
-    NgxsLoggerPluginModule.forRoot(),
-    NgxsReduxDevtoolsPluginModule.forRoot(),
+    // NgxsLoggerPluginModule.forRoot(),
+    // NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxKjuaModule,
     ZXingScannerModule,
     NgbModule,
@@ -145,12 +144,14 @@ import {NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
     MatIconModule,
     MatMenuModule,
     ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
+    PipesModule
 
   ],
   exports: [],
   providers: [
     AuthService,
     FirestoreService,
+    HttpService,
     AuthGuard,
     PwaService,
     RegisterGuard,

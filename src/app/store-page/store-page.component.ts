@@ -5,8 +5,10 @@ import {Observable, Subscription} from 'rxjs';
 import {GetAllProducts, ProductFounded, SearchForProduct} from '../shared/actions/product.actions';
 import {SingleProductModel} from '../shared/models/product.model';
 import {Navigate} from '@ngxs/router-plugin';
-import {LoadingTrue} from '../shared/state/loading.state';
+import {LoadingFalse, LoadingTrue} from '../shared/state/loading.state';
 import {AuthState} from '../shared/state/auth.state';
+import {first, take} from 'rxjs/operators';
+import {StoreState} from '../shared/state/store.state';
 
 @Component({
   selector: 'app-store-page',
@@ -14,7 +16,7 @@ import {AuthState} from '../shared/state/auth.state';
   styleUrls: ['./store-page.component.css']
 })
 export class StorePageComponent implements OnInit, OnDestroy {
-
+  @Select(StoreState.uid) storeId$: Observable<string>;
   @Select('storeState') storeState$: Observable<object>;
   @Select('allProducts') allProducts$: Observable<SingleProductModel[]>;
   @Select('loading') loading$: Observable<boolean>;
@@ -24,19 +26,19 @@ export class StorePageComponent implements OnInit, OnDestroy {
   currentStore;
   allProducts: any[];
   resultProduct: any[];
-  searchKeyword = '';
-  searchOptions = ['Description', 'Product name', 'Product id'];
-  selectedSearchOption = 2;
   isWhitespace = true;
   isEmpty: boolean;
   role;
   isEmployee;
   isRegister;
+  searchQuery: { storeId: string, query: string } = {storeId: '', query: ''};
+
   constructor(private store: Store, private actions$: Actions) {
     this.role = this.store.selectSnapshot(AuthState.role);
     this.isEmployee = this.store.selectSnapshot(AuthState.isEmployee);
     this.isRegister = this.store.selectSnapshot(AuthState.isRegister);
     this.loading$.subscribe((loading) => this.loading = loading.valueOf());
+    this.storeId$.pipe(first()).subscribe((storeId) => this.searchQuery.storeId = storeId);
     this.storeDataSubscription = this.storeState$.subscribe((data) => {
       this.storeState = new UserStoreState(data.valueOf());
       this.currentStore = this.storeState.linkedStores[this.storeState.selectedStore];
@@ -63,24 +65,15 @@ export class StorePageComponent implements OnInit, OnDestroy {
     this.store.dispatch([new Navigate(['add'])]);
   }
 
-  selectSearchOption(index) {
-    this.selectedSearchOption = index;
-  }
-
   onChange() {
     this.resultProduct = [];
   }
-
   search() {
-    this.isWhitespace = (this.searchKeyword || '').trim().length === 0;
-    if (!this.isWhitespace) {
-      this.store
-        .dispatch([new SearchForProduct(this.currentStore['storeUid'], this.searchKeyword, this.searchOptions[this.selectedSearchOption])]);
-      this.actions$
-        .pipe(ofActionDispatched(ProductFounded))
-        .subscribe(({resultProducts}) => this.resultProduct = resultProducts);
-    } else {
-      return console.log('we cant search empty field');
-    }
+    this.store.dispatch([new LoadingTrue(), new SearchForProduct(this.searchQuery)]);
+    this.actions$.pipe(ofActionDispatched(ProductFounded), take(5)).subscribe(({resultProducts}) => {
+      this.resultProduct = resultProducts;
+      this.store.dispatch([new LoadingFalse()]);
+    });
   }
+
 }

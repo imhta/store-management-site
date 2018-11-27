@@ -112,53 +112,6 @@ export class FirestoreService {
       });
   }
 
-  searchForProduct(storeUid, keyword, searchOption) {
-    console.log(storeUid, keyword, searchOption);
-    switch (searchOption) {
-      case 'Product id':
-        this.db.collection(`products`).ref
-          .where('storeId', '==', `${storeUid}`)
-          .where('isDeleted', '==', false)
-          .orderBy('prn')
-          .startAt(keyword)
-          .onSnapshot((result) => {
-            this.resultProducts = [];
-            result.forEach((product) => {
-              this.resultProducts.push(product.data());
-              this.store.dispatch([new ProductFounded(this.resultProducts)]);
-            });
-          });
-        break;
-      case 'Product name':
-        this.db.collection(`products`).ref
-          .where('storeId', '==', `${storeUid}`)
-          .where('isDeleted', '==', false)
-          .orderBy('productName')
-          .startAt(keyword)
-          .onSnapshot((result) => {
-            this.resultProducts = [];
-            result.forEach((product) => {
-              this.resultProducts.push(product.data());
-              this.store.dispatch([new ProductFounded(this.resultProducts)]);
-            });
-          });
-        break;
-      case 'Description':
-        this.db.collection(`products`).ref
-          .where('storeId', '==', `${storeUid}`)
-          .where('isDeleted', '==', false).orderBy('description').startAt(keyword)
-          .onSnapshot((result) => {
-            this.resultProducts = [];
-            result.forEach((product) => {
-              this.resultProducts.push(product.data());
-              this.store.dispatch([new ProductFounded(this.resultProducts)]);
-            });
-          });
-        break;
-
-    }
-  }
-
   deleteProduct(productUid) {
     return this.db.collection(`products`).ref
       .doc(`${productUid}`).update('isDeleted', true);

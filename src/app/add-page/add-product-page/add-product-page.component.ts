@@ -9,6 +9,7 @@ import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 import {LoadingTrue} from '../../shared/state/loading.state';
 import {UploadSingleProduct} from '../../shared/actions/product.actions';
 
+
 const categories = ['Shirt', 'T- Shirt', 'Track', 'Casuals', 'Formals', 'Full Pant', 'Half Pant',
   'Trouser', 'Jeans', 'Full Hand', 'Half Hand', 'Saree', 'Silk',
   'Cotton', 'Wool', 'Chudidar', 'Tops', 'Inner Wears', 'Watches', 'Wallets', 'Shoes', 'Designer', 'Western Wear',
@@ -38,7 +39,7 @@ const colors = ['AliceBlue', 'AntiqueWhite', 'Aqua', 'Aquamarine', 'Azure', 'Bei
 @Component({
   selector: 'app-add-product-page',
   templateUrl: './add-product-page.component.html',
-  styleUrls: ['./add-product-page.component.css']
+  styleUrls: ['./add-product-page.component.css'],
 })
 export class AddProductPageComponent implements OnInit, OnDestroy {
   @Select('user') user$: Observable<object>;

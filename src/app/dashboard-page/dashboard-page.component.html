@@ -15,9 +15,11 @@
 <!--</div>-->
 <div class="container">
   <h3>Dashboard</h3>
+  <hr>
   <button class="btn btn-primary " type="button" (click)="navigateToAddProduct('/add')">Add Product</button>
   <button class="btn btn-primary" type="button" (click)="navigateToAddProduct('/sales')">Start Selling</button>
   <button class="btn btn-primary" type="button" (click)="refresh()">Refresh</button>
+
   <div class="row">
     <div class="col-md">
       <canvas id="earningsInWeek" class="charts"></canvas>
