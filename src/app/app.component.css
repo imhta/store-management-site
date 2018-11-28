@@ -38,5 +38,6 @@ mat-sidenav{
   cursor: pointer;
   position: fixed;
   z-index: 100;
-  bottom: 0;
+  bottom: 10px;
+  left: 10px;
 }
