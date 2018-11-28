@@ -1,4 +1,3 @@
-<app-navbar></app-navbar>
 <nav class="bg-dark navbar toolbar">
   <div><a (click)="navigateToStore()"><i class="material-icons">arrow_back</i></a></div>
 </nav>
@@ -14,7 +13,7 @@
       </i><i class="material-icons not-done" *ngIf="!isAvailable">
         clear
       </i></a>
-      <label for="product-name">Unique Store Name</label>
+      <label for="unique-name">Unique Store Name</label>
       <input class="form-control form-control-lg " id="unique-name" type="text" [(ngModel)]="uniqueStoreName"
              placeholder="clothxshopping" required>
       <div>

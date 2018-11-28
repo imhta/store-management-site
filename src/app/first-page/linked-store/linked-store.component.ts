@@ -72,16 +72,11 @@ export class LinkedStoreComponent implements OnInit, OnDestroy {
     this.storeSub$.unsubscribe();
   }
 
-  navigateToSetupStore() {
-    return this.store.dispatch(new Navigate(['store/setup']));
-  }
 
   selectStore(index: number) {
     return this.store.dispatch([new LoadingTrue(), new SelectStore(index)]);
   }
-
-  logout() {
-    return this.store.dispatch([new LoadingTrue(), new Logout()]);
+  navigateToSetupStore() {
+    return this.store.dispatch(new Navigate(['store/setup']));
   }
-
 }

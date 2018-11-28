@@ -19,7 +19,7 @@ export class ShopRegistrationForm {
   gstNumber: string;
   hasNoGstNumber: boolean;
   mobileNumber: string;
-  contactNumber: string;
+  // contactNumber: string;
   typeOfStore: 'boutique' |
     'factory outlet' |
     'fashion retailer' |
@@ -42,7 +42,7 @@ export class ShopRegistrationForm {
   fromJson(data) {
     this.storeName = data.storeName;
     this.mobileNumber = data.mobileNumber;
-    this.contactNumber = data.contactNumber;
+    // this.contactNumber = data.contactNumber;
     this.address = data.address;
     this.registerUid = data.registerUid;
     this.gstNumber = data.gstNumber;
@@ -55,7 +55,7 @@ export class ShopRegistrationForm {
       'registerUid': this.registerUid,
       'storeName': this.storeName,
       'mobileNumber': this.mobileNumber,
-      'contactNumber': this.contactNumber,
+      // 'contactNumber': this.contactNumber,
       'typeOfStore': this.typeOfStore,
       'gstNumber': this.gstNumber,
       'hasNoGstNumber': this.hasNoGstNumber,

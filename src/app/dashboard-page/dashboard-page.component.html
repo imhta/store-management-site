@@ -1,10 +1,9 @@
-<app-navbar ></app-navbar>
-<nav class="bg-dark navbar toolbar text-white">
-  <div>  <a><b><h5>{{today | date:'medium'}}</h5></b></a> </div>
 
+<nav class="bg-dark navbar toolbar text-white">
   <div>
 
   </div>
+  <div>  <a><b><h5>{{today | date:'medium'}}</h5></b></a> </div>
 </nav>
 <!--<div class="grid-wrapper">-->
   <!--<div class="card">-->
@@ -16,19 +15,7 @@
 <div class="container">
   <h3>Dashboard</h3>
   <hr>
-  <button class="btn btn-primary " type="button" (click)="navigateToAddProduct('/add')">Add Product</button>
-  <button class="btn btn-primary" type="button" (click)="navigateToAddProduct('/sales')">Start Selling</button>
   <button class="btn btn-primary" type="button" (click)="refresh()">Refresh</button>
-
-  <div class="row">
-    <div class="col-md">
-      <canvas id="earningsInWeek" class="charts"></canvas>
-    </div>
-    <div class="col-md">
-      <canvas id="salesPie" class="charts"></canvas>
-    </div>
-  </div>
-
 
   <div class="row">
     <div class="col-sm">
@@ -57,6 +44,16 @@
       </div>
     </div>
   </div>
+  <div class="row">
+    <div class="col-sm">
+      <canvas id="earningsInWeek" class="charts"></canvas>
+    </div>
+    <div class="col-sm">
+      <canvas id="salesPie" class="charts"></canvas>
+    </div>
+  </div>
+
+
 
 
   </div>

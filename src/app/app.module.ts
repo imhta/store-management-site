@@ -35,6 +35,9 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatListModule} from '@angular/material/list';
 // for qr code generation lib
 import {NgxKjuaModule} from 'ngx-kjua';
 // qr scanner module
@@ -143,6 +146,9 @@ import {CommonModule} from '@angular/common';
     MatButtonModule,
     MatIconModule,
     MatMenuModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatListModule,
     ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
     PipesModule
 

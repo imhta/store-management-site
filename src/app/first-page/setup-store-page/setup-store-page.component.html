@@ -1,4 +1,4 @@
-<app-navbar></app-navbar>
+
 <div class="container">
   <div class="card">
     <h2>Tell us about your store</h2>
@@ -41,22 +41,22 @@
       </div>
 
 
-      <div class="form-group">
-        <label for="InputPhonenumber">Contact Number</label>
-        <input type="number" class="form-control form-control-lg" id="InputPhonenumber" aria-describedby="contactNumber"
-               formControlName="contactNumber">
-        <div
-          *ngIf="contactNumber.invalid && (contactNumber.dirty || contactNumber.touched)">
-          <small class="form-text text-danger" *ngIf="contactNumber.errors.required">
-            Contact number is required.
-          </small>
-          <small class="form-text text-danger" *ngIf="contactNumber.errors.minlength">
-            Contact number should contains minimum of {{contactNumber.errors.minlength.requiredLength}} digits number.
-            digits number.
-          </small>
+      <!--<div class="form-group">-->
+        <!--<label for="InputPhonenumber">Contact Number</label>-->
+        <!--<input type="number" class="form-control form-control-lg" id="InputPhonenumber" aria-describedby="contactNumber"-->
+               <!--formControlName="contactNumber">-->
+        <!--<div-->
+          <!--*ngIf="contactNumber.invalid && (contactNumber.dirty || contactNumber.touched)">-->
+          <!--<small class="form-text text-danger" *ngIf="contactNumber.errors.required">-->
+            <!--Contact number is required.-->
+          <!--</small>-->
+          <!--<small class="form-text text-danger" *ngIf="contactNumber.errors.minlength">-->
+            <!--Contact number should contains minimum of {{contactNumber.errors.minlength.requiredLength}} digits number.-->
+            <!--digits number.-->
+          <!--</small>-->
 
-        </div>
-      </div>
+        <!--</div>-->
+      <!--</div>-->
 
       <div class="form-group">
         <mat-checkbox class="m-1 float-right" formControlName="hasNoGstNumber">I don't have GST Number</mat-checkbox>

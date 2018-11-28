@@ -30,7 +30,7 @@ export class SetupStorePageComponent implements OnInit, OnDestroy {
   storeForm = this.fb.group({
     storeName: ['', Validators.compose([Validators.required, Validators.minLength(5)])],
     mobileNumber: ['', Validators.compose([Validators.required, Validators.minLength(10), Validators.pattern('^[0-9]{10}$')])],
-    contactNumber: ['', Validators.compose([Validators.required, Validators.minLength(5), Validators.pattern('^[0-9]{5,15}$')])],
+    // contactNumber: ['', Validators.compose([Validators.required, Validators.minLength(5), Validators.pattern('^[0-9]{5,15}$')])],
     registerUid: ['', Validators.compose([Validators.required])],
     gstNumber: [
       '',

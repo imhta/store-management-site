@@ -12,121 +12,19 @@
   display: flex;
   float: left;
 }
-
-.profile-pic {
-  border-radius: 50%;
-  margin: 10px;
-  cursor: pointer;
-  display: flex;
-  width: 35px;
-  float: right;
-
+.navbar{
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-list{
+  height: 100vh;
+  overflow-y: scroll;
 }
 
-.profile-pic:hover {
-  border: solid 1px transparent;
-}
-
-.profile-pic:active {
-  border: solid 2px aquamarine;
-}
-
-.bg {
-  background-color: white;
-}
-
-.menu {
-
-  border-radius: 50%;
-  cursor: pointer;
-  float: right;
-  display: flex;
-  width: 35px;
-  height: 35px;
-  color: lightgray;
-  margin: 10px;
-  padding-top: 3px;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select:none;
-  user-select:none;
-  background-color: white;
-  border: solid 2px white;
-}
-
-.menu .material-icons {
-  margin: 0 auto;
-  color: #343a40;
-  font-size: 25px;
-}
-
-.menu:hover {
-  border: solid 2px aquamarine;
-}
-
-.menu:active {
-  border: solid 2px aquamarine;
-}
-
-.container {
-  max-width: 940px;
-  margin: 0 20px;
-  display: grid;
-  grid-gap: 10px;
-  padding: 20px;
-
-}
-
-.container {
-  max-width: 1200px;
-  display: grid;
-  margin: 0 auto;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  grid-auto-rows: minmax(100px, auto);
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select:none;
-  user-select:none;
-}
-
-.app {
-  /* needed for the flex layout*/
-  margin-left: 2px;
-  margin-right: 5px;
-  flex: 1 1 200px;
-  cursor: pointer;
-  border: solid 1px transparent;
-}
-
-.app .material-icons {
-  display: block;
-  margin-bottom: 10px;
-  color: aquamarine;
-}
-
-.app:hover {
-  border: solid 1px rgba(127, 255, 212, 0.50);
-}
-
-.app:active {
-  border: solid 1px aquamarine;
-}
-
-.container > * {
-  background-color: #444;
+mat-list-item, mat-icon,.mat-list-base .mat-list-item .mat-line{
   color: white;
-  border-radius: 5px;
-  padding: 20px;
-  font-size: 15px;
-  margin-bottom: 10px;
 }
-
-.navbar {
-  z-index: 30;
+mat-divider{
+  background-color: grey;
 }
-@supports (display: grid) {
-  .container > * {
-    margin: 0;
-  }
-}
-

@@ -8,13 +8,7 @@
 </div>
 <diV class="container" *ngIf="!linkedStoreEmpty && (this.user.isEmployee || this.user.isRegister)">
   <h3>Get started</h3>
-  <a class="menu logout" (click)="logout()"><i class="material-icons" data-toggle="tooltip" data-placement="bottom"
-                                               title="Logout">exit_to_app</i> </a>
-  <img class="profile-pic" src="{{this.user?.photoUrl}}">
-  <a class="menu" (click)="navigateToSetupStore()" data-toggle="tooltip" *ngIf="user.isRegister || !user.isEmployee"
-     data-placement="bottom" title="Setup new store"><i class="material-icons">add_circle</i> </a>
-
-  <div class="card ">
+    <div class="card ">
     <div class="item-wrapper">
       <div class="item" *ngFor="let store of this.storeState?.linkedStores; let i = index" (click)="selectStore(i)">
         <a class="menu"><i class="material-icons">keyboard_arrow_right</i> </a>

@@ -1,2 +1,16 @@
-<app-loading></app-loading>
-<router-outlet></router-outlet>
+<div class="mat-container" [class.is-mobile]="mobileQuery.matches">
+
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav   #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
+                 [fixedInViewport]="mobileQuery.matches" fixedTopGap="0" [opened]="!mobileQuery.matches && auth" >
+      <app-navbar></app-navbar>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  <button *ngIf="auth" (click)="snav?.toggle()" mat-mini-fab class="menu" >
+    <mat-icon aria-label="right" *ngIf="!snav?.opened"> keyboard_arrow_right</mat-icon>
+    <mat-icon aria-label="left" *ngIf="snav?.opened"> keyboard_arrow_left</mat-icon>
+  </button>
+</div>
