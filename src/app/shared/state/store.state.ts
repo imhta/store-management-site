@@ -1,4 +1,4 @@
-import {Action, Selector, State, StateContext, Store} from '@ngxs/store';
+import {Action, Select, Selector, State, StateContext, Store} from '@ngxs/store';
 import {UserStoreState} from '../models/store.model';
 import {
   DeleteEmployee,
@@ -23,6 +23,10 @@ import {Navigate} from '@ngxs/router-plugin';
 import {LoadingFalse} from './loading.state';
 import {GetProductByUid} from '../actions/product.actions';
 import {DeleteADiscount, GetAllDiscounts, UploadDiscount} from '../actions/discount.actions';
+import {AuthState} from './auth.state';
+import {Observable} from 'rxjs';
+import {take} from 'rxjs/operators';
+import {UserModel} from '../models/auth.model';
 
 
 @State<UserStoreState>({
@@ -33,7 +37,10 @@ import {DeleteADiscount, GetAllDiscounts, UploadDiscount} from '../actions/disco
   }
 })
 export class StoreState {
+  @Select('user') user$: Observable<UserModel>;
+  user: UserModel;
   constructor(private dbService: FirestoreService, private  store: Store) {
+    this.user$.pipe(take(5)).subscribe((data) => this.user = data);
   }
 
   @Selector()
@@ -82,7 +89,11 @@ export class StoreState {
     const state = ctx.getState();
     state.selectedStore = action.index;
     ctx.setState({...state});
-    return this.store.dispatch([new Navigate(['dashboard'])]);
+    if (this.user.role === 'Register') {
+      return this.store.dispatch([new Navigate(['dashboard'])]);
+    } else {
+      return this.store.dispatch([new Navigate(['store'])]);
+    }
   }
 
   @Action(ResetSelectedStore)

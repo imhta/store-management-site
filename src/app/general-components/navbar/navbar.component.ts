@@ -21,7 +21,7 @@ export class NavbarComponent implements OnInit {
   user: UserModel;
   storeState: UserStoreState;
   linkedStoreEmpty: boolean;
-  role = this.store.selectSnapshot(AuthState.role);
+
 
   constructor(private  store: Store, private actions$: Actions) {
     this.linkedStoreEmpty = false;
@@ -31,6 +31,7 @@ export class NavbarComponent implements OnInit {
           this.user = data.valueOf();
         }
       });
+
     this.actions$
       .pipe(ofActionDispatched(EmptyLinkedStore))
       .subscribe(() => this.linkedStoreEmpty = true);

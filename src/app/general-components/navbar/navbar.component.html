@@ -32,18 +32,18 @@
     <mat-icon mat-list-icon>trending_up</mat-icon>
     <h4 mat-line> Dashboard</h4>
   </mat-list-item>
-  <mat-list-item (click)="navigateTo('/sales')" *ngIf="!(role === 'Data entry')">
+  <mat-list-item (click)="navigateTo('/sales')" *ngIf="user.role !== 'Data entry'">
     <mat-icon mat-list-icon>shopping_cart</mat-icon>
     <h4 mat-line>Sales</h4>
   </mat-list-item>
-  <mat-list-item (click)="navigateTo('/add')" *ngIf="!(role === 'Billing')">
+  <mat-list-item (click)="navigateTo('/add')" *ngIf="user.role !== 'Billing'">
     <mat-icon mat-list-icon>add_circle</mat-icon>
     <h4 mat-line>Add</h4>
   </mat-list-item>
   <mat-list-item (click)="navigateTo('/store')">
     <mat-icon mat-list-icon>store</mat-icon>
     <h4 mat-line>Store</h4></mat-list-item>
-  <mat-list-item (click)="navigateTo('/invoice')" *ngIf="!(role === 'Data entry')">
+  <mat-list-item (click)="navigateTo('/invoice')" *ngIf="user.role !== 'Data entry'">
     <mat-icon mat-list-icon>pages
     </mat-icon>
     <h4 mat-line>Invoice</h4>
@@ -53,7 +53,7 @@
     <mat-icon mat-list-icon>account_box</mat-icon>
     <h4 mat-line>Manage users</h4>
   </mat-list-item>
-  <mat-list-item (click)="navigateTo('/customers')" *ngIf="!(role === 'Data entry')">
+  <mat-list-item (click)="navigateTo('/customers')" *ngIf="user.role !== 'Data entry'">
     <mat-icon mat-list-icon>people</mat-icon>
     <h4 mat-line>Customers</h4>
   </mat-list-item>
