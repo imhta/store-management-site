@@ -21,7 +21,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
   storeState: UserStoreState;
   roles = ['Data entry', 'Manager', 'Billing', 'Register'];
   userAddingForm = this.fb.group({
-    email: ['', Validators.required, Validators.email],
+    email: ['', Validators.compose([Validators.required, Validators.email])],
     role: ['Data entry'],
     storeUid: [''],
     createdBy: [''],
