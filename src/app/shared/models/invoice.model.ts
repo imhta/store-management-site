@@ -22,6 +22,7 @@ export class InvoiceModel {
   hasNoGstNumber: boolean;
   totalTax: number;
   storeUid: string;
+  sendSms: boolean;
   createdOn: Timestamp;
   billedBy: string;
 
@@ -30,6 +31,7 @@ export class InvoiceModel {
     this.totalQuantity = 0;
     this.totalPrice = 0;
     this.totalTax = 0;
+    this.sendSms = true;
   }
 
   fromJson(data) {
@@ -79,6 +81,7 @@ export class InvoiceModel {
       'totalQuantity': this.totalQuantity,
       'totalTax': this.totalTax,
       'storeUid': this.storeUid,
+      'sendSms': this.sendSms,
       'createdOn': Timestamp.now(),
       'invoiceId': this.invoiceId ? this.invoiceId : '',
       'pending': true
