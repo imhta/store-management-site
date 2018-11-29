@@ -19,12 +19,22 @@ import {Navigate} from '@ngxs/router-plugin';
 import {LoadingFalse} from './loading.state';
 import {FirestoreService} from '../service/firestore/firestore.service';
 import {delay} from 'rxjs/operators';
+import {ActivatedRoute, Router} from '@angular/router';
+
 
 @State<UserModel>({
   name: 'user',
   defaults: null
 })
 export class AuthState {
+  constructor(
+    private authService: AuthService,
+    private  store: Store,
+    private dbService: FirestoreService,
+    private route: ActivatedRoute,
+    private router: Router) {
+  }
+
   @Selector()
   static uid(state: UserModel) {
     return state.uid;
@@ -44,12 +54,10 @@ export class AuthState {
   static isRegister(state: UserModel) {
     return state.isRegister;
   }
+
   @Selector()
   static token(state: UserModel) {
     return state.token;
-  }
-
-  constructor(private authService: AuthService, private  store: Store, private dbService: FirestoreService) {
   }
 
   @Action(CheckAuthState)
@@ -94,8 +102,14 @@ export class AuthState {
   }
 
   @Action([LoginSuccessful, Authenticated])
-  navigateToHome() {
-      return this.store.dispatch([new Navigate(['select/store']), new LoadingFalse()]);
+  navigateToHome(ctx: StateContext<UserModel>) {
+    const state = ctx.getState();
+    console.log(this.route.snapshot.queryParamMap.get('returnUrl'));
+    return this.store
+      .dispatch([
+        new Navigate(['authenticated'], {}, {replaceUrl: true}),
+        new LoadingFalse()
+      ]);
   }
 
   @Action([LogoutSuccessful])
@@ -105,8 +119,9 @@ export class AuthState {
 
   @Action([NotAuthenticated])
   navigateToLogin() {
-    return this.store.dispatch([new LoadingFalse(), new Navigate([''])]);
+    return this.store.dispatch([new LoadingFalse()]);
   }
+
   @Action(AddExtraUser)
   addExtraUser(ctx: StateContext<UserModel>, {extraUser}: AddExtraUser) {
     return this.dbService
@@ -117,7 +132,9 @@ export class AuthState {
 
   @Action(ExtraUserAddedSuccessfully)
   extraUserAddedSuccessfully() {
-    return this.store.dispatch([new LoadingFalse(), new Navigate(['manage/users'])]);
+    const id = +this.router.routerState.snapshot.url.split('/')[2];
+
+    return this.store.dispatch([new LoadingFalse(), new Navigate([`u/${id}/manage/users`])]);
   }
 }
 

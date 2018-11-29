@@ -8,6 +8,8 @@ import {Navigate} from '@ngxs/router-plugin';
 import {EmptyLinkedStore, GetEmployeeLinkedStores, GetLinkedStores, ResetSelectedStore} from '../../shared/actions/store.actions';
 import {AuthState} from '../../shared/state/auth.state';
 import {Observable} from 'rxjs';
+import {ActivatedRoute, Router} from '@angular/router';
+import {map, switchMap} from 'rxjs/operators';
 
 
 @Component({
@@ -23,7 +25,7 @@ export class NavbarComponent implements OnInit {
   linkedStoreEmpty: boolean;
 
 
-  constructor(private  store: Store, private actions$: Actions) {
+  constructor(private  store: Store, private actions$: Actions, private route: ActivatedRoute, private router: Router) {
     this.linkedStoreEmpty = false;
     this.user$
       .subscribe((data) => {
@@ -42,9 +44,12 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
 
   }
-
+  navigateToManageStore() {
+    return this.store.dispatch(new Navigate(['select/store']));
+  }
   navigateTo(path: string) {
-    return this.store.dispatch([new Navigate([path])]);
+    const id = +this.router.routerState.snapshot.url.split('/')[2];
+    return this.store.dispatch([new Navigate([`u/${id}/${path}`])]);
   }
 
   logout() {

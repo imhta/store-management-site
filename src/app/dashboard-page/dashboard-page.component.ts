@@ -10,6 +10,7 @@ import {SingleProductModel} from '../shared/models/product.model';
 import {GetAllProducts} from '../shared/actions/product.actions';
 import {Navigate} from '@ngxs/router-plugin';
 import {take} from 'rxjs/operators';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -25,7 +26,7 @@ export class DashboardPageComponent implements OnInit {
   today = new Date();
   dashboard = new DashboardModel();
 
-  constructor(private store: Store) {
+  constructor(private store: Store, private router: Router) {
     this.storeUid$.pipe(take(1)).subscribe((storeUid) => {
       this.store.dispatch([new GetAllInvoice(storeUid), new GetAllProducts(storeUid)]);
     });
@@ -71,7 +72,8 @@ export class DashboardPageComponent implements OnInit {
   }
 
   navigateToAddProduct(path: string) {
-    return this.store.dispatch(new Navigate([path]));
+    const id = +this.router.routerState.snapshot.url.split('/')[2];
+    return this.store.dispatch([new Navigate([`u/${id}/${path}`])]);
   }
 
   refresh() {

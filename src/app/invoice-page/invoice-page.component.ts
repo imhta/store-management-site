@@ -9,6 +9,7 @@ import {Navigate} from '@ngxs/router-plugin';
 import {GetAllReturns} from '../shared/actions/return.actions';
 import {ReturnModel} from '../shared/models/return.model';
 import {LoadingTrue} from '../shared/state/loading.state';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-invoice-page',
@@ -24,7 +25,7 @@ export class InvoicePageComponent implements OnInit {
   printContents;
   currentStore;
   showReturn = false;
-  constructor(private store: Store) {
+  constructor(private store: Store, private router: Router) {
     this.storeUid$
       .subscribe((storeUid) => this.store.dispatch([new LoadingTrue(), new GetAllInvoice(storeUid), new GetAllReturns(storeUid)]));
     this.allBills$.subscribe((allBills) => {
@@ -94,6 +95,7 @@ export class InvoicePageComponent implements OnInit {
   }
 
   navigateToSell() {
-    this.store.dispatch([new Navigate(['sales'])]);
+    const id = +this.router.routerState.snapshot.url.split('/')[2];
+    return this.store.dispatch([new Navigate([`u/${id}/sales`])]);
   }
 }

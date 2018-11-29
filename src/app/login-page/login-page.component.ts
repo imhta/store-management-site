@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {Select, Store} from '@ngxs/store';
-import {Login} from '../shared/actions/auth.actions';
+import {CheckAuthState, Login} from '../shared/actions/auth.actions';
 import {LoadingTrue} from '../shared/state/loading.state';
 import {Observable} from 'rxjs';
 
@@ -16,6 +16,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   loading: boolean ;
   windowHeight;
   constructor( private router: Router, private store: Store) {
+    this.store.dispatch([new LoadingTrue(), new CheckAuthState()]);
    }
 
   ngOnInit() {

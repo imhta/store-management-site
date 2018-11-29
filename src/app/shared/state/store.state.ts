@@ -27,6 +27,7 @@ import {AuthState} from './auth.state';
 import {Observable} from 'rxjs';
 import {take} from 'rxjs/operators';
 import {UserModel} from '../models/auth.model';
+import {Router} from '@angular/router';
 
 
 @State<UserStoreState>({
@@ -39,7 +40,7 @@ import {UserModel} from '../models/auth.model';
 export class StoreState {
   @Select('user') user$: Observable<UserModel>;
   user: UserModel;
-  constructor(private dbService: FirestoreService, private  store: Store) {
+  constructor(private dbService: FirestoreService, private  store: Store, private router: Router) {
     this.user$.pipe(take(5)).subscribe((data) => this.user = data);
   }
 
@@ -90,9 +91,9 @@ export class StoreState {
     state.selectedStore = action.index;
     ctx.setState({...state});
     if (this.user.role === 'Register') {
-      return this.store.dispatch([new Navigate(['dashboard'])]);
+      return this.store.dispatch([new Navigate(['u', action.index, 'dashboard'])]);
     } else {
-      return this.store.dispatch([new Navigate(['store'])]);
+      return this.store.dispatch([new Navigate([`u/${action.index}/store`])]);
     }
   }
 
@@ -126,8 +127,9 @@ export class StoreState {
 
   @Action(DeleteEmployee)
   deleteEmployee(ctx: StateContext<any>, {email}: DeleteEmployee) {
+    const id = +this.router.routerState.snapshot.url.split('/')[2];
     this.dbService.deleteExtraUser(email)
-      .then(() => this.store.dispatch([new EmployeeDeletedSuccessfully(), new Navigate(['manage/users'])]));
+      .then(() => this.store.dispatch([new EmployeeDeletedSuccessfully(), new Navigate([`u/${id}/manage/users`])]));
   }
 
   @Action(GetProductByUid)

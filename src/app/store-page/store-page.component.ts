@@ -9,6 +9,7 @@ import {LoadingFalse, LoadingTrue} from '../shared/state/loading.state';
 import {AuthState} from '../shared/state/auth.state';
 import {first, take} from 'rxjs/operators';
 import {StoreState} from '../shared/state/store.state';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-store-page',
@@ -33,7 +34,7 @@ export class StorePageComponent implements OnInit, OnDestroy {
   isRegister;
   searchQuery: { storeId: string, query: string } = {storeId: '', query: ''};
 
-  constructor(private store: Store, private actions$: Actions) {
+  constructor(private store: Store, private actions$: Actions, private router: Router) {
     this.role = this.store.selectSnapshot(AuthState.role);
     this.isEmployee = this.store.selectSnapshot(AuthState.isEmployee);
     this.isRegister = this.store.selectSnapshot(AuthState.isRegister);
@@ -58,11 +59,13 @@ export class StorePageComponent implements OnInit, OnDestroy {
   }
 
   navigateToProduct(productId: string) {
-    this.store.dispatch([new Navigate(['store/product'], {uid: productId})]);
+    const id = +this.router.routerState.snapshot.url.split('/')[2];
+    this.store.dispatch([new Navigate([`u/${id}/store/product`], {uid: productId})]);
   }
 
   navigateToAddProduct() {
-    this.store.dispatch([new Navigate(['add'])]);
+    const id = +this.router.routerState.snapshot.url.split('/')[2];
+    this.store.dispatch([new Navigate([`u/${id}/add`])]);
   }
 
   onChange() {

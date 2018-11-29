@@ -16,6 +16,7 @@ import {InvoiceModel} from '../../shared/models/invoice.model';
 import {take} from 'rxjs/operators';
 import {Navigate} from '@ngxs/router-plugin';
 import {ReturnModel} from '../../shared/models/return.model';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -36,7 +37,7 @@ export class ReturnProductsComponent implements OnInit {
   tempInvoice: InvoiceModel;
   hasErrorWhileReturning = false;
 
-  constructor(private store: Store, private action$: Actions) {
+  constructor(private store: Store, private action$: Actions, private router: Router) {
     this.storeDataSubscription = this.storeState$.subscribe((data) => {
       this.storeState = new UserStoreState(data.valueOf());
       this.currentStore = this.storeState.linkedStores[this.storeState.selectedStore];
@@ -81,7 +82,10 @@ export class ReturnProductsComponent implements OnInit {
     this.store.dispatch([new LoadingTrue(), new ReturnInvoice(returnInvoice)]);
     this.action$
       .pipe(ofActionDispatched(ReturnedInvoiceSuccessfully), take(1))
-      .subscribe(() => this.store.dispatch([new Navigate(['store'])]));
+      .subscribe(() => {
+        const id = +this.router.routerState.snapshot.url.split('/')[2];
+        return this.store.dispatch([new Navigate([`u/${id}/store`])]);
+      });
     this.action$
       .pipe(ofActionDispatched(ErrorInReturningInvoice), take(1))
       .subscribe(({err}) => this.hasErrorWhileReturning = true);
@@ -100,7 +104,10 @@ export class ReturnProductsComponent implements OnInit {
     this.store.dispatch([new LoadingTrue(), new ReturnInvoice(returnInvoice)]);
     this.action$
       .pipe(ofActionDispatched(ReturnedInvoiceSuccessfully), take(1))
-      .subscribe(() => this.store.dispatch([new Navigate(['store'])]));
+      .subscribe(() => {
+        const id = +this.router.routerState.snapshot.url.split('/')[2];
+        return this.store.dispatch([new Navigate([`u/${id}/store`])]);
+      });
     this.action$
       .pipe(ofActionDispatched(ErrorInReturningInvoice), take(1))
       .subscribe(({err}) => this.hasErrorWhileReturning = true);

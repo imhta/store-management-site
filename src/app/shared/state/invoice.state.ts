@@ -15,6 +15,7 @@ import {
 import {ErrorInGettingAllReturns, GetAllReturns, GetInvoice, GotAllReturnsSuccessfully, ReturnInvoice} from '../actions/return.actions';
 import {ReturnModel} from '../models/return.model';
 import {CheckCustomerExitsOrNot, CheckCustomerNewToStore} from '../actions/customers.actions';
+import {Router} from '@angular/router';
 
 
 @State<{ invoices: InvoiceModel[], returnBills: ReturnModel[] }>({
@@ -25,7 +26,7 @@ import {CheckCustomerExitsOrNot, CheckCustomerNewToStore} from '../actions/custo
   }
 })
 export class InvoicesState {
-  constructor(private dbService: FirestoreService, private  store: Store) {
+  constructor(private dbService: FirestoreService, private  store: Store, private router: Router) {
   }
 
 
@@ -39,7 +40,8 @@ export class InvoicesState {
 
   @Action(InvoiceSavedSuccessfully)
   invoiceSavedSuccessfully() {
-    this.store.dispatch([new LoadingFalse(), new Navigate(['invoice'])]);
+    const id = +this.router.routerState.snapshot.url.split('/')[2];
+    this.store.dispatch([new LoadingFalse(), new Navigate([`u/${id}/invoice`])]);
   }
 
   @Action(ErrorInSavingInvoice)

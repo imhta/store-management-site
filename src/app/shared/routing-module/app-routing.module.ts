@@ -29,7 +29,14 @@ const routes: Routes = [
 
   {
     path: '',
-    component: LoginPageComponent
+    component: LoginPageComponent,
+    canDeactivate: [AuthGuard]
+  },
+  {
+    path: 'authenticated',
+    redirectTo: '/select/store',
+    pathMatch: 'full',
+    canActivate: [AuthGuard]
   },
   {
     path: 'select/store',
@@ -42,71 +49,82 @@ const routes: Routes = [
     canActivate: [AuthGuard, StoreCreatorGuard]
   },
   {
-    path: 'dashboard',
-    component: DashboardPageComponent,
-    canActivate: [AuthGuard, RegisterGuard]
-  },
-  {
-    path: 'store',
-    canActivate: [AuthGuard],
-    resolve: {getAllProducts: StoreResolver},
+    path: 'u/:id',
     children: [
       {
         path: '',
-        component: StorePageComponent
+        redirectTo: 'store',
+        pathMatch: 'full'
       },
       {
-        path: 'profile',
-        component: StoreSettingsComponent,
+        path: 'dashboard',
+        component: DashboardPageComponent,
+        canActivate: [AuthGuard, RegisterGuard]
+      },
+      {
+        path: 'store',
+        canActivate: [AuthGuard],
+        // resolve: {getAllProducts: StoreResolver},
+        children: [
+          {
+            path: '',
+            component: StorePageComponent
+          },
+          {
+            path: 'profile',
+            component: StoreSettingsComponent,
+            canActivate: [AuthGuard, RegisterGuard]
+          }
+        ]
+      },
+      {
+        path: 'sales',
+        component: SalesPageComponent,
+        canActivate: [AuthGuard, SellingGuard]
+      },
+      {
+        path: 'billing',
+        component: BillingPageComponent,
+        canActivate: [AuthGuard, RegisterGuard]
+      },
+      {
+        path: 'add',
+        component: AddPageComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'invoice',
+        component: InvoicePageComponent,
+        canActivate: [AuthGuard, SellingGuard]
+      },
+      {
+        path: 'customers',
+        component: CustomerPageComponent,
+        canActivate: [AuthGuard, SellingGuard]
+      },
+      {
+        path: 'store/product',
+        component: ProductPageComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'generated/qr',
+        component: QrPageComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'manage/users',
+        component: ManageUsersComponent,
+        canActivate: [AuthGuard, RegisterGuard]
+      },
+      {
+        path: 'add/user',
+        component: AddUserComponent,
         canActivate: [AuthGuard, RegisterGuard]
       }
     ]
   },
-  {
-    path: 'sales',
-    component: SalesPageComponent,
-    canActivate: [AuthGuard, SellingGuard]
-  },
-  {
-    path: 'billing',
-    component: BillingPageComponent,
-    canActivate: [AuthGuard, RegisterGuard]
-  },
-  {
-    path: 'add',
-    component: AddPageComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'invoice',
-    component: InvoicePageComponent,
-    canActivate: [AuthGuard, SellingGuard]
-  },
-  {
-    path: 'customers',
-    component: CustomerPageComponent,
-    canActivate: [AuthGuard, SellingGuard]
-  },
-  {
-    path: 'store/product',
-    component: ProductPageComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'generated/qr',
-    component: QrPageComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'manage/users',
-    component: ManageUsersComponent,
-    canActivate: [AuthGuard, RegisterGuard]
-  },
-  {
-    path: 'add/user',
-    component: AddUserComponent,
-    canActivate: [AuthGuard, RegisterGuard]
-  },
+
   {
     path: '**',
     component: NotFoundPageComponent

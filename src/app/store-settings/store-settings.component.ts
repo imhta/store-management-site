@@ -13,6 +13,7 @@ import {
 } from '../shared/actions/store.actions';
 import {LoadingTrue} from '../shared/state/loading.state';
 import {AuthState} from '../shared/state/auth.state';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -33,7 +34,7 @@ export class StoreSettingsComponent implements OnInit, OnDestroy {
   storeDescription: string;
   isAvailable = true;
 
-  constructor(private store: Store, private actions$: Actions) {
+  constructor(private store: Store, private actions$: Actions, private router: Router) {
     this.store.dispatch([new GetLinkedStores(this.store.selectSnapshot(AuthState.uid))]);
   }
 
@@ -62,7 +63,8 @@ export class StoreSettingsComponent implements OnInit, OnDestroy {
   }
 
   navigateToStore() {
-    this.store.dispatch([new Navigate(['store'])]);
+    const id = +this.router.routerState.snapshot.url.split('/')[2];
+    this.store.dispatch([new Navigate([`u/${id}/store`])]);
   }
 
   getLogoData(data) {

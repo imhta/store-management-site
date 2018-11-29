@@ -7,6 +7,7 @@ import {StoreState} from '../shared/state/store.state';
 import {first} from 'rxjs/operators';
 import {Navigate} from '@ngxs/router-plugin';
 import {ReturnModel} from '../shared/models/return.model';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -23,7 +24,7 @@ export class CustomerPageComponent implements OnInit {
   changeCustomer = true;
   selectedCustomerValue: string;
   selectedCustomerData: InvoiceModel[] = [];
-  constructor(public store: Store) {
+  constructor(public store: Store, private router: Router) {
   }
 
   ngOnInit() {
@@ -59,6 +60,7 @@ export class CustomerPageComponent implements OnInit {
   }
 
   navigateToSell() {
-    this.store.dispatch([new Navigate(['sell'])]);
+    const id = +this.router.routerState.snapshot.url.split('/')[2];
+    return this.store.dispatch([new Navigate([`u/${id}/sell`])]);
   }
 }

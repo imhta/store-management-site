@@ -15,6 +15,7 @@ import {LoadingFalse} from './loading.state';
 import {Navigate} from '@ngxs/router-plugin';
 import {AddOnlineProductTag, GetOnlineProductTags, RemoveOnlineProductTag} from '../actions/online-product-tag.actions';
 import {HttpService} from '../service/http/http.service';
+import {Router} from '@angular/router';
 
 
 @State<any[]>({
@@ -22,7 +23,7 @@ import {HttpService} from '../service/http/http.service';
   defaults: []
 })
 export class AllProductState {
-  constructor(private dbService: FirestoreService, private  store: Store, private httpService: HttpService) {
+  constructor(private dbService: FirestoreService, private  store: Store, private httpService: HttpService, private router: Router) {
   }
 
 
@@ -35,7 +36,8 @@ export class AllProductState {
 
   @Action(SingleProductUploadedSuccessfully)
   uploadSingleProductSuccessfully() {
-    this.store.dispatch([new LoadingFalse(), new Navigate(['store'])]);
+    const id = +this.router.routerState.snapshot.url.split('/')[2];
+    this.store.dispatch([new LoadingFalse(), new Navigate([`u/${id}/store`])]);
   }
 
   @Action(GetAllProducts)
@@ -59,7 +61,8 @@ export class AllProductState {
 
   @Action(ProductDeletedSuccessfully)
   productDeletedSuccessfully() {
-    return this.store.dispatch([new Navigate(['store'])]);
+    const id = +this.router.routerState.snapshot.url.split('/')[2];
+    return this.store.dispatch([new Navigate([`u/${id}/store`])]);
   }
 
   @Action(SearchForProduct)

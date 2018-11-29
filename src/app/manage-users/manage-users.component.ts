@@ -4,6 +4,7 @@ import {Observable, Subscription} from 'rxjs';
 import {UserStoreState} from '../shared/models/store.model';
 import {DeleteEmployee, GetAllEmployees, GotAllEmployeesSuccessfully} from '../shared/actions/store.actions';
 import {Navigate} from '@ngxs/router-plugin';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-manage-users',
@@ -15,7 +16,7 @@ export class ManageUsersComponent implements OnInit, OnDestroy {
   storeDataSubscription: Subscription;
   currentStore;
   employees: any[] = [];
-  constructor(private store: Store, private actions$: Actions) { }
+  constructor(private store: Store, private actions$: Actions, private router: Router) { }
 
   ngOnInit() {
   this.getStoreId();
@@ -34,7 +35,9 @@ export class ManageUsersComponent implements OnInit, OnDestroy {
     this.storeDataSubscription.unsubscribe();
   }
   navigateToAddUser() {
-    this.store.dispatch([new Navigate(['add/user'])]);
+    const id = +this.router.routerState.snapshot.url.split('/')[2];
+    return this.store.dispatch([new Navigate([`u/${id}/add/user`])]);
+
   }
   deleteEmployee(email: string) {
     return this.store.dispatch([new DeleteEmployee(email)]);

@@ -1,11 +1,11 @@
-.toolbar {
-  height: 50px;
-  width: 100%;
-  margin-bottom: 20px;
-}
+
 
 .grid-wrapper {
   display: grid;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: white;
   grid-template-columns: repeat(6, 1fr);
   grid-template-rows: repeat(6, 1fr);
 }
