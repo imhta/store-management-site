@@ -20,6 +20,7 @@ test_app_deploy:
        - npm run build_test_env
        - npm run set_development_environment
        - npm run deploy_to_dev
+       - exit 0
     only:
        - development-
 
@@ -29,5 +30,6 @@ firebase_deploy:
         - npm run build_prod_env
         - npm run set_production_environment
         - npm run deploy_to_prod
+        - exit 0
      only:
         - master
