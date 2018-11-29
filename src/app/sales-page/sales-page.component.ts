@@ -264,7 +264,14 @@ export class SalesPageComponent implements OnInit, OnDestroy {
       && this.outStockedProducts.length === 0
     ) {
       this.calculateInvoiceTotal();
-      this.store.dispatch([new LoadingTrue(), new SaveInvoice(this.invoice)]);
+      this.invoice.storeDetails = {
+        storeName: this.currentStore.storeName,
+        address: this.currentStore.address ? this.currentStore.address : '',
+        mobileNumber: this.currentStore.mobileNumber ? this.currentStore.mobileNumber : '',
+        location: this.currentStore.location,
+        gstNumber: this.currentStore.gstNumber ? this.currentStore.gstNumber : ''
+      };
+      return this.store.dispatch([new LoadingTrue(), new SaveInvoice(this.invoice)]);
     } else {
       this.isErrorInSavingInvoice = true;
     }
