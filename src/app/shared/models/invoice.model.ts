@@ -24,7 +24,7 @@ export class InvoiceModel {
   totalTax: number;
   storeUid: string;
   sendSms: boolean;
-  storeDetails: { storeName: string, mobileNumber: string, address: object, location: GeoPoint, gstNumber: string, storeLogo: object };
+  storeDetails: { storeName: string, mobileNumber: string, address: object, location: GeoPoint, gstNumber: string, storeLogo: string };
   createdOn: Timestamp;
   billedBy: string;
 

@@ -270,7 +270,7 @@ export class SalesPageComponent implements OnInit, OnDestroy {
         mobileNumber: this.currentStore.mobileNumber ? this.currentStore.mobileNumber : '',
         location: this.currentStore.location,
         gstNumber: this.currentStore.gstNumber ? this.currentStore.gstNumber : '',
-        storeLogo: this.currentStore.storeLogo ? this.currentStore.storeLogo : []
+        storeLogo: this.currentStore.storeLogo.localDownloadUrl ? this.currentStore.storeLogo.localDownloadUrl : ''
       };
       return this.store.dispatch([new LoadingTrue(), new SaveInvoice(this.invoice)]);
     } else {
