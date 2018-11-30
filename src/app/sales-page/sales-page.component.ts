@@ -269,7 +269,8 @@ export class SalesPageComponent implements OnInit, OnDestroy {
         address: this.currentStore.address ? this.currentStore.address : '',
         mobileNumber: this.currentStore.mobileNumber ? this.currentStore.mobileNumber : '',
         location: this.currentStore.location,
-        gstNumber: this.currentStore.gstNumber ? this.currentStore.gstNumber : ''
+        gstNumber: this.currentStore.gstNumber ? this.currentStore.gstNumber : '',
+        storeLogo: this.currentStore.storeLogo ? this.currentStore.storeLogo : []
       };
       return this.store.dispatch([new LoadingTrue(), new SaveInvoice(this.invoice)]);
     } else {
