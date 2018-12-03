@@ -108,6 +108,11 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
     if (this.productForm.valid) {
       this.addStoreId();
       this.addAddedBy();
+      this.product.fromStoreDate({
+        address: this.currentStore.address,
+        location: this.currentStore.location,
+        name: this.currentStore.storeName
+      });
       this.product.fromFromData(this.productForm.value);
       this.product.picturesUrl.length > 0 ? this.product.isListable = true : this.product.isListable = false;
       this.store.dispatch([new LoadingTrue(), new UploadSingleProduct(this.product)]);
@@ -157,9 +162,9 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
   createVariant(): FormGroup {
     return this.fb.group({
       size: [''],
-      stock: [''],
-      purchasedPrice: [''],
-      sellingPrice: ['']
+      stock: [0],
+      purchasedPrice: [0],
+      sellingPrice: [0]
     });
   }
 

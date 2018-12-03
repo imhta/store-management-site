@@ -1,4 +1,5 @@
 import Timestamp = firebase.firestore.Timestamp;
+import GeoPoint = firebase.firestore.GeoPoint;
 import * as firebase from 'firebase';
 
 export class SingleProductModel {
@@ -21,6 +22,7 @@ export class SingleProductModel {
   taxType: 'footwear' | 'textile' | 'other';
   otherTax: number;
   hsnCode: string;
+  storeDetails: { address: { city: string, pinCode: number, state: string, street: string }, location: GeoPoint, name: string };
   inclusiveAllTaxes: boolean;
   createdOn: Timestamp;
   isListable: boolean;
@@ -48,6 +50,9 @@ export class SingleProductModel {
     this.hasNoGstNumber = data.hasNoGstNumber;
   }
 
+  fromStoreDate(storeDetails) {
+    this.storeDetails = storeDetails;
+  }
 
   toJson() {
     return {
@@ -68,6 +73,7 @@ export class SingleProductModel {
       'inclusiveAllTaxes': this.inclusiveAllTaxes,
       'addedBy': this.addedBy,
       'storeId': this.storeId,
+      'storeDetails': this.storeDetails,
       'createdOn': Timestamp.now(),
       'isListable': this.isListable,
       'isDeleted': false

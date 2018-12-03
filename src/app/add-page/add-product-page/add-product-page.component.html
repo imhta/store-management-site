@@ -80,14 +80,16 @@
 
           <input formControlName="size" placeholder="Size" class="form-control  form-control-lg text-uppercase">
 
-          <input formControlName="stock" placeholder="Stock " class="form-control  form-control-lg">
+          <input formControlName="stock" placeholder="Stock " type="number" class="form-control  form-control-lg">
 
           <input formControlName="purchasedPrice" placeholder="Purchased Price"
+                 type="number"
                  [attr.readonly]="productForm.get('isVariantsWithSamePrice').value ? i!==0 ? '' : null : null"
                  [value]="productForm.get('isVariantsWithSamePrice').value ? variants.at(0).get('purchasedPrice').value: ''"
                  class="form-control  form-control-lg">
 
           <input formControlName="sellingPrice" placeholder="Selling Price"
+                 type="number"
                  [attr.readonly]="productForm.get('isVariantsWithSamePrice').value ? i!==0 ? '' : null : null"
                  [value]="productForm.get('isVariantsWithSamePrice').value ? variants.at(0).get('sellingPrice').value : ''"
                  class="form-control  form-control-lg">
