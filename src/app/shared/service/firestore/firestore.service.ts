@@ -18,7 +18,7 @@ import {
   UpdateUniqueStoreNameSuccessful
 } from '../../actions/store.actions';
 import {SingleProductModel} from '../../models/product.model';
-import {GetAllProductsError, GotAllProducts, GotProductByUid, ProductFounded} from '../../actions/product.actions';
+import {GetAllProductsError, GotAllProducts, GotProductByUid} from '../../actions/product.actions';
 import {ExtraUser} from '../../models/auth.model';
 import {InvoiceModel} from '../../models/invoice.model';
 import {GotAllInvoiceSuccessfully} from '../../actions/invoice.actions';
@@ -96,20 +96,15 @@ export class FirestoreService {
   }
 
   getAllProducts(storeId: string) {
-    return this.db.collection(`products`).ref
-      .where('storeId', '==', `${storeId}`)
-      .where('isDeleted', '==', false)
-      .orderBy('createdOn', 'desc')
-      .get().then((data) => {
-        this.allProducts = [];
-        data.forEach((product) => {
-          this.allProducts.push(product.data());
-        });
-        this.store.dispatch([new GotAllProducts(this.allProducts)]);
-      }).catch((err) => {
-        console.log(err);
-        this.store.dispatch([new GetAllProductsError(err)]);
-      });
+    return this.db.collection(`products`, ref =>
+      ref
+        .where('storeId', '==', `${storeId}`)
+        .where('isDeleted', '==', false)
+        .orderBy('createdOn', 'desc'))
+      .valueChanges()
+      .subscribe((data) => this.store.dispatch([new GotAllProducts(data)]),
+        error1 => this.store.dispatch([new GetAllProductsError(error1)])
+      );
   }
 
   deleteProduct(productUid) {
