@@ -1,0 +1,72 @@
+<div class=" qr-scanner-preview">
+  <div class="card">
+    <app-qr-scanner (data)="getInvoiceId($event)"></app-qr-scanner>
+  </div>
+</div>
+<div class="container">
+  <h3>Return invoice</h3>
+  <div class="form-group">
+    <div class="input-group">
+      <input type="text" class="form-control form-control-md " id="invoice-id" placeholder="Invoice Id"
+             required
+             [(ngModel)]="invoiceId">
+      <div class="input-group-append" id="button-addon4">
+        <button class="btn btn-primary" type="button" (click)="getInvoice()">Get</button>
+      </div>
+    </div>
+    <div *ngIf="invoiceNotFound">
+      <small class="form-text text-info">
+        Invoice not found, doesn't match any Invoice Id.
+      </small>
+    </div>
+    <div *ngIf="hasErrorWhileReturning">
+      <small class="form-text text-danger">
+        Error Occurred ! Check your internet connection and try again.
+      </small>
+    </div>
+  </div>
+  <div class="grid-wrapper" *ngIf="!(tempInvoice)">
+    <div class="card">
+
+      <img src="../../assets/logo/logo.png" class="grey-icon" alt="">
+      <div class="content">Here you can record product return</div>
+    </div>
+  </div>
+  <div *ngIf="tempInvoice">
+
+    <div class="item-wrapper">
+      <div class="item" *ngFor="let product of tempInvoice.cartProducts; let i = index">
+        <a
+          class="menu float-right"
+          (click)="!isSelected(product)
+            ? addToSelectedProducts(product)
+            : deselectProducts(product)">
+          <i class="material-icons" *ngIf="!isSelected(product)">keyboard_return</i>
+          <i class="material-icons" *ngIf="isSelected(product)">delete</i></a>
+        <h5>{{ product['productName'] }}</h5>
+        <h6>{{product['prn']}}</h6>
+        <span class="badge search-option badge-primary">
+          {{product['size']}}
+        </span>
+        <hr>
+        <h6>Quantity: {{product['totalQuantity']}}</h6>
+
+        <h6>Price: &#8377; {{product['totalPrice']}}</h6>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+<nav class="bg-dark text-white navbar " *ngIf="tempInvoice">
+  <div class=" total-detail">
+    <a>TQ: {{tempInvoice.totalQuantity}}</a>
+    <a>Total Price: &#8377; {{tempInvoice.totalPrice}}</a>
+    <!--<a>Total Tax: &#8377; {{invoice.totalTax}}</a>-->
+  </div>
+  <div>
+    <button class="btn btn-primary" type="button" *ngIf="selectedCartProducts.length > 0" (click)="returnSpecific()">Return selected</button>
+    <button class="btn btn-primary" type="button" *ngIf="selectedCartProducts.length === 0" (click)="returnAll()">Return all</button>
+
+  </div>
+</nav>

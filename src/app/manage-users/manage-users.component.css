@@ -1,0 +1,143 @@
+.toolbar {
+  height: 50px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+.icon-button{
+  cursor: pointer;
+}
+.material-icons{
+  text-decoration: none;
+}
+.material-icons:hover{
+  color: aquamarine;
+}
+.material-icons:active{
+  color: rgba(127, 255, 212, 0.5);
+}
+.card{
+  z-index: 1;
+  border: none;
+  width: 100%;
+}
+.container{
+  margin-top: 40px;
+}
+.container h3{
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+  display: flex;
+}
+.item-wrapper{
+  -webkit-box-shadow: 0px 0px 50px 0px rgba(0,0,0,0.12);
+  -moz-box-shadow: 0px 0px 50px 0px rgba(0,0,0,0.12);
+  box-shadow: 0px 0px 50px 0px rgba(0,0,0,0.12);
+  border-radius:10px;
+  margin: 0 auto;
+}
+.item{
+  cursor: pointer;
+  padding: 15px;
+  border-radius:10px;
+
+}
+
+.item h5{
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  margin: 0 auto;
+}
+.item-wrapper{
+  margin: 15px;
+}
+.menu {
+
+  border-radius: 50%;
+  cursor: pointer;
+  float: right;
+  display: flex;
+  width: 35px;
+  height: 35px;
+  color: lightgray;
+  margin: 10px;
+  padding-top: 3px;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select:none;
+  user-select:none;
+}
+.menu .material-icons {
+  margin: 0 auto;
+  color: grey;
+  font-size: 25px;
+
+}
+
+.menu:hover {
+  border: solid 1px transparent;
+}
+
+.menu:active {
+  border: solid 2px red;
+}
+
+.grid-wrapper {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+}
+
+.grid-wrapper .card {
+  grid-row: 2/6;
+  grid-column: 2/6;
+  z-index: 1;
+  border: none;
+}
+
+.grid-wrapper .card {
+  z-index: 1;
+  border: none;
+  width: 100%;
+}
+
+.grid-wrapper .grey-icon {
+  -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+  filter: grayscale(100%);
+  width: 120px;
+  margin: 0 auto;
+}
+
+.grid-wrapper .content {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  font-weight: 900;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 30px;
+  color: grey;
+}
+
+.grid-wrapper .setup-link {
+  border-radius: 30px;
+  text-align: center;
+  cursor: pointer;
+  margin: 0 auto;
+  padding: 15px 20px;
+  border: solid 4px aquamarine;
+  color: #214c3f;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+  letter-spacing: 2px;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.grid-wrapper .setup-link:hover {
+  border: solid 5px aquamarine;
+}
+
+.grid-wrapper .setup-link:active {
+  border: solid 3px aquamarine;
+}

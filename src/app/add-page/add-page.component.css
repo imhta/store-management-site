@@ -1,0 +1,17 @@
+
+::ng-deep #tab .nav-tabs{
+  background-color: #343a40 ;
+  position: sticky;
+  top: 0;
+  z-index: 25;
+}
+::ng-deep #tab .nav-link{
+  color: white ;
+}
+::ng-deep #tab .nav-link:hover{
+  border-radius: 0;
+}
+::ng-deep #tab .nav-link.active{
+  color: #343a40 ;
+  border-radius: 0;
+}

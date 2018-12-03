@@ -1,0 +1,22 @@
+{
+  "projects": {
+    "default": "clothxnet",
+    "dev": "clothxtest"
+  },
+  "targets": {
+    "clothxnet": {
+      "hosting": {
+        "console": [
+          "clothxnet"
+        ]
+      }
+    },
+    "clothxtest": {
+      "hosting": {
+        "dev": [
+          "clothxtest"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+<nav class="bg-dark navbar toolbar">
+  <div></div>
+  <a class="text-white icon-button" (click)="navigateToAddUser()"><i class="material-icons">person_add</i></a>
+</nav>
+<div class="grid-wrapper" *ngIf="!(employees.length > 0)">
+  <div class="card">
+
+    <img src="../../assets/logo/logo.png" class="grey-icon" alt="">
+    <div class="content">There is no employee yet</div>
+    <div class="setup-link" (click)="navigateToAddUser()">Add Employee</div>
+  </div>
+</div>
+<div class="container" *ngIf="employees.length > 0">
+  <h3>Manage users</h3>
+
+  <div class="card ">
+  <div class="item-wrapper">
+  <div class="item" *ngFor="let employee of employees; let i = index" >
+  <a class="menu" (click)="deleteEmployee(employee['email'])"><i class="material-icons">delete</i> </a>
+  <h5>{{ employee['email'] }}</h5>
+  <h6>{{employee['role']}}</h6>
+  </div>
+  </div>
+  </div>
+</div>

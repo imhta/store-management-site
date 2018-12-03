@@ -1,0 +1,126 @@
+.container  .btn {
+  border-radius: 50px;
+  border-color: #06bca9;
+  background-color: #06bca9;
+   margin: 20px;
+}
+
+.container  .btn:hover {
+  background-color: #06bca9;
+  color: white;
+}
+
+.container  .btn:focus {
+  border-color: #06bca9;
+  box-shadow: 0 1px 1px #06bca9 inset, 0 0 8px #06bca9;
+  outline: 0 none;
+}
+.container h3{
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+  display: flex;
+  margin: 20px;
+}
+.modal-title{
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+}
+.modal-footer .btn{
+  border-radius: 50px;
+  border-color: #06bca9;
+  background-color: #06bca9;
+}
+.modal-footer  .btn:hover {
+  background-color: #06bca9;
+  color: white;
+}
+
+.modal-footer  .btn:focus {
+  border-color: #06bca9;
+  box-shadow: 0 1px 1px #06bca9 inset, 0 0 8px #06bca9;
+  outline: 0 none;
+}
+.input-group .btn{
+  margin: 0 !important;
+  background-color: lightgray;
+  border-top-right-radius: 50px ;
+  border-bottom-right-radius: 50px;
+  border: none;
+}
+.input-group .active{
+  color: white;
+  background-color: #06bca9;
+  outline: 0 none;
+}
+#add-cloth{
+  border-top-right-radius: 50px ;
+  border-bottom-right-radius: 50px;
+  border-color: #06bca9;
+  background-color: #06bca9;
+}
+.modal-content{
+  border: none;
+  border: 10px;
+}
+/*empty message style*/
+
+.grid-wrapper {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+}
+
+.grid-wrapper .card {
+  grid-row: 2/6;
+  grid-column: 2/6;
+  z-index: 1;
+  border: none;
+}
+
+.grid-wrapper .card {
+  z-index: 1;
+  border: none;
+  width: 100%;
+}
+
+.grid-wrapper .grey-icon {
+  -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+  filter: grayscale(100%);
+  width: 120px;
+  margin: 0 auto;
+}
+
+.grid-wrapper .content {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  font-weight: 900;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 30px;
+  color: grey;
+}
+
+.setup-link {
+  border-radius: 30px;
+  text-align: center;
+  cursor: pointer;
+  margin: 0 auto;
+  padding: 15px 20px;
+  border: solid 4px aquamarine;
+  color: #214c3f;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+  letter-spacing: 2px;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.setup-link:hover {
+  border: solid 5px aquamarine;
+}
+
+.setup-link:active {
+  border: solid 3px aquamarine;
+}

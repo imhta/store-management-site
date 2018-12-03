@@ -1,0 +1,20 @@
+<div class="grid-wrapper" *ngIf="linkedStoreEmpty">
+  <div class="card">
+
+    <img src="../../../assets/logo/logo.png" class="grey-icon" alt="">
+    <div class="content">Your store has not setup yet</div>
+    <div class="setup-link" (click)="navigateToSetupStore()">SETUP NOW</div>
+  </div>
+</div>
+<diV class="container" *ngIf="!linkedStoreEmpty && (this.user.isEmployee || this.user.isRegister)">
+  <h3>Get started</h3>
+    <div class="card ">
+    <div class="item-wrapper">
+      <div class="item" *ngFor="let store of this.storeState?.linkedStores; let i = index" (click)="selectStore(i)">
+        <a class="menu"><i class="material-icons">keyboard_arrow_right</i> </a>
+        <h5>{{ store['storeName'] }}</h5>
+        <h6>{{store['address']['city']}}</h6>
+      </div>
+    </div>
+  </div>
+</diV>

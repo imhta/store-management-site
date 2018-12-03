@@ -1,0 +1,50 @@
+<nav class="bg-dark navbar toolbar">
+  <div><a (click)="navigateToStore()"><i class="material-icons">arrow_back</i></a></div>
+</nav>
+
+<div class="container">
+  <div class="card">
+    <h2>Store profile</h2>
+    <div class="form-group ">
+      <span class="badge badge-primary float-right" (click)="checkUniqueness()"
+            data-toggle="tooltip" data-placement="top" title="Click to check and save">Check and Save</span>
+      <a class="float-right "><i class="material-icons done" *ngIf="isAvailable">
+        done
+      </i><i class="material-icons not-done" *ngIf="!isAvailable">
+        clear
+      </i></a>
+      <label for="unique-name">Unique Store Name</label>
+      <input class="form-control form-control-lg " id="unique-name" type="text" [(ngModel)]="uniqueStoreName"
+             placeholder="clothxshopping" required>
+      <div>
+        <small class="form-text text-info" *ngIf="!(this.uniqueStoreName.length >= 5)">
+          Unique store name should contains minimum of 5 characters.
+        </small>
+        <small class="form-text text-info" *ngIf="!( this.uniqueStoreName.split(' ').length === 1)">
+          Unique store name should not contains space.
+        </small>
+        <small class="form-text text-info" *ngIf="!(noSpecialCharacters())">
+          Unique store name should not contains special characters.
+        </small>
+      </div>
+    </div>
+    <div class="form-group ">
+              <span class="badge badge-primary float-right" (click)="saveStoreDescription()"
+                    data-toggle="tooltip" data-placement="top" title="Click to save description">Save</span>
+      <label for="description">Description</label>
+      <textarea type="text" class="form-control" id="description" [(ngModel)]="storeDescription" maxlength="250"
+                placeholder="Establishments primarily engaged in the retail sale of a general line of women's ready-to-wear clothing."
+      ></textarea>
+      <div>
+        <small class="form-text text-info float-right">
+          Max 250 characters.
+        </small>
+      </div>
+    </div>
+    <app-logo-upload [storeId]="currentStore['storeUid']" [inData]="logo"
+                     (outData)="getLogoData($event)"></app-logo-upload>
+    <app-store-pics-upload [storeId]="currentStore['storeUid']" [inData]="storePictures"
+                           (outData)="getStorePicturesData($event)"></app-store-pics-upload>
+
+  </div>
+</div>

@@ -1,0 +1,152 @@
+.grid-wrapper{
+  display: grid;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  grid-template-columns:  repeat(6,  1fr );
+  grid-template-rows: repeat(6,  1fr );
+}
+
+.grid-wrapper .card{
+  grid-row: 2/6;
+  grid-column:2/6 ;
+  z-index: 1;
+  border: none;
+}
+.card{
+  z-index: 1;
+  border: none;
+  width: 100%;
+}
+.container{
+  margin-top: 40px;
+}
+.container h3{
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+  display: flex;
+}
+.item-wrapper{
+  -webkit-box-shadow: 0px 0px 50px 0px rgba(0,0,0,0.12);
+  -moz-box-shadow: 0px 0px 50px 0px rgba(0,0,0,0.12);
+  box-shadow: 0px 0px 50px 0px rgba(0,0,0,0.12);
+  border-radius:10px;
+  margin: 0 auto;
+}
+.item{
+  cursor: pointer;
+  padding: 15px;
+  border-radius:10px;
+
+}
+
+.item:hover {
+  background-color: rgba(133, 255, 216, 0.25);
+}
+
+.item:active {
+  background-color: rgba(133, 255, 216, 0.5);
+}
+.item h5{
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  margin: 0 auto;
+}
+.item-wrapper{
+  margin: 15px;
+}
+.grey-icon{
+  -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+  filter: grayscale(100%);
+  width:120px;
+  margin: 0 auto;
+}
+
+.content{
+ text-align: center;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  font-weight: 900;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 30px;
+  color: grey;
+}
+
+.setup-link{
+  border-radius: 30px;
+  text-align: center;
+  cursor: pointer;
+  margin: 0 auto;
+  padding: 15px 20px;
+  border: solid 4px aquamarine;
+  color: #214c3f;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+  letter-spacing: 2px;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select:none;
+  user-select:none;
+}
+.setup-link:hover {
+  border: solid 5px aquamarine;
+}
+
+.setup-link:active {
+  border: solid 3px aquamarine;
+}
+.menu {
+
+  border-radius: 50%;
+  cursor: pointer;
+  float: right;
+  display: flex;
+  width: 35px;
+  height: 35px;
+  color: lightgray;
+  margin: 10px;
+  padding-top: 3px;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select:none;
+  user-select:none;
+}
+.menu .material-icons {
+  margin: 0 auto;
+  color: grey;
+  font-size: 25px;
+
+}
+
+.menu:hover {
+  border: solid 1px transparent;
+}
+
+.menu:active {
+  border: solid 2px aquamarine;
+}
+
+.profile-pic {
+  border-radius: 50%;
+  margin: 10px;
+  cursor: pointer;
+  display: flex;
+  width: 35px;
+  float: left;
+
+}
+
+.profile-pic:hover {
+  border: solid 1px transparent;
+}
+
+.profile-pic:active {
+  border: solid 2px aquamarine;
+}
+.empty-pos{
+  float: right;
+}
+.logout:active{
+  border-color: red;
+
+}

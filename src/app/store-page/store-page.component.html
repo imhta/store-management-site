@@ -1,0 +1,39 @@
+
+<nav class="bg-dark text-white navbar toolbar">
+  <diV><h5><b>{{currentStore['storeName']}}</b></h5></diV>
+
+  <div>
+    <a routerLink="profile" *ngIf="((role === 'Register' && isRegister) || !isEmployee)"><i class="material-icons">settings</i></a>
+  </div>
+</nav>
+
+<div class="container">
+  <button class="btn btn-primary float-right" type="button" (click)="navigateToAddProduct()">Add Product</button>
+  <h3>Store</h3>
+  <hr>
+  <div class="m-4">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Store search" [(ngModel)]="searchQuery.query" (keyup.enter)="search()" (ngModelChange)="onChange()">
+      <button class="input-group-append btn btn-primary" (click)="search()">Search</button>
+    </div>
+  </div>
+</div>
+
+<app-store-table-view
+  *ngIf="!isEmpty && !loading"
+  [allProducts]="searchQuery.query.length === 0 ? allProducts : resultProduct"
+  (goToProduct)="navigateToProduct($event)"
+  (goToAddProduct)="navigateToAddProduct()">
+</app-store-table-view>
+
+
+
+<div class="grid-wrapper" *ngIf="isEmpty && !loading">
+  <div class="card">
+
+    <img src="../../../assets/logo/logo.png" class="grey-icon" alt="">
+    <div class="content">Your store has no product yet</div>
+    <div class="setup-link" (click)="  navigateToAddProduct()">ADD PRODUCT</div>
+  </div>
+</div>
+

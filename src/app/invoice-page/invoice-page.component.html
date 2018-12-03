@@ -1,0 +1,119 @@
+<nav class="bg-dark navbar toolbar">
+  <div></div>
+  <div>
+    <button class="btn btn-primary" *ngIf="!showReturn" (click)="showReturn = !showReturn">Returns bills</button>
+    <button class="btn btn-primary" *ngIf="showReturn" (click)="showReturn = !showReturn">Invoices</button>
+    <button class="btn btn-primary" (click)="navigateToSell()">Sell</button>
+  </div>
+
+</nav>
+<div #invoices *ngIf="!showReturn">
+  <div class="grid-wrapper" *ngIf="!(allInvoices.length > 0)">
+    <div class="card">
+
+      <img src="../../assets/logo/logo.png" class="grey-icon" alt="">
+      <div class="content">There is no invoice yet</div>
+      <div class="setup-link" (click)="navigateToSell()">START SELLING</div>
+    </div>
+  </div>
+
+  <div class="container" *ngIf="allInvoices.length > 0">
+    <h3>Invoices</h3>
+
+    <div class="card ">
+      <div class="item-wrapper">
+        <div class="item" *ngFor="let invoice of allInvoices; let i = index">
+          <a class="float-right" style="margin-left: 15px" (click)="this.print()"><i
+            class="material-icons">print</i></a>
+          <h6 class="float-right">{{ invoice.createdOn.toDate()}}</h6>
+          <p>{{invoice.invoiceId}}</p>
+          <h5>{{invoice.customerNumber}}</h5>
+          <p>Total quantity: {{invoice.totalQuantity}}</p>
+          <p>Total price: &#8377; {{invoice.totalPrice}}</p>
+
+          <!--//billing invoice-->
+
+          <div style="display: none">
+            <div id="print-section">
+              <h2> {{ currentStore['storeName'] }}</h2>
+              <h4 style="font-weight: normal;">
+                <span *ngIf="!invoice.hasNoGstNumber">GSTIN:{{currentStore.gstNumber}}</span><br>
+                {{currentStore['address']['street'] + ' ' +
+                currentStore['address']['city']}}
+                <br>Customer no: {{invoice.customerNumber}}<br>{{invoice.createdOn.toDate()}}</h4>
+              <table class="table" *ngFor="let product of invoice.cartProducts; let i = index">
+                <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">PRN</th>
+                  <th scope="col">Product name</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Total Price</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <th scope="row">{{i+1}}</th>
+                  <td>{{product['prn']}}</td>
+                  <td>{{product['productName'] +' - ' + product['size']}}</td>
+                  <td>{{product['totalQuantity']}}</td>
+                  <td>&#8377; {{product['totalPrice']}}</td>
+                </tr>
+
+                </tbody>
+              </table>
+              <p *ngIf="!invoice.hasNoGstNumber">Total tax : &#8377; {{invoice.totalTax}}</p>
+              <p>Total products :{{invoice.cartProducts.length}}</p>
+              <p>Total quantity: {{invoice.totalQuantity}}</p>
+              <p [style.text-decoration]="invoice.isDiscountApplied ? 'line-through' : 'none'">Total price: &#8377; {{invoice.totalPrice}}</p>
+              <p *ngIf="invoice.isDiscountApplied">Total Discounted price: &#8377; {{invoice.discountPrice}}</p>
+              <div style="text-align: center;">
+                <ngx-kjua
+                  [renderAsync]="true"
+                  [text]="invoice.invoiceId"
+                  [crisp]="true"
+                  [size]="100"
+                ></ngx-kjua>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div #returns *ngIf="showReturn">
+  <div class="grid-wrapper" *ngIf="!(allReturns.length > 0)">
+    <div class="card">
+
+      <img src="../../assets/logo/logo.png" class="grey-icon" alt="">
+      <div class="content">There is no returns yet</div>
+      <div class="setup-link" (click)="navigateToSell()">START SELLING</div>
+    </div>
+  </div>
+
+  <div class="container" *ngIf="allReturns.length > 0">
+    <h3>Returns</h3>
+
+    <div class="card ">
+      <div class="item-wrapper">
+        <div class="item" *ngFor="let returnBill of allReturns; let i = index">
+          <!--<h6 class="float-right">{{ invoice.createdOn.toDate()}}</h6>-->
+          <p>{{returnBill.invoiceId}}</p>
+          <div *ngFor="let product of returnBill.cartProducts">
+            <hr>
+            <p><b>{{product['productName']}}</b></p>
+            <p><b>{{product['prn']}}</b></p>
+            <p><b>Size: {{product['size']}}</b></p>
+            <p> Total Quantity: {{product['totalQuantity']}}</p>
+            <p> Total price: &#8377; {{product['totalPrice']}}</p>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

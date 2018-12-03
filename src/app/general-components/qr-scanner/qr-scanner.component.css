@@ -1,0 +1,13 @@
+@media only screen and (max-width: 600px) {
+  .select{
+    width: 100%;
+  }
+
+  .select-wrapper{
+    width: 100%;
+  }
+
+}
+.badge {
+  cursor: pointer;
+}

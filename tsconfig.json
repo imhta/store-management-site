@@ -2,6 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
+    "importHelpers": true,
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
@@ -17,4 +18,9 @@
       "dom"
     ]
   }
+//  "angularCompilerOptions": {
+//    "enableIvy": true,
+//    "genDir": "aot",
+//    "skipMetadataEmit" : true
+//  }
 }
