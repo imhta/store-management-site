@@ -108,6 +108,9 @@ export class SalesPageComponent implements OnInit, OnDestroy {
     if (String(phoneNo).length === 10) {
       this.store.dispatch([new LoadingTrue(), new CheckCustomerExitsOrNot(phoneNo)]);
       this.action$.pipe(ofActionDispatched(CustomerExits), first()).subscribe(({customerName}) => {
+        if (customerName === '') {
+          this.customerNotExit = true;
+        }
         this.invoice.customerName = customerName;
         this.store.dispatch([new LoadingTrue(), new CheckCustomerNewToStore(phoneNo, this.currentStore.storeUid)]);
       });
