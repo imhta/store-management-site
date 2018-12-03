@@ -111,7 +111,11 @@ export class DashboardPageComponent implements OnInit {
       data: {
         labels: ['Earned Money', 'Total Collected Taxes', 'Total Discount Provided'],
         datasets: [{
-          data: [this.dashboard.totalMoneyOfAllInvoiceWithoutDiscounts, this.dashboard.totalOfAllTaxes, this.dashboard.totalOfAllDiscounts],
+          data: [
+            this.dashboard.totalMoneyOfAllInvoiceWithoutDiscounts.toFixed(2),
+            this.dashboard.totalOfAllTaxes.toFixed(2),
+            this.dashboard.totalOfAllDiscounts.toFixed(2)
+          ],
           backgroundColor: [
             '#4bc0c0',
             '#ff6384',
