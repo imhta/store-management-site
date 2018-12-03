@@ -9,7 +9,7 @@ export class SingleProductModel {
   brandName: string;
   categories: { category1: string, category2: string, colorCategory: string };
   description: string;
-  gender: 'Male' | 'Female' | 'Boy' | 'Girl';
+  gender: 'Men' | 'Women' | 'Boy' | 'Girl';
   picturesUrl: string[] = [];
   picturesPath: string[] = [];
   isDeleted: boolean;
