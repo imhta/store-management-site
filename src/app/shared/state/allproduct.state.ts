@@ -42,7 +42,7 @@ export class AllProductState {
 
   @Action(GetAllProducts)
   getAllProducts(cxt: StateContext<any[]>, {storeId}: GetAllProducts) {
-    this.dbService.getAllProducts(storeId).then().catch();
+    this.dbService.getAllProducts(storeId);
   }
 
   @Action(GotAllProducts)
