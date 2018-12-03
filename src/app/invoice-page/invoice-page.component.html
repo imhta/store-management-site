@@ -41,7 +41,7 @@
                 {{currentStore['address']['street'] + ' ' +
                 currentStore['address']['city']}}
                 <br>Customer no: {{invoice.customerNumber}}<br>{{invoice.createdOn.toDate()}}</h4>
-              <table class="table" *ngFor="let product of invoice.cartProducts; let i = index">
+              <table class="table">
                 <thead>
                 <tr>
                   <th scope="col">#</th>
@@ -52,7 +52,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
+                <tr  *ngFor="let product of invoice.cartProducts; let i = index">
                   <th scope="row">{{i+1}}</th>
                   <td>{{product['prn']}}</td>
                   <td>{{product['productName'] +' - ' + product['size']}}</td>
@@ -62,11 +62,11 @@
 
                 </tbody>
               </table>
-              <p *ngIf="!invoice.hasNoGstNumber">Total tax : &#8377; {{invoice.totalTax}}</p>
+              <p *ngIf="!invoice.hasNoGstNumber">Total tax : &#8377; {{invoice.totalTax  | number : '1.2-2'}}</p>
               <p>Total products :{{invoice.cartProducts.length}}</p>
               <p>Total quantity: {{invoice.totalQuantity}}</p>
-              <p [style.text-decoration]="invoice.isDiscountApplied ? 'line-through' : 'none'">Total price: &#8377; {{invoice.totalPrice}}</p>
-              <p *ngIf="invoice.isDiscountApplied">Total Discounted price: &#8377; {{invoice.discountPrice}}</p>
+              <p [style.text-decoration]="invoice.isDiscountApplied ? 'line-through' : 'none'">Total price: &#8377; {{invoice.totalPrice  | number : '1.2-2'}}</p>
+              <p *ngIf="invoice.isDiscountApplied">Total Discounted price: &#8377; {{invoice.discountPrice  | number : '1.2-2'}}</p>
               <div style="text-align: center;">
                 <ngx-kjua
                   [renderAsync]="true"
