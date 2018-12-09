@@ -10,7 +10,7 @@ import {LoadingTrue} from '../../shared/state/loading.state';
 import {UploadSingleProduct} from '../../shared/actions/product.actions';
 
 
-const categories = ['Shirt', 'T- Shirt', 'Track', 'Casuals', 'Formals', 'Full Pant', 'Half Pant',
+const tags = ['Shirt', 'T- Shirt', 'Track', 'Casuals', 'Formals', 'Full Pant', 'Half Pant',
   'Trouser', 'Jeans', 'Full Hand', 'Half Hand', 'Saree', 'Silk',
   'Cotton', 'Wool', 'Chudidar', 'Tops', 'Inner Wears', 'Watches', 'Wallets', 'Shoes', 'Designer', 'Western Wear',
   'Ethnic Wear', 'Sports Wear', 'Lingerie & Nightwear', 'Handbags', 'Sunglasses', 'New Trend', 'Celeb Fashion', 'Scandals',
@@ -35,7 +35,12 @@ const colors = ['AliceBlue', 'AntiqueWhite', 'Aqua', 'Aquamarine', 'Azure', 'Bei
   'PowderBlue', 'Purple', 'Red', 'RosyBrown', 'RoyalBlue', 'SaddleBrown', 'Salmon', 'SandyBrown', 'SeaGreen', 'SeaShell',
   'Sienna', 'Silver', 'SkyBlue', 'SlateBlue', 'SlateGray', 'SlateGrey', 'Snow', 'SpringGreen', 'SteelBlue', 'Tan', 'Teal',
   'Thistle', 'Tomato', 'Turquoise', 'Violet', 'Wheat', 'White', 'WhiteSmoke', 'Yellow', 'YellowGreen'];
-
+const occasionsCat = [
+  'Casuals', 'Party', 'Lingerie & Night Wear', 'Sports', 'Formals', 'Wedding', 'Summer', 'Winter', 'Swim Wear'
+];
+const styleCat = [
+  'Full Hand', 'Half Hand', 'Sleeveless', 'V-Neck', 'U-Neck', 'Tight', 'Designer', 'Custom', 'HipHop', 'Polo', 'Boxer', 'Leggings'
+];
 @Component({
   selector: 'app-add-product-page',
   templateUrl: './add-product-page.component.html',
@@ -73,12 +78,12 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
     hsnCode: ['']
   });
   product = new SingleProductModel();
-  categories = (text$: Observable<string>) =>
+  tags = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
       map(term => term.length < 1 ? []
-        : categories.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+        : tags.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
     );
   colors = (text$: Observable<string>) =>
     text$.pipe(
@@ -87,7 +92,20 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
       map(term => term.length < 2 ? []
         : colors.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
     );
-
+  occasionsCat = (text$: Observable<string>) =>
+    text$.pipe(
+      debounceTime(200),
+      distinctUntilChanged(),
+      map(term => term.length < 1 ? []
+        : occasionsCat.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+    );
+  styleCat = (text$: Observable<string>) =>
+    text$.pipe(
+      debounceTime(200),
+      distinctUntilChanged(),
+      map(term => term.length < 1 ? []
+        : styleCat.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+    );
   constructor(private fb: FormBuilder, private store: Store) {
 
   }
