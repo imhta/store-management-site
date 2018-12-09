@@ -82,7 +82,6 @@ import {HttpService} from './shared/service/http/http.service';
 import {PipesModule} from './shared/pipes/pipes.module';
 import {CommonModule} from '@angular/common';
 
-
 @NgModule({
   declarations: [
     AppComponent,
