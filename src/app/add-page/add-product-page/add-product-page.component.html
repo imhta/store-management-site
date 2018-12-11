@@ -36,7 +36,7 @@
                placeholder="Nike sports T-shirt, Casual check shirt" required formControlName="productName">
         <div
           *ngIf="productForm.get('productName').invalid && (productForm.get('productName').dirty || productForm.get('productName').touched)">
-          <small class="form-text text-danger" *ngIf="productForm.get('productName').errors.required">
+          <small *ngIf="productForm.get('productName').errors.required" class="form-text text-danger">
             Product name is required.
           </small>
         </div>

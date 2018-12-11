@@ -47,6 +47,7 @@ export class AllProductState {
 
   @Action(GotAllProducts)
   gotAllProducts(cxt: StateContext<any[]>, {allProduct}: GotAllProducts) {
+    console.log(allProduct);
     cxt.setState(allProduct);
     this.store.dispatch([new LoadingFalse()]);
   }

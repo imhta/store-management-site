@@ -81,6 +81,8 @@ import {MatMenuModule} from '@angular/material/menu';
 import {HttpService} from './shared/service/http/http.service';
 import {PipesModule} from './shared/pipes/pipes.module';
 import {CommonModule} from '@angular/common';
+import {NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
+import {NgxsLoggerPluginModule} from '@ngxs/logger-plugin';
 
 @NgModule({
   declarations: [
@@ -136,8 +138,8 @@ import {CommonModule} from '@angular/common';
     AngularFireModule.initializeApp(environment.firebase),
     NgxsModule.forRoot([AuthState, LoadingState, StoreState, AllProductState, InvoicesState]),
     NgxsRouterPluginModule.forRoot(),
-    // NgxsLoggerPluginModule.forRoot(),
-    // NgxsReduxDevtoolsPluginModule.forRoot(),
+    NgxsLoggerPluginModule.forRoot(),
+    NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxKjuaModule,
     ZXingScannerModule,
     NgbModule,

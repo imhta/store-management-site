@@ -6,7 +6,7 @@
   </div>
 </mat-toolbar>
 <mat-nav-list *ngIf="user">
-  <mat-list-item (click)="navigateTo('/select/store')">
+  <mat-list-item >
     <img mat-list-avatar src="{{user.photoUrl}}">
     <h4 mat-line>{{user.displayName}}</h4>
     <p mat-line> {{user.email}}</p>

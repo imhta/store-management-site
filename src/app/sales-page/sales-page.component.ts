@@ -74,7 +74,7 @@ export class SalesPageComponent implements OnInit, OnDestroy {
     this.storeDataSubscription = this.storeState$.subscribe((data) => {
       this.storeState = new UserStoreState(data.valueOf());
       this.currentStore = this.storeState.linkedStores[this.storeState.selectedStore];
-      this.store.dispatch([new GetAllProducts(this.currentStore.storeUid), new GetAllDiscounts(this.currentStore.storeUid)]);
+      this.store.dispatch([ new GetAllDiscounts(this.currentStore.storeUid)]);
     });
     this.allProducts$.subscribe((data: any[]) => {
       this.allProducts = data;
@@ -273,7 +273,7 @@ export class SalesPageComponent implements OnInit, OnDestroy {
         mobileNumber: this.currentStore.mobileNumber ? this.currentStore.mobileNumber : '',
         location: this.currentStore.location,
         gstNumber: this.currentStore.gstNumber ? this.currentStore.gstNumber : '',
-        storeLogo: this.currentStore.storeLogo.localDownloadUrl ? this.currentStore.storeLogo.localDownloadUrl : ''
+        storeLogo: this.currentStore.storeLogo ? this.currentStore.storeLogo.localDownloadUrl : ''
       };
       return this.store.dispatch([new LoadingTrue(), new SaveInvoice(this.invoice)]);
     } else {
