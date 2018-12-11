@@ -69,13 +69,10 @@ export class FirestoreService {
 
   async getLinkedStore(uid) {
     this.stores = [];
-    await this.db.collection('stores').ref
-      .where('registerUid', '==', uid)
-      .get()
-      .then((data) => {
-        if (!data.empty) {
-          data.forEach((store) => this.stores.push(store.data()));
-          return this.store.dispatch([new GotLinkedStores(this.stores)]);
+    await this.db.collection('stores', ref => ref.where('registerUid', '==', uid)).valueChanges()
+      .subscribe((data) => {
+        if (data.length > 0) {
+          return this.store.dispatch([new GotLinkedStores(data)]);
         } else {
           return this.store.dispatch([new EmptyLinkedStore()]);
         }
