@@ -40,7 +40,7 @@ export class LinkedStoreComponent implements OnInit, OnDestroy {
     this.linkedStoreEmpty = false;
 
     this.storeSub$ = this.storeState$
-      .subscribe((data) => this.storeState = new UserStoreState(data.valueOf()));
+      .subscribe((data) => this.storeState = new UserStoreState(data));
 
     this.userSub$ = this.user$.pipe().subscribe((data) => {
       if (data) {
