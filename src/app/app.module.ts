@@ -150,7 +150,7 @@ import {NgxsLoggerPluginModule} from '@ngxs/logger-plugin';
     MatToolbarModule,
     MatSidenavModule,
     MatListModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
+    // ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
     PipesModule
 
   ],

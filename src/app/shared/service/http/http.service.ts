@@ -12,7 +12,7 @@ export class HttpService {
   constructor(private http: HttpClient, private store: Store) { }
   searchForProduct(searchQuery) {
     this.http
-      .post(`https://us-central1-${environment.firebase.projectId}..cloudfunctions.net/algoliaSearch/search/store_all`, searchQuery)
+      .post(`https://us-central1-${environment.firebase.projectId}.cloudfunctions.net/algoliaSearch/search/store_all`, searchQuery)
       .subscribe((res: any[]) => this.store.dispatch([new ProductFounded(res)]));
   }
 }

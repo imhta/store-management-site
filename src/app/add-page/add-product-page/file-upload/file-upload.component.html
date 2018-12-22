@@ -1,4 +1,8 @@
 <div class="container">
+  <div class="wrapper">
+  <img [src]="pictureUrl" *ngFor="let pictureUrl of localDownloadUrls; let i = index"  class="preview"
+       (click)="removePicture(i)">
+  </div>
 <div class="box">
   <div class="input-group ">
     <div class="input-group-prepend">
@@ -20,8 +24,7 @@
 
 </div>
 
-  <img [src]="pictureUrl" *ngFor="let pictureUrl of localDownloadUrls; let i = index" width="50" class="preview"
-       (click)="removePicture(i)">
+
 
 
   <!--<div *ngIf="snapshot | async as snap" >-->
