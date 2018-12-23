@@ -6,8 +6,7 @@
   <div class="card">
     <h2>Store profile</h2>
     <div class="form-group ">
-      <span class="badge badge-primary float-right" (click)="checkUniqueness()"
-            data-toggle="tooltip" data-placement="top" title="Click to check and save">Check and Save</span>
+
       <a class="float-right "><i class="material-icons done" *ngIf="isAvailable">
         done
       </i><i class="material-icons not-done" *ngIf="!isAvailable">
@@ -29,8 +28,7 @@
       </div>
     </div>
     <div class="form-group ">
-              <span class="badge badge-primary float-right" (click)="saveStoreDescription()"
-                    data-toggle="tooltip" data-placement="top" title="Click to save description">Save</span>
+
       <label for="description">Description</label>
       <textarea type="text" class="form-control" id="description" [(ngModel)]="storeDescription" maxlength="250"
                 placeholder="Establishments primarily engaged in the retail sale of a general line of women's ready-to-wear clothing."
@@ -40,7 +38,10 @@
           Max 250 characters.
         </small>
       </div>
+
     </div>
+    <span class="btn btn-primary float-right" (click)="checkUniqueness(); saveStoreDescription()"
+          data-toggle="tooltip" data-placement="top" title="Click to save description">Save</span>
     <app-logo-upload [storeId]="currentStore['storeUid']" [inData]="logo"
                      (outData)="getLogoData($event)"></app-logo-upload>
     <app-store-pics-upload [storeId]="currentStore['storeUid']" [inData]="storePictures"

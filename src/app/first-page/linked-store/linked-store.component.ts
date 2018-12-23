@@ -11,7 +11,6 @@ import {
 import {Observable, Subscription} from 'rxjs';
 import {UserStoreState} from '../../shared/models/store.model';
 import {LoadingTrue} from '../../shared/state/loading.state';
-import {Logout} from '../../shared/actions/auth.actions';
 import {UserModel} from '../../shared/models/auth.model';
 import {Register} from 'ts-node';
 import {AuthState} from '../../shared/state/auth.state';
@@ -33,10 +32,6 @@ export class LinkedStoreComponent implements OnInit, OnDestroy {
 
 
   constructor(private store: Store, private actions$: Actions) {
-
-  }
-
-  ngOnInit() {
     this.linkedStoreEmpty = false;
 
     this.storeSub$ = this.storeState$
@@ -65,6 +60,10 @@ export class LinkedStoreComponent implements OnInit, OnDestroy {
       .subscribe(() => this.linkedStoreEmpty = true);
   }
 
+  ngOnInit() {
+
+  }
+
   ngOnDestroy() {
     this.storeState = null;
     this.linkedStoreEmpty = false;
@@ -76,6 +75,7 @@ export class LinkedStoreComponent implements OnInit, OnDestroy {
   selectStore(index: number) {
     return this.store.dispatch([new LoadingTrue(), new SelectStore(index)]);
   }
+
   navigateToSetupStore() {
     return this.store.dispatch(new Navigate(['store/setup']));
   }

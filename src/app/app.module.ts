@@ -138,8 +138,8 @@ import {NgxsLoggerPluginModule} from '@ngxs/logger-plugin';
     AngularFireModule.initializeApp(environment.firebase),
     NgxsModule.forRoot([AuthState, LoadingState, StoreState, AllProductState, InvoicesState]),
     NgxsRouterPluginModule.forRoot(),
-    NgxsLoggerPluginModule.forRoot(),
-    NgxsReduxDevtoolsPluginModule.forRoot(),
+    // NgxsLoggerPluginModule.forRoot(),
+    // NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxKjuaModule,
     ZXingScannerModule,
     NgbModule,
@@ -150,7 +150,7 @@ import {NgxsLoggerPluginModule} from '@ngxs/logger-plugin';
     MatToolbarModule,
     MatSidenavModule,
     MatListModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
+    // ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
     PipesModule
 
   ],
