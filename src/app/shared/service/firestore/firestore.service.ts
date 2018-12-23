@@ -352,4 +352,36 @@ export class FirestoreService {
         }
       });
   }
+
+  incrementStock(productId: string, index: number) {
+// Create a reference to the product doc.
+    const productDocRef = this.db.firestore.collection('products').doc(productId);
+
+
+    return this.db.firestore.runTransaction(transaction =>
+// This code may get re-run multiple times if there are conflicts.
+      transaction.get(productDocRef)
+        .then(productDoc => {
+          const updatedVariants = productDoc.data().variants;
+          updatedVariants[index].stock++;
+          transaction.update(productDocRef, {variants: updatedVariants});
+        })).then(() => console.log('Transaction successfully committed!'))
+      .catch(error => console.log('Transaction failed: ', error));
+  }
+
+  decrementStock(productId: string, index: number) {
+// Create a reference to the product doc.
+    const productDocRef = this.db.firestore.collection('products').doc(productId);
+
+
+    return this.db.firestore.runTransaction(transaction =>
+// This code may get re-run multiple times if there are conflicts.
+      transaction.get(productDocRef)
+        .then(productDoc => {
+          const updatedVariants = productDoc.data().variants;
+          updatedVariants[index].stock--;
+          transaction.update(productDocRef, {variants: updatedVariants});
+        })).then(() => console.log('Transaction successfully committed!'))
+      .catch(error => console.log('Transaction failed: ', error));
+  }
 }

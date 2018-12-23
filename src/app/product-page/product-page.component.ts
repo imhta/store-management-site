@@ -6,7 +6,8 @@ import {DeleteAProduct, GetProductByUid, GotProductByUid} from '../shared/action
 import {OnlineProductTagModel} from '../shared/models/online-product-tag.model';
 import {AddOnlineProductTag, GetOnlineProductTags, GotOnlineProductTagsSuccessfully} from '../shared/actions/online-product-tag.actions';
 import {LoadingTrue} from '../shared/state/loading.state';
-import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, NgbModalConfig} from '@ng-bootstrap/ng-bootstrap';
+import {FirestoreService} from '../shared/service/firestore/firestore.service';
 
 @Component({
   selector: 'app-product-page',
@@ -29,7 +30,9 @@ export class ProductPageComponent implements OnInit, OnDestroy {
   constructor(private activatedRoute: ActivatedRoute,
               private store: Store,
               private actions$: Actions,
-              private modalService: NgbModal) {
+              private modalService: NgbModal,
+              private dbService: FirestoreService
+  ) {
   }
 
   ngOnInit() {
@@ -45,6 +48,7 @@ export class ProductPageComponent implements OnInit, OnDestroy {
 
     this.paramsSubscription.unsubscribe();
   }
+
   open(content) {
     this.modalService.open(content);
   }
@@ -98,5 +102,17 @@ export class ProductPageComponent implements OnInit, OnDestroy {
     this.opt.productUid = this.productUid;
     this.store.dispatch([new AddOnlineProductTag(this.opt)]);
     this.opt = new OnlineProductTagModel();
+  }
+
+  incrementStock(index) {
+    this.product.variants[index].stock++;
+    this.dbService.incrementStock(this.product.productUid, index)
+      .catch(() => this.store.dispatch([new LoadingTrue(), new GetProductByUid(this.productUid)]));
+  }
+
+  decrementStock(index) {
+    this.product.variants[index].stock--;
+    this.dbService.decrementStock(this.product.productUid, index)
+      .catch(() => this.store.dispatch([new LoadingTrue(), new GetProductByUid(this.productUid)]));
   }
 }

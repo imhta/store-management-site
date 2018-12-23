@@ -17,7 +17,7 @@
     <div class="card-body">
 
       <div *ngIf="product['isListable']" class="float-right carousel-wrapper">
-        <a ><img width="280" [src]="product['picturesUrl'][0]"></a>
+        <a><img width="280" [src]="product['picturesUrl'][0]"></a>
       </div>
       <ngx-kjua *ngIf="!product['isListable']" class="float-right qr-code"
                 [renderAsync]="true"
@@ -42,7 +42,22 @@
         <h5>
           <span class="badge badge-info" *ngFor="let tag of product['tags']">{{tag | lowercase}}</span>
         </h5>
-
+        <div class="row ">
+          <div class="col variant" *ngFor="let variant of product.variants; let i = index">
+            <div class="row btn btn-primary" (click)="incrementStock(i)">
+              <i class="material-icons">keyboard_arrow_up</i>
+            </div>
+            <div class="row h5 text-center" style="text-transform: uppercase">
+              <b>{{variant.size}}</b>
+            </div>
+            <div class="row h5 text-center font-weight-bolder">
+              {{variant.stock}}
+            </div>
+            <div class="row btn btn-primary" (click)="decrementStock(i)">
+              <i class="material-icons">keyboard_arrow_down</i>
+            </div>
+          </div>
+        </div>
       </div>
 
 
