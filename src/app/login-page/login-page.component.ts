@@ -16,7 +16,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   loading: boolean ;
   windowHeight;
   constructor( private router: Router, private store: Store) {
-    this.store.dispatch([new LoadingTrue(), new CheckAuthState()]);
+
    }
 
   ngOnInit() {
