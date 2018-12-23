@@ -39,3 +39,6 @@ testem.log
 Thumbs.db
 # compiled files
 /build
+
+# lock files
+package-lock.json
