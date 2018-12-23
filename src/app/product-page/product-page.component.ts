@@ -6,12 +6,13 @@ import {DeleteAProduct, GetProductByUid, GotProductByUid} from '../shared/action
 import {OnlineProductTagModel} from '../shared/models/online-product-tag.model';
 import {AddOnlineProductTag, GetOnlineProductTags, GotOnlineProductTagsSuccessfully} from '../shared/actions/online-product-tag.actions';
 import {LoadingTrue} from '../shared/state/loading.state';
-
+import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-product-page',
   templateUrl: './product-page.component.html',
-  styleUrls: ['./product-page.component.css']
+  styleUrls: ['./product-page.component.css'],
+  providers: [NgbModalConfig, NgbModal]
 })
 export class ProductPageComponent implements OnInit, OnDestroy {
   productUid;
@@ -22,9 +23,13 @@ export class ProductPageComponent implements OnInit, OnDestroy {
   // pageHeight = '5cm';
   printContents = '';
   selectedSlide = 0;
+  qrCount = 1;
   opt = new OnlineProductTagModel();
 
-  constructor(private activatedRoute: ActivatedRoute, private store: Store, private actions$: Actions) {
+  constructor(private activatedRoute: ActivatedRoute,
+              private store: Store,
+              private actions$: Actions,
+              private modalService: NgbModal) {
   }
 
   ngOnInit() {
@@ -40,12 +45,14 @@ export class ProductPageComponent implements OnInit, OnDestroy {
 
     this.paramsSubscription.unsubscribe();
   }
+  open(content) {
+    this.modalService.open(content);
+  }
 
-
-  print(): void {
+  print(count): void {
     this.printContents = '';
     let popupWin;
-    for (let i = 0; i < 70; i++) {
+    for (let i = 0; i < count; i++) {
       this.printContents = document.getElementById('print-section').innerHTML + this.printContents;
     }
     popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
