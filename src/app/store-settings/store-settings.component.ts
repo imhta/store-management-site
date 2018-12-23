@@ -14,6 +14,8 @@ import {
 import {LoadingTrue} from '../shared/state/loading.state';
 import {AuthState} from '../shared/state/auth.state';
 import {Router} from '@angular/router';
+import {environment} from '../../environments/environment';
+
 
 
 @Component({
@@ -33,7 +35,7 @@ export class StoreSettingsComponent implements OnInit, OnDestroy {
   uniqueStoreName: string;
   storeDescription: string;
   isAvailable = true;
-
+  previewUrl = environment.firebase.projectId;
   constructor(private store: Store, private actions$: Actions, private router: Router) {
     this.store.dispatch([new GetLinkedStores(this.store.selectSnapshot(AuthState.uid))]);
   }

@@ -1,5 +1,10 @@
 <nav class="bg-dark navbar toolbar">
   <div><a (click)="navigateToStore()"><i class="material-icons">arrow_back</i></a></div>
+  <div><a class="nav-link" *ngIf="uniqueStoreName"
+          [href]="previewUrl === 'clothxtest'? 'https://spoteasytest.firebaseapp.com/store/'+ uniqueStoreName : 'https://spoteasy.in/store/'+ uniqueStoreName "
+        target="_blank"
+  >Preview</a>
+  </div>
 </nav>
 
 <div class="container">
@@ -27,6 +32,9 @@
         </small>
       </div>
     </div>
+    <span class="btn btn-primary float-right" (click)="checkUniqueness()"
+          data-toggle="tooltip" data-placement="top" title="Click to save description">Check & Save</span>
+    <hr>
     <div class="form-group ">
 
       <label for="description">Description</label>
@@ -40,8 +48,9 @@
       </div>
 
     </div>
-    <span class="btn btn-primary float-right" (click)="checkUniqueness(); saveStoreDescription()"
+    <span class="btn btn-primary float-right" (click)="saveStoreDescription()"
           data-toggle="tooltip" data-placement="top" title="Click to save description">Save</span>
+    <hr>
     <app-logo-upload [storeId]="currentStore['storeUid']" [inData]="logo"
                      (outData)="getLogoData($event)"></app-logo-upload>
     <app-store-pics-upload [storeId]="currentStore['storeUid']" [inData]="storePictures"
