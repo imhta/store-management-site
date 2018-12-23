@@ -5,7 +5,10 @@
   bottom: 50px;
   z-index: 5;
 }
-
+.grey-icon {
+  -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+  filter: grayscale(100%);
+}
 @media only screen and (max-width: 700px) {
   .qr-scanner-preview {
     position: static;
@@ -39,8 +42,8 @@
 
 .container {
   max-width: 700px;
-  margin-bottom: 200px;
-  margin-top: 20px;
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 .container h3 {

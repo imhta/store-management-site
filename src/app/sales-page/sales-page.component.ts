@@ -163,6 +163,7 @@ export class SalesPageComponent implements OnInit, OnDestroy {
           console.log(resultProduct);
           cartProduct.prn = resultProduct[0].prn;
           cartProduct.categories = resultProduct[0].categories;
+          cartProduct.productPreviewUrl = resultProduct[0].isListable ? resultProduct[0].picturesUrl[0] : '';
           cartProduct.productName = resultProduct[0].productName;
           cartProduct.brandName = resultProduct[0].brandName;
           cartProduct.productUid = resultProduct[0].productUid;

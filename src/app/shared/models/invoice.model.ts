@@ -114,6 +114,7 @@ export class CartProduct {
   inclusiveAllTaxes: boolean;
   addedBy: string;
   isOutStock = false;
+  productPreviewUrl: string;
 
   constructor() {
     this.maxQuantity = 0;
@@ -164,7 +165,8 @@ export class CartProduct {
       'categories': this.categories,
       'taxInPercentage': this.taxInPercentage,
       'inclusiveAllTaxes': this.inclusiveAllTaxes ? this.inclusiveAllTaxes : null,
-      'addedBy': this.addedBy ? this.addedBy : ''
+      'addedBy': this.addedBy ? this.addedBy : '',
+      'productPreviewUrl': this.productPreviewUrl
     };
   }
 
