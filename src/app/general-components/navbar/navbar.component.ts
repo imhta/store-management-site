@@ -1,15 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {UserModel} from '../../shared/models/auth.model';
 import {Actions, ofActionDispatched, Select, Store} from '@ngxs/store';
 import {Logout} from '../../shared/actions/auth.actions';
 import {LoadingTrue} from '../../shared/state/loading.state';
 import {UserStoreState} from '../../shared/models/store.model';
 import {Navigate} from '@ngxs/router-plugin';
-import {EmptyLinkedStore, GetEmployeeLinkedStores, GetLinkedStores, ResetSelectedStore} from '../../shared/actions/store.actions';
-import {AuthState} from '../../shared/state/auth.state';
-import {Observable} from 'rxjs';
+import {EmptyLinkedStore} from '../../shared/actions/store.actions';
 import {ActivatedRoute, Router} from '@angular/router';
-import {map, switchMap} from 'rxjs/operators';
 
 
 @Component({
@@ -20,12 +17,14 @@ import {map, switchMap} from 'rxjs/operators';
 export class NavbarComponent implements OnInit {
   @Select('user') user$;
   @Select('storeState') storeState$;
+  @Output() toggle = new EventEmitter<boolean>();
   user: UserModel;
   storeState: UserStoreState;
   linkedStoreEmpty: boolean;
 
 
   constructor(private  store: Store, private actions$: Actions, private route: ActivatedRoute, private router: Router) {
+
     this.linkedStoreEmpty = false;
     this.user$
       .subscribe((data) => {
@@ -44,22 +43,31 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
 
   }
+
   navigateToManageStore() {
+    this.toggle.emit(true);
     return this.store.dispatch(new Navigate(['select/store']));
   }
+
   navigateTo(path: string) {
     const id = +this.router.routerState.snapshot.url.split('/')[2];
+    this.toggle.emit(true);
     return this.store.dispatch([new Navigate([`u/${id}/${path}`])]);
   }
 
   logout() {
+    this.toggle.emit(true);
     return this.store.dispatch([new LoadingTrue(), new Logout()]);
   }
+
   navigateToSetupStore() {
+    this.toggle.emit(true);
     return this.store.dispatch(new Navigate(['store/setup']));
   }
 
   onNavigate() {
+    this.toggle.emit(true);
     window.open('https://www.clothx.net', '_blank');
   }
+
 }
