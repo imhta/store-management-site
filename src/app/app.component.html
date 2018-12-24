@@ -3,7 +3,7 @@
   <mat-sidenav-container class="sidenav-container">
     <mat-sidenav   #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
                  [fixedInViewport]="mobileQuery.matches" fixedTopGap="0" [opened]="!mobileQuery.matches && auth" >
-      <app-navbar></app-navbar>
+      <app-navbar (toggle)="toggle($event, snav)"></app-navbar>
     </mat-sidenav>
     <mat-sidenav-content>
       <router-outlet></router-outlet>

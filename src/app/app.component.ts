@@ -1,13 +1,9 @@
 import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
-import {Actions, ofActionDispatched, Select, Store} from '@ngxs/store';
+import {Actions, ofActionDispatched, Store} from '@ngxs/store';
 import {LoadingTrue} from './shared/state/loading.state';
 import {Authenticated, CheckAuthState, LoginSuccessful} from './shared/actions/auth.actions';
 import {MediaMatcher} from '@angular/cdk/layout';
-import {UserStoreState} from './shared/models/store.model';
-import {EmptyLinkedStore, GetEmployeeLinkedStores, GetLinkedStores, ResetSelectedStore} from './shared/actions/store.actions';
-import {Observable, Subscription} from 'rxjs';
-import {AuthState} from './shared/state/auth.state';
-import {UserModel} from './shared/models/auth.model';
+
 
 @Component({
   selector: 'app-root',
@@ -24,7 +20,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.actions$.pipe(ofActionDispatched(LoginSuccessful, Authenticated)).subscribe(() => this.auth = true);
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-    this.mobileQuery.addListener(this._mobileQueryListener);
+    this.mobileQuery.addEventListener('change', this._mobileQueryListener, false);
   }
 
   ngOnInit() {
@@ -32,7 +28,15 @@ export class AppComponent implements OnInit, OnDestroy {
 
 
   ngOnDestroy(): void {
-    this.mobileQuery.removeListener(this._mobileQueryListener);
+    this.mobileQuery.removeEventListener('change', this._mobileQueryListener, false);
+  }
+
+  toggle($event, snav) {
+    if (this.mobileQuery.matches) {
+      return snav.toggle();
+    } else {
+      return null;
+    }
   }
 
   // installPwa(): void {
