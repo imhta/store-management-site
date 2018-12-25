@@ -19,13 +19,18 @@ export class ProductPageComponent implements OnInit, OnDestroy {
   productUid;
   product;
   paramsSubscription: Subscription;
-  // requiredNumber: string;
-  // pageWidth = '5cm';
-  // pageHeight = '5cm';
   printContents = '';
   selectedSlide = 0;
   qrCount = 1;
   opt = new OnlineProductTagModel();
+  newVariant: { size: string, stock: number, purchasedPrice: number, sellingPrice: number } = {
+    size: '',
+    stock: 1,
+    purchasedPrice: 0,
+    sellingPrice: 0
+  };
+  newProductTag = '';
+  regNoSpace = /^[^-\s][a-zA-Z0-9_\s-]+$/;
 
   constructor(private activatedRoute: ActivatedRoute,
               private store: Store,
@@ -102,6 +107,41 @@ export class ProductPageComponent implements OnInit, OnDestroy {
     this.opt.productUid = this.productUid;
     this.store.dispatch([new AddOnlineProductTag(this.opt)]);
     this.opt = new OnlineProductTagModel();
+  }
+
+  addVariant() {
+    if (this.regNoSpace.test(this.newVariant.size)) {
+      this.dbService.addProductVariant(this.product.productUid, this.newVariant)
+        .then(() => {
+            this.newVariant = {
+              size: '',
+              stock: 1,
+              purchasedPrice: 0,
+              sellingPrice: 0
+            };
+          }
+        );
+      this.store.dispatch([new LoadingTrue(), new GetProductByUid(this.product.productUid)]);
+      this.modalService.dismissAll();
+    }
+  }
+
+  addNewTag() {
+    if (this.regNoSpace.test(this.newProductTag)) {
+      this.dbService.addProductTag(this.product.productUid, this.newProductTag).then(() => {
+        this.newProductTag = '';
+        this.store.dispatch([new LoadingTrue(), new GetProductByUid(this.product.productUid)]);
+        this.modalService.dismissAll();
+      });
+    }
+  }
+
+  removeTag(tag) {
+    this.dbService.removeProductTag(this.product.productUid, tag)
+      .then(() =>
+        this.store
+          .dispatch([new LoadingTrue(), new GetProductByUid(this.product.productUid)])
+      );
   }
 
   incrementStock(index) {
