@@ -50,6 +50,8 @@ import {
   GotAllDiscountsSuccessfully
 } from '../../actions/discount.actions';
 import {CustomerExits, CustomerNotExits, NewCustomerOfStore, OldCustomerOfStore} from '../../actions/customers.actions';
+import FieldValue = firebase.firestore.FieldValue;
+import * as firebase from 'firebase';
 
 
 // @ts-ignore
@@ -383,5 +385,28 @@ export class FirestoreService {
           transaction.update(productDocRef, {variants: updatedVariants});
         })).then(() => console.log('Transaction successfully committed!'))
       .catch(error => console.log('Transaction failed: ', error));
+  }
+  addProductTag(productId: string, tag: string) {
+
+    return this.db.firestore
+      .collection('products')
+      .doc(productId)
+      .update({'tags': FieldValue.arrayUnion(tag)});
+
+
+}
+  removeProductTag(productId: string, tag: string) {
+    return this.db.firestore
+      .collection('products')
+      .doc(productId)
+      .update({'tags': FieldValue.arrayRemove(tag)});
+
+
+  }
+  addProductVariant(productId: string, variant: object) {
+    return this.db.firestore
+      .collection('products')
+      .doc(productId)
+      .update({'variants': FieldValue.arrayUnion(variant)});
   }
 }
