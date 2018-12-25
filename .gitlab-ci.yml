@@ -2,8 +2,6 @@ image: node:8.11.1
 
 before_script:
     - npm install
-    - npm install -g @angular/cli
-    - npm install -g firebase-tools
 
 test_app_deploy:
     script:
