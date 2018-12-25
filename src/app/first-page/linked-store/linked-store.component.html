@@ -1,3 +1,4 @@
+
 <div class="grid-wrapper" *ngIf="linkedStoreEmpty">
   <div class="card">
 
@@ -6,7 +7,7 @@
     <div class="setup-link" (click)="navigateToSetupStore()">SETUP NOW</div>
   </div>
 </div>
-<diV class="container" *ngIf="!linkedStoreEmpty && (this.user.isEmployee || this.user.isRegister)">
+<diV class="container" *ngIf="!linkedStoreEmpty">
   <h3>Get started</h3>
   <div class="card ">
     <div class="item-wrapper">
