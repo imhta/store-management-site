@@ -12,7 +12,8 @@
       <!--class="material-icons">bookmark</i></a>-->
 
       <!--<a class="float-right" style="margin-left: 15px"><i class="material-icons">edit</i></a>-->
-      <a class="float-right" style="margin-left: 15px" (click)="open(content)"><i class="material-icons">print</i></a>
+      <a class="float-right" style="margin-left: 15px" (click)="open(qr_count)"><i class="material-icons">print</i></a>
+      <a class="float-right" style="margin-left: 15px" (click)="open(add_variant)"><i class="material-icons">playlist_add</i></a>
     </div>
     <div class="card-body">
 
@@ -32,16 +33,19 @@
             class="badge badge-primary">{{product['gender']}} / {{product['brandName']}} </span>
         </h5>
         <h5 class="card-title ">{{product['brandName']}}</h5>
-        <h5 class="card-title ">{{product['productName']}}</h5>
+        <h5 class="card-title "><b>{{product['productName']}}</b></h5>
         <p class="card-text ">{{product['description']}}</p>
         <h5 *ngFor="let ssp of product['ssp']">
           <span class="badge badge-primary">{{ssp['stock']}} </span>
           <span class="badge badge-primary">{{ssp['size']}} </span>
           <span class="badge badge-primary">&#8377; {{ssp['price']}} </span>
         </h5>
-        <h5>
-          <span class="badge badge-info" *ngFor="let tag of product['tags']">{{tag | lowercase}}</span>
-        </h5>
+        <h4><span class="badge badge-info" *ngFor="let tag of product.tags">{{tag  | lowercase}} <i
+          class="material-icons text-danger" (click)="removeTag(tag)">close</i></span>
+          <i class="material-icons m-2" (click)="open(add_tag)">add_circle</i>
+        </h4>
+
+
         <div class="row ">
           <div class="col variant" *ngFor="let variant of product.variants; let i = index">
             <div class="row btn btn-primary" (click)="incrementStock(i)">
@@ -85,47 +89,87 @@
   </div>
 </div>
 
-<div class="modal fade" id="addOnlineProductTagModal" tabindex="-1" role="dialog"
-     aria-labelledby="addOnlineProductTagModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="addOnlineProductTagModalLabel">Add Online Product Tag</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="form-group">
-            <label for="url" class="col-form-label">Link (Url):</label>
-            <input type="text" [(ngModel)]="opt.onlineProductLink" [ngModelOptions]="{standalone: true}"
-                   class="form-control" id="url">
-          </div>
-          <div class="form-group">
-            <label for="type" class="col-form-label">Type of Tag:</label>
-            <input type="text" [(ngModel)]="opt.typeOfLink" [ngModelOptions]="{standalone: true}" class="form-control"
-                   id="type">
-          </div>
+<!--<div class="modal fade" id="addOnlineProductTagModal" tabindex="-1" role="dialog"-->
+<!--aria-labelledby="addOnlineProductTagModalLabel" aria-hidden="true">-->
+<!--<div class="modal-dialog" role="document">-->
+<!--<div class="modal-content">-->
+<!--<div class="modal-header">-->
+<!--<h5 class="modal-title" id="addOnlineProductTagModalLabel">Add Online Product Tag</h5>-->
+<!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--<span aria-hidden="true">&times;</span>-->
+<!--</button>-->
+<!--</div>-->
+<!--<div class="modal-body">-->
+<!--<form>-->
+<!--<div class="form-group">-->
+<!--<label for="url" class="col-form-label">Link (Url):</label>-->
+<!--<input type="text" [(ngModel)]="opt.onlineProductLink" [ngModelOptions]="{standalone: true}"-->
+<!--class="form-control" id="url">-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label for="type" class="col-form-label">Type of Tag:</label>-->
+<!--<input type="text" [(ngModel)]="opt.typeOfLink" [ngModelOptions]="{standalone: true}" class="form-control"-->
+<!--id="type">-->
+<!--</div>-->
 
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addOpt()">Add</button>
-      </div>
-    </div>
-  </div>
-</div>
+<!--</form>-->
+<!--</div>-->
+<!--<div class="modal-footer">-->
+<!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+<!--<button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addOpt()">Add</button>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
 
-<ng-template #content let-c="close" let-d="dismiss">
+<ng-template #qr_count let-c="close" let-d="dismiss">
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Print QR</h4>
   </div>
   <div class="modal-body">
-    <input class="form-control" placeholder="Enter QR Count" type="number" [(ngModel)]="qrCount">
+    <input class="form-control" placeholder="Enter QR Count" type="number" [(ngModel)]="qrCount"  (keyup.enter)="print(qrCount)">
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-dark" (click)="print(qrCount)">Print</button>
+  </div>
+</ng-template>
+
+<ng-template #add_tag let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-add-tag">New Tag</h4>
+  </div>
+  <div class="modal-body">
+    <input class="form-control" placeholder="Enter tag" type="text" [(ngModel)]="newProductTag" (keyup.enter)="addNewTag()">
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="addNewTag()">Add</button>
+  </div>
+</ng-template>
+
+<ng-template #add_variant let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="add-variant-model">New Variant</h4>
+  </div>
+  <div class="modal-body">
+    <p class="text-danger"><sup>*</sup>All fields are required</p>
+    <label for="size-stock"> Size and Stock</label>
+    <div class="input-group m-2" id="size-stock">
+
+      <input placeholder="Size" class="form-control text-uppercase" [(ngModel)]="newVariant.size">
+      <input placeholder="Stock " type="number" class="form-control " [(ngModel)]="newVariant.stock">
+
+    </div>
+    <div *ngIf="product.isVariantsWithSamePrice" class="alert alert-info">This Product has variants with same price
+    </div>
+    <label *ngIf="!product.isVariantsWithSamePrice" for="purchased-selling">Purchased and Selling Price </label>
+    <div *ngIf="!product.isVariantsWithSamePrice" class="input-group m-2" id="purchased-selling">
+      <input placeholder="Purchased Price" type="number" class="form-control " [(ngModel)]="newVariant.purchasedPrice">
+
+      <input placeholder="Selling Price" type="number" class="form-control " [(ngModel)]="newVariant.sellingPrice">
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="addVariant()">Add Variant</button>
   </div>
 </ng-template>
