@@ -35,7 +35,12 @@ export class LinkedStoreComponent implements OnInit, OnDestroy {
     this.linkedStoreEmpty = false;
 
     this.storeSub$ = this.storeState$
-      .subscribe((data) => this.storeState = new UserStoreState(data));
+      .subscribe((data) => {
+        this.storeState = new UserStoreState(data);
+        if (this.storeState.linkedStores) {
+          this.linkedStoreEmpty = false;
+        }
+      });
 
     this.userSub$ = this.user$.pipe().subscribe((data) => {
       if (data) {
@@ -70,7 +75,6 @@ export class LinkedStoreComponent implements OnInit, OnDestroy {
     this.userSub$.unsubscribe();
     this.storeSub$.unsubscribe();
   }
-
 
   selectStore(index: number) {
     return this.store.dispatch([new LoadingTrue(), new SelectStore(index)]);
