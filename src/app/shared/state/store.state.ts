@@ -76,8 +76,7 @@ export class StoreState {
 
   @Action(NewStoreSetupSuccessfully)
   newStoreSetupSuccessfully() {
-    this.store.dispatch([new LoadingFalse()]);
-    return window.location.reload();
+   return this.store.dispatch([new LoadingFalse(), new Navigate(['select/store'])]);
   }
 
   @Action(NewStoreSetupNotSuccessful)
