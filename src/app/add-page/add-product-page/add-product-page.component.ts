@@ -180,9 +180,9 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
   createVariant(): FormGroup {
     return this.fb.group({
       size: [''],
-      stock: [0],
-      purchasedPrice: [0],
-      sellingPrice: [0]
+      stock: [],
+      purchasedPrice: [],
+      sellingPrice: []
     });
   }
 
