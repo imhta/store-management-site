@@ -30,7 +30,7 @@ export class ProductPageComponent implements OnInit, OnDestroy {
     sellingPrice: 0
   };
   newProductTag = '';
-  regNoSpace = /^[^-\s][a-zA-Z0-9_\s-]+$/;
+  regNoSpace = /^((?:\s*[A-Za-z]\s*){1,})$/;
 
   constructor(private activatedRoute: ActivatedRoute,
               private store: Store,
@@ -38,6 +38,7 @@ export class ProductPageComponent implements OnInit, OnDestroy {
               private modalService: NgbModal,
               private dbService: FirestoreService
   ) {
+
   }
 
   ngOnInit() {
