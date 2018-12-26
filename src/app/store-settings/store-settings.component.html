@@ -2,7 +2,7 @@
   <div><a (click)="navigateToStore()"><i class="material-icons">arrow_back</i></a></div>
   <div><a class="nav-link" *ngIf="uniqueStoreName"
           [href]="previewUrl === 'clothxtest'? 'https://spoteasytest.firebaseapp.com/store/'+ uniqueStoreName : 'https://spoteasy.in/store/'+ uniqueStoreName "
-        target="_blank"
+          target="_blank"
   >Preview</a>
   </div>
 </nav>
@@ -12,11 +12,18 @@
     <h2>Store profile</h2>
     <div class="form-group ">
 
-      <a class="float-right "><i class="material-icons done" *ngIf="isAvailable">
-        done
-      </i><i class="material-icons not-done" *ngIf="!isAvailable">
-        clear
-      </i></a>
+      <a class="float-right " style="font-size: small">
+        <span class="text-success"
+                      *ngIf="isAvailable && currentStore['usn'] === uniqueStoreName">This ID belongs to you</span>
+        <i class="material-icons done" *ngIf="isAvailable && currentStore['usn'] === uniqueStoreName">
+          done
+        </i>
+
+        <i class="material-icons not-done" *ngIf="currentStore['usn'] && !isAvailable && currentStore['usn'] !== uniqueStoreName">
+          clear
+        </i>
+        <span *ngIf="!isAvailable && currentStore['usn'] !== uniqueStoreName" class="text-danger float-right">Unique store name already taken</span>
+      </a>
       <label for="unique-name">Unique Store Name</label>
       <input class="form-control form-control-lg " id="unique-name" type="text" [(ngModel)]="uniqueStoreName"
              placeholder="clothxshopping" required>
@@ -32,8 +39,10 @@
         </small>
       </div>
     </div>
-    <span class="btn btn-primary float-right" (click)="checkUniqueness()"
-          data-toggle="tooltip" data-placement="top" title="Click to save description">Check & Save</span>
+    <span *ngIf="currentStore['usn'] !== uniqueStoreName" class="btn btn-primary float-right"
+          (click)="checkUniqueness()"
+          data-toggle="tooltip" data-placement="top"
+          title="Click to find 'unique store name' availability">Check & Save</span>
     <hr>
     <div class="form-group ">
 

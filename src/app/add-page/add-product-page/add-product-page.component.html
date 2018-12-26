@@ -57,15 +57,19 @@
 
       <div class="form-group" formGroupName="categories">
         <label for="category">Categories</label>
-        <div class="input-group" id="category">
+        <div class="form-group" id="category">
           <input placeholder="Occasion Category" class="form-control  form-control-lg" formControlName="category1"
                  [ngbTypeahead]="occasionsCat">
-
+        </div>
+        <div class="form-group" >
           <input placeholder="Style Category" class="form-control  form-control-lg" formControlName="category2"
                  [ngbTypeahead]="styleCat">
+        </div>
+        <div class="form-group" >
           <input placeholder="Color Category" class="form-control  form-control-lg"
                  formControlName="colorCategory"
                  [ngbTypeahead]="colors">
+        </div>
         </div>
         <hr style="height: 4px; width: 100%"
             [style.background-color]="productForm.get('categories').get('colorCategory').value">
@@ -73,7 +77,7 @@
           <small class="form-text text-info">
             Categories is required.
           </small>
-        </div>
+
       </div>
       <mat-checkbox class="float-right m-2" formControlName="isVariantsWithSamePrice">Variants with same price
       </mat-checkbox>

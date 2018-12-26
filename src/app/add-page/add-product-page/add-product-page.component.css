@@ -76,4 +76,5 @@ form .card {
 
 input::placeholder {
   text-transform: none;
+  font-size: 15px;
 }

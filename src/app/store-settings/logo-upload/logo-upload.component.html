@@ -13,8 +13,8 @@
     <div *ngIf="percentage | async as pct">
 
       <mat-progress-bar mode="determinate" [value]="pct"></mat-progress-bar>
-      {{ pct | number }}%
-
+      <span *ngIf="pct !== 100">{{ pct | number }}%</span>
+      <span *ngIf="pct === 100" class="text-success"><i class="material-icons">done</i>Done !</span>
     </div>
 
     <p *ngIf="data.localDownloadUrl === ''">No store logo has been uploaded</p>

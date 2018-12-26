@@ -40,7 +40,7 @@ export class SetupStorePageComponent implements OnInit, OnDestroy {
       ])
     ],
     hasNoGstNumber: [false, Validators.compose([Validators.required])],
-    typeOfStore: ['fashion brand', [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
+    typeOfStore: ['fashion brand outlet', [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
     address: this.fb.group({
       street: ['', Validators.compose([Validators.required])],
       city: ['', Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z ]*$')])],
@@ -49,8 +49,7 @@ export class SetupStorePageComponent implements OnInit, OnDestroy {
     }),
   });
   typeOfStores = [
-    {value: 'fashion brand', title: 'Fashion brand'},
-    {value: 'factory outlet', title: 'Fashion outlet'},
+    {value: 'fashion brand outlet', title: 'Fashion brand outlet'},
     {value: 'fashion retailer', title: 'Fashion retailer'},
     {value: 'fashion designer', title: 'Fashion designer'},
     {value: 'boutique', title: 'Boutique'},
