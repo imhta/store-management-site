@@ -103,9 +103,10 @@
           <div class="item-wrapper" *ngIf="cartProducts.length > 0">
             <div class="item" *ngFor="let product of cartProducts; let i = index">
               <a class="menu float-right" (click)="deleteProductFromCart(i)"><i class="material-icons">delete</i> </a>
-              <img  *ngIf="product.productPreviewUrl === ''" src="../../../assets/logo/logo.png" class="grey-icon m-2"
+              <img *ngIf="product.productPreviewUrl === ''" src="../../../assets/logo/logo.png" class="grey-icon m-2"
                    width="50px" alt="no-preview">
-              <img class="m-2" *ngIf="product.productPreviewUrl !== ''" [src]="product.productPreviewUrl" width="50px" alt="product preview">
+              <img class="m-2" *ngIf="product.productPreviewUrl !== ''" [src]="product.productPreviewUrl" width="50px"
+                   alt="product preview">
               <h5>{{ product.productName }}</h5>
               <h6>{{product.prn}}</h6>
               <span class="badge search-option"
@@ -128,24 +129,17 @@
             </div>
 
           </div>
-
+          <div class="alert-dark text-right p-3 font-weight-bold ">
+            <div class=" m-4"><a >Total Quantity: {{invoice.totalQuantity}}</a></div>
+            <div class=" m-4 "> <a  *ngIf="!invoice.isDiscountApplied">Total Price: &#8377; {{invoice.totalPrice}}</a></div>
+            <div class=" m-4"><a  *ngIf="invoice.isDiscountApplied">Total Discount price:
+              &#8377; {{invoice.discountPrice}}</a></div>
+          </div>
+          <div class="w-100">
+            <a class="button" (click)="saveInvoice()">Send Invoice</a>
+          </div>
         </div>
       </div>
-      <nav class="bg-dark text-white navbar toolbar">
-        <div>
-
-        </div>
-        <div class=" total-detail">
-          <a>TQ: {{invoice.totalQuantity}}</a>
-          <a *ngIf="!invoice.isDiscountApplied">Total Price: &#8377; {{invoice.totalPrice}}</a>
-          <a *ngIf="invoice.isDiscountApplied">Total Discount price: &#8377; {{invoice.discountPrice}}</a>
-          <!--<a>Total Tax: &#8377; {{invoice.totalTax}}</a>-->
-
-          <!--<a class="icon-button" (click)="saveInvoice()"> <i class="material-icons">save_alt</i></a>-->
-          <a class="icon-button" (click)="saveInvoice()"> <i class="material-icons">send</i></a>
-        </div>
-
-      </nav>
 
     </ng-template>
   </ngb-tab>

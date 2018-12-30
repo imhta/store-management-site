@@ -57,16 +57,19 @@
 
 
   </div>
-</div>
-<nav class="bg-dark text-white navbar " *ngIf="tempInvoice">
-  <div class=" total-detail">
-    <a>TQ: {{tempInvoice.totalQuantity}}</a>
-    <a>Total Price: &#8377; {{tempInvoice.totalPrice}}</a>
-    <!--<a>Total Tax: &#8377; {{invoice.totalTax}}</a>-->
-  </div>
-  <div>
-    <button class="btn btn-primary" type="button" *ngIf="selectedCartProducts.length > 0" (click)="returnSpecific()">Return selected</button>
-    <button class="btn btn-primary" type="button" *ngIf="selectedCartProducts.length === 0" (click)="returnAll()">Return all</button>
 
+</div>
+<div class="container">
+  <div class="alert-dark p-3 text-right font-weight-bold" *ngIf="tempInvoice">
+
+    <div class="m-4">Total Quantity: {{tempInvoice.totalQuantity}}</div>
+    <div class="m-4">Total Price: &#8377; {{tempInvoice.totalPrice}}</div>
+    <!--<a>Total Tax: &#8377; {{invoice.totalTax}}</a>-->
+
+    <div class="w-100">
+      <div class="button" (click)="returnSpecific()">Return selected</div>
+      <div class="button" (click)="returnAll()">Return all</div>
+
+    </div>
   </div>
-</nav>
+</div>

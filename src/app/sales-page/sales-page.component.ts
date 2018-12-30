@@ -1,6 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UserStoreState} from '../shared/models/store.model';
-import {GetAllProducts} from '../shared/actions/product.actions';
 import {Actions, ofActionDispatched, Select, Store} from '@ngxs/store';
 import {Observable, Subscription} from 'rxjs';
 import {CartProduct, InvoiceModel} from '../shared/models/invoice.model';
@@ -22,7 +21,8 @@ import {DiscountModel} from '../shared/models/discount.model';
 @Component({
   selector: 'app-billing-page',
   templateUrl: './sales-page.component.html',
-  styleUrls: ['./sales-page.component.css']
+  styleUrls: ['./sales-page.component.css'],
+
 })
 export class SalesPageComponent implements OnInit, OnDestroy {
   @Select('storeState') storeState$: Observable<object>;
@@ -43,6 +43,12 @@ export class SalesPageComponent implements OnInit, OnDestroy {
   isOldCustomer = false;
   customerNotExit = false;
   isErrorInSavingInvoice = false;
+  isFc = true;
+
+  constructor(private store: Store, private action$: Actions) {
+    this.invoice.typeOfPayment = 'Cash';
+  }
+
   prnSearch = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),
@@ -50,10 +56,6 @@ export class SalesPageComponent implements OnInit, OnDestroy {
       map(term => term.length < 1 ? []
         : this.allProducts.map(v => v['prn']).filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).reverse().slice(0, 10))
     );
-
-  constructor(private store: Store, private action$: Actions) {
-    this.invoice.typeOfPayment = 'Cash';
-  }
 
   ngOnInit() {
     this.uid$.subscribe((uid) => this.invoice.billedBy = uid);
@@ -67,6 +69,7 @@ export class SalesPageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.storeDataSubscription.unsubscribe();
+
   }
 
   refreshAllProduct() {
@@ -74,7 +77,7 @@ export class SalesPageComponent implements OnInit, OnDestroy {
     this.storeDataSubscription = this.storeState$.subscribe((data) => {
       this.storeState = new UserStoreState(data.valueOf());
       this.currentStore = this.storeState.linkedStores[this.storeState.selectedStore];
-      this.store.dispatch([ new GetAllDiscounts(this.currentStore.storeUid)]);
+      this.store.dispatch([new GetAllDiscounts(this.currentStore.storeUid)]);
     });
     this.allProducts$.subscribe((data: any[]) => {
       this.allProducts = data;
