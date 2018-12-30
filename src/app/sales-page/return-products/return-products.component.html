@@ -4,7 +4,7 @@
   </div>
 </div>
 <div class="container">
-  <h3>Return invoice</h3>
+  <h3>Return Invoice</h3>
   <div class="form-group">
     <div class="input-group">
       <input type="text" class="form-control form-control-md " id="invoice-id" placeholder="Invoice Id"
@@ -67,8 +67,8 @@
     <!--<a>Total Tax: &#8377; {{invoice.totalTax}}</a>-->
 
     <div class="w-100">
-      <div class="button" (click)="returnSpecific()">Return selected</div>
-      <div class="button" (click)="returnAll()">Return all</div>
+      <div class="button"  *ngIf="selectedCartProducts.length > 0"  (click)="returnSpecific()">Return selected</div>
+      <div class="button" *ngIf="selectedCartProducts.length === 0" (click)="returnAll()">Return all</div>
 
     </div>
   </div>
