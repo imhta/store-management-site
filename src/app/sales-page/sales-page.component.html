@@ -14,7 +14,7 @@
 
         <div class="container">
           <a class="float-right" style="cursor: pointer" (click)="reset()"><i class="material-icons">refresh</i> </a>
-          <h3>Create invoice</h3>
+          <h3>Create Invoice</h3>
 
           <ngb-alert [dismissible]="true" *ngIf="isErrorInSavingInvoice" (close)="isErrorInSavingInvoice = false"
                      [type]="'danger'">
@@ -139,8 +139,9 @@
             <a class="button" (click)="saveInvoice()">Send Invoice</a>
           </div>
         </div>
-      </div>
 
+      </div>
+      <emptyspace></emptyspace>
     </ng-template>
   </ngb-tab>
   <ngb-tab>
