@@ -2,7 +2,7 @@
   max-width: 250px;
   max-height: 250px;
   position: fixed;
-  bottom: 50px;
+  bottom: 0;
   z-index: 5;
 }
 .grey-icon {
@@ -211,4 +211,8 @@
 .scrolling-wrapper::-webkit-scrollbar-thumb {
   background-color: grey;
   border-radius: 10px;
+}
+.form-group{
+  margin-top: 10px;
+  margin-bottom: 10px;
 }

@@ -44,7 +44,7 @@ export class DashboardPageComponent implements OnInit {
         bills.invoices.forEach((invoice) => {
           this.dashboard.totalProductsSold = this.dashboard.totalProductsSold + invoice.totalQuantity;
           this.dashboard.totalMoneyOfAllInvoiceWithoutDiscounts = invoice.hasNoGstNumber
-            ? this.dashboard.totalMoneyOfAllInvoiceWithoutDiscounts + invoice.totalPrice
+            ? this.dashboard.totalMoneyOfAllInvoiceWithoutDiscounts + invoice.totalPrice - invoice.discountPrice
             : this.dashboard.totalMoneyOfAllInvoiceWithoutDiscounts + (invoice.totalPrice - invoice.totalTax);
           this.dashboard.totalOfAllTaxes = invoice.hasNoGstNumber ? 0 : this.dashboard.totalOfAllTaxes + invoice.totalTax;
           this.dashboard.totalOfAllDiscounts = this.dashboard.totalOfAllDiscounts + invoice.discountPrice;
@@ -53,21 +53,21 @@ export class DashboardPageComponent implements OnInit {
         this.refreshCharts();
       });
 
-    this.allProducts$.subscribe((products) => {
-      this.dashboard.totalNumberOfProductsInStock = 0;
-      this.dashboard.totalNumberOfProductsInDifferentSizes = 0;
-      products.forEach((product) => {
-        this.dashboard.totalNumberOfProductsInDifferentSizes =
-          this.dashboard.totalNumberOfProductsInDifferentSizes + product.variants.length;
-        this.dashboard.totalNumberOfProductsInStock =
-          this.dashboard.totalNumberOfProductsInStock + product.variants
-            .map((variant) => variant.stock)
-            .reduce((sum, value) => {
-              return sum + value;
-            }, 0);
-      });
-      console.log(this.dashboard.totalNumberOfProductsInDifferentSizes, this.dashboard.totalNumberOfProductsInStock );
-    });
+    // this.allProducts$.subscribe((products) => {
+    //   this.dashboard.totalNumberOfProductsInStock = 0;
+    //   this.dashboard.totalNumberOfProductsInDifferentSizes = 0;
+    //   products.forEach((product) => {
+    //     this.dashboard.totalNumberOfProductsInDifferentSizes =
+    //       this.dashboard.totalNumberOfProductsInDifferentSizes + product.variants.length;
+    //     this.dashboard.totalNumberOfProductsInStock =
+    //       this.dashboard.totalNumberOfProductsInStock + product.variants
+    //         .map((variant) => variant.stock)
+    //         .reduce((sum, value) => {
+    //           return sum + value;
+    //         }, 0);
+    //   });
+    //   console.log(this.dashboard.totalNumberOfProductsInDifferentSizes, this.dashboard.totalNumberOfProductsInStock );
+    // });
 
   }
 
