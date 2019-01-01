@@ -34,7 +34,7 @@
   max-width: 250px;
   max-height: 250px;
   position: fixed;
-  bottom: 50px;
+  bottom: 0;
   z-index: 5;
 }
 

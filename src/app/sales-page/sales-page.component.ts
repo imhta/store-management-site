@@ -44,9 +44,10 @@ export class SalesPageComponent implements OnInit, OnDestroy {
   customerNotExit = false;
   isErrorInSavingInvoice = false;
   isFc = true;
-
+  screenWidth;
   constructor(private store: Store, private action$: Actions) {
     this.invoice.typeOfPayment = 'Cash';
+   this.screenWidth = window.screen.width;
   }
 
   prnSearch = (text$: Observable<string>) =>
