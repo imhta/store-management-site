@@ -50,7 +50,7 @@
         <label for="description">Description</label>
         <input type="text" class="form-control form-control-lg" id="description" placeholder="White sports T-shirt"
                formControlName="description">
-        <small class="form-text text-info">
+        <small class="form-text text-info float-right">
           Description is optional.
         </small>
       </div>
@@ -71,14 +71,15 @@
                  [ngbTypeahead]="colors">
         </div>
         </div>
-        <hr style="height: 4px; width: 100%"
-            [style.background-color]="productForm.get('categories').get('colorCategory').value">
-        <div>
-          <small class="form-text text-info">
-            Categories is required.
-          </small>
+      <div>
+        <small class="form-text text-info float-right">
+          Categories is required.
+        </small>
 
       </div>
+        <hr style="height: 4px; width: 100%"
+            [style.background-color]="productForm.get('categories').get('colorCategory').value">
+
       <mat-checkbox class="float-right m-2" formControlName="isVariantsWithSamePrice">Variants with same price
       </mat-checkbox>
       <div formArrayName="variants"
@@ -103,7 +104,7 @@
                  class="form-control  form-control-lg">
         </div>
         <div>
-          <small class="form-text text-info">
+          <small class="form-text text-info float-right">
             Variant<sup>{{i + 1}}</sup> is required.
           </small>
         </div>

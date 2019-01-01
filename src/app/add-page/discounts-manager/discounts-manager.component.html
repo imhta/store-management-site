@@ -1,12 +1,12 @@
-<div class="grid-wrapper" *ngIf="false">
+<div class="grid-wrapper  bg-white" *ngIf="allDiscounts.length === 0">
   <div class="card">
-
+s
     <img src="../../assets/logo/logo.png" class="grey-icon" alt="">
-    <div class="content">There is no discount added yet</div>
+    <div class="content">Create discounts to offer your customers</div>
     <div class="setup-link" (click)="openAddDiscountModel(content)">ADD DISCOUNT</div>
   </div>
 </div>
-<div class="container">
+<div class="container" *ngIf="allDiscounts.length > 0">
   <button class="btn btn-primary float-right" type="button" (click)="openAddDiscountModel(content)">Add Discount
   </button>
   <h3>Discounts</h3>
