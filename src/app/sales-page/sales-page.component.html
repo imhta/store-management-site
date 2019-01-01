@@ -3,7 +3,7 @@
     <ng-template ngbTabContent>
 
 
-      <div class="page">
+      <div class="page  bg-white">
 
         <div class=" qr-scanner-preview">
           <div class="card">
@@ -33,7 +33,7 @@
                                           (click)="selectPayment(payment)"
                                           *ngFor="let payment of typeOfPayment">{{payment}}</span></h6>
             <div class="input-group">
-              <input type="number" class="form-control form-control-sm " id="customer-number" placeholder="Phone number"
+              <input type="number" class="form-control"  [ngClass]="screenWidth > 1400 ? 'form-control-lg':'form-control-sm'" id="customer-number" placeholder="Phone number"
                      required
                      [(ngModel)]="invoice.customerNumber"
                      (ngModelChange)="phoneNoChanged($event)">
@@ -47,7 +47,7 @@
           <div class="form-group">
             <label for="customer-number">Customer Name :</label>
             <div class="input-group">
-              <input type="text" class="form-control form-control-sm " id="customer-name" placeholder="Customer name"
+              <input type="text" class="form-control" [ngClass]="screenWidth > 1400 ? 'form-control-lg':'form-control-sm'" id="customer-name" placeholder="Customer name"
                      required
                      [attr.readonly]="customerNotExit ? null : ''"
                      [(ngModel)]="invoice.customerName">
@@ -66,11 +66,11 @@
           <div class="form-group">
             <label for="add-cart">Product ID :</label>
             <div class="input-group">
-              <input type="text" class="form-control form-control-sm " id="add-cart" aria-describedby="button-addon4"
+              <input type="text" class="form-control" [ngClass]="screenWidth > 1400 ? 'form-control-lg':'form-control-sm'" id="add-cart" aria-describedby="button-addon4"
                      placeholder="Product Reference Number (PRN)"
                      [(ngModel)]="prn" [ngbTypeahead]="prnSearch" (keyup.enter)="addToCart(prn)">
               <div class="input-group-append" id="button-addon4">
-                <button class="btn btn-primary btn-sm" type="button" (click)="addToCart(prn)">Add</button>
+                <button class="btn btn-primary" [ngClass]="screenWidth > 1400 ? '':' btn-sm'"  type="button" (click)="addToCart(prn)">Add</button>
               </div>
             </div>
           </div>
@@ -93,7 +93,7 @@
               </div>
             </div>
           </div>
-          <div class="grid-wrapper bg-white" *ngIf="!(cartProducts.length > 0)">
+          <div class="grid-wrapper" *ngIf="!(cartProducts.length > 0)">
             <div class="card">
 
               <img src="../../assets/logo/logo.png" class="grey-icon" alt="">
@@ -146,8 +146,8 @@
   </ngb-tab>
   <ngb-tab>
     <ng-template ngbTabTitle>Return</ng-template>
-    <ng-template ngbTabContent>
-      <app-return-products></app-return-products>
+    <ng-template ngbTabContent >
+      <app-return-products ></app-return-products>
     </ng-template>
   </ngb-tab>
 
