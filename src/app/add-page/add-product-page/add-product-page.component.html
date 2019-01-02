@@ -69,14 +69,13 @@
           <input placeholder="Color Category" class="form-control  form-control-lg"
                  formControlName="colorCategory"
                  [ngbTypeahead]="colors">
-        </div>
-        </div>
-      <div>
-        <small class="form-text text-info float-right">
-          Categories is required.
-        </small>
+          <small class="form-text text-info float-right">
+            Categories are required.
+          </small>
 
-      </div>
+        </div>
+        </div>
+
         <hr style="height: 4px; width: 100%"
             [style.background-color]="productForm.get('categories').get('colorCategory').value">
 
