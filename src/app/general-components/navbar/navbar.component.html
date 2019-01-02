@@ -55,7 +55,7 @@
   </mat-list-item>
   <mat-list-item (click)="navigateTo('/customers')" *ngIf="user.role !== 'Data entry'">
     <mat-icon mat-list-icon>people</mat-icon>
-    <h4 mat-line>Customers</h4>
+    <h4 mat-line>Customer</h4>
   </mat-list-item>
   <mat-list-item (click)="navigateTo('/billing')"
                  *ngIf="user.isRegister === true">
