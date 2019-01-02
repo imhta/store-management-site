@@ -129,7 +129,7 @@
         <div class="button location-btn" (click)="locateStore()"> Locate store</div>
       </div>
       <div class="text-success text-center" *ngIf="isLocated">We got your location</div>
-      <a><p>*By signing up you agree to our store privacy policy and store terms of use.</p></a>
+      <a><p>*By signing up you agree to <a href="https://docs.clothx.net/terms-and-conditions" target="_blank">our store privacy policy and store terms of use</a>.</p></a>
       <div class="button" (click)="isLocated? onSubmit() : null"> Let's get started</div>
     </form>
 

@@ -65,9 +65,9 @@ export class NavbarComponent implements OnInit {
     return this.store.dispatch(new Navigate(['store/setup']));
   }
 
-  onNavigate() {
+  navigateToHelp() {
     this.toggle.emit(true);
-    window.open('https://www.clothx.net', '_blank');
+    window.open('https://www.docs.clothx.net', '_blank');
   }
 
 }
