@@ -8,6 +8,7 @@ import {first} from 'rxjs/operators';
 import {Navigate} from '@ngxs/router-plugin';
 import {ReturnModel} from '../shared/models/return.model';
 import {Router} from '@angular/router';
+import {FirestoreService} from '../shared/service/firestore/firestore.service';
 
 
 @Component({
@@ -17,18 +18,32 @@ import {Router} from '@angular/router';
 })
 export class CustomerPageComponent implements OnInit {
   @Select(StoreState.uid) storeUid$: Observable<string>;
-  @Select('bills') allInvoice$: Observable<{ invoices: InvoiceModel[], returnBills: ReturnModel[] }>;
-  allInvoices: InvoiceModel[] = [];
+  @Select('bills') allInvoice$: Observable<{ invoices: [], returnBills: ReturnModel[] }>;
+  allInvoices = [];
   uniqueCustomers: string[];
   selectedCustomer;
   changeCustomer = true;
   selectedCustomerValue: string;
-  selectedCustomerData: InvoiceModel[] = [];
-  constructor(public store: Store, private router: Router) {
+  selectedCustomerInvoiceData = [];
+  selectedCustomerData ;
+  customerDetails = [];
+  lastPurchasedProduct;
+  constructor(public store: Store, private router: Router, private dbService: FirestoreService) {
+
   }
 
   ngOnInit() {
-    this.storeUid$.pipe(first()).subscribe((storeUid) => this.store.dispatch([new GetAllInvoice(storeUid)]));
+    this.storeUid$.pipe(first()).subscribe((storeUid) => {
+      this.store.dispatch([new GetAllInvoice(storeUid)]);
+      this.dbService.getAllCustomers(storeUid).then((data) => {
+        data.forEach((doc) => {
+          const customer = doc.data();
+          customer['number'] = doc.id;
+          this.customerDetails.push(customer);
+        });
+        console.log(this.customerDetails);
+      });
+    });
     this.allInvoice$.subscribe((allInvoices) => {
       this.allInvoices = allInvoices.invoices;
       this.findUniqueCustomers();
@@ -45,19 +60,21 @@ export class CustomerPageComponent implements OnInit {
 
     console.log(this.uniqueCustomers);
   }
-  selectCustomer(i) {
-    this.selectedCustomerData = [];
-    this.selectedCustomer = i;
+
+  selectCustomer(customerNumber: string) {
+    this.selectedCustomerInvoiceData = [];
     this.changeCustomer = false;
-    this.selectedCustomerValue = this.uniqueCustomers[this.selectedCustomer];
-    this.selectedCustomerData = this.filterCustomerData();
+    this.selectedCustomer = customerNumber;
+    this.selectedCustomerValue = customerNumber;
+    this.selectedCustomerInvoiceData = this.allInvoices.filter((invoice) => invoice.customerNumber === +customerNumber);
+    this.selectedCustomerData = this.customerDetails.filter((customer) => customer.number === customerNumber)[0];
+    this.lastPurchasedProduct = this.selectedCustomerInvoiceData[0].cartProducts.map((product) => product.productName + '-' + product.size)[0] ;
   }
+
   toggleCustomer() {
     this.changeCustomer = true;
   }
-  filterCustomerData() {
-   return this.allInvoices.filter((invoice) => invoice.customerNumber === this.selectedCustomerValue);
-  }
+
 
   navigateToSell() {
     const id = +this.router.routerState.snapshot.url.split('/')[2];

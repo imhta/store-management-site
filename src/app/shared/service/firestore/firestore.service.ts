@@ -355,6 +355,11 @@ export class FirestoreService {
       });
   }
 
+  getAllCustomers(storeId) {
+    return this.db
+      .collection(`stores/${storeId}/customers`).ref.get();
+  }
+
   incrementStock(productId: string, index: number) {
 // Create a reference to the product doc.
     const productDocRef = this.db.firestore.collection('products').doc(productId);
@@ -386,6 +391,7 @@ export class FirestoreService {
         })).then(() => console.log('Transaction successfully committed!'))
       .catch(error => console.log('Transaction failed: ', error));
   }
+
   addProductTag(productId: string, tag: string) {
 
     return this.db.firestore
@@ -394,7 +400,8 @@ export class FirestoreService {
       .update({'tags': FieldValue.arrayUnion(tag)});
 
 
-}
+  }
+
   removeProductTag(productId: string, tag: string) {
     return this.db.firestore
       .collection('products')
@@ -403,6 +410,7 @@ export class FirestoreService {
 
 
   }
+
   addProductVariant(productId: string, variant: object) {
     return this.db.firestore
       .collection('products')
