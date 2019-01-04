@@ -28,19 +28,19 @@
   <a class="menu float-right" (click)="toggleCustomer()"><i class="material-icons">view_list</i></a>
   <h3>History</h3>
   <div class="row text-white text-center">
-    <div class="col card bg-info m-3 ">
+    <div class="col-md card bg-info m-3 ">
       <div class="card-body m-3 ">
         <p>No. Of Item Purchased</p>
         <h2 class="font-weight-bolder"> {{selectedCustomerData.noOfItemsPurchased | number}}</h2>
       </div>
     </div>
-    <div class="col card bg-info m-3">
+    <div class="col-md card bg-info m-3">
       <div class="card-body  m-3">
         <p>Total worth</p>
         <h2 class="font-weight-bolder"> &#8377; {{selectedCustomerData.totalCostOfPurchase | number}}</h2>
       </div>
     </div>
-    <div class="col card bg-info m-3">
+    <div class="col-md card bg-info m-3">
       <div class="card-body  m-3">
         <p>No. Of Visits</p>
         <h2 class="font-weight-bolder">{{selectedCustomerData.totalNoOfVisit | number}}</h2>
@@ -48,13 +48,13 @@
     </div>
   </div>
   <div class="row text-white text-center">
-    <div class="col card bg-success m-3 ">
+    <div class="col-md card bg-success m-3 ">
       <div class="card-body m-3 ">
         <p>Average Item Purchased</p>
         <h2 class="font-weight-bolder"> {{selectedCustomerData.noOfItemsPurchased / selectedCustomerData.totalNoOfVisit | number}}</h2>
       </div>
     </div>
-    <div class="col card bg-success m-3">
+    <div class="col-md card bg-success m-3">
       <div class="card-body  m-3">
         <p>Average Purchase</p>
         <h2 class="font-weight-bolder">
@@ -63,19 +63,19 @@
     </div>
   </div>
   <div class="row text-white text-center">
-    <div class="col card bg-info m-3 ">
+    <div class="col-md card bg-info m-3 ">
       <div class="card-body m-3 ">
         <p>Customer Since</p>
         <h2 class="font-weight-bolder"> {{selectedCustomerData.firstVisit.toDate() | date:'medium'}}</h2>
       </div>
     </div>
-    <div class="col card bg-info m-3">
+    <div class="col-md card bg-info m-3">
       <div class="card-body  m-3">
         <p>Last visits</p>
         <h2 class="font-weight-bolder"> {{selectedCustomerData.lastVisit.toDate() | date:'medium'}}</h2>
       </div>
     </div>
-    <div class="col card bg-info m-3">
+    <div class="col-md card bg-info m-3">
       <div class="card-body  m-3">
         <p>Last Purchased Product</p>
         <h2 class="font-weight-bolder">{{lastPurchasedProduct}}</h2>
