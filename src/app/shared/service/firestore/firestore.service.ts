@@ -50,9 +50,10 @@ import {
   GotAllDiscountsSuccessfully
 } from '../../actions/discount.actions';
 import {CustomerExits, CustomerNotExits, NewCustomerOfStore, OldCustomerOfStore} from '../../actions/customers.actions';
-import FieldValue = firebase.firestore.FieldValue;
-import * as firebase from 'firebase';
 
+import FieldValue = firebase.firestore.FieldValue;
+
+import * as firebase from 'firebase';
 
 // @ts-ignore
 @Injectable({
@@ -417,4 +418,5 @@ export class FirestoreService {
       .doc(productId)
       .update({'variants': FieldValue.arrayUnion(variant)});
   }
+
 }
