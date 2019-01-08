@@ -72,7 +72,8 @@
     <div class="col-md card bg-info m-3">
       <div class="card-body  m-3">
         <p>Last visits</p>
-        <h2 class="font-weight-bolder"> {{selectedCustomerData.lastVisit.toDate() | date:'medium'}}</h2>
+        <h2 class="font-weight-bolder" *ngIf="!selectedCustomerData.lastVisit"> {{selectedCustomerData.firstVisit.toDate() | date:'medium'}}</h2>
+        <h2 class="font-weight-bolder" *ngIf="selectedCustomerData.lastVisit"> {{selectedCustomerData.lastVisit.toDate() | date:'medium'}}</h2>
       </div>
     </div>
     <div class="col-md card bg-info m-3">
