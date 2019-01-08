@@ -67,7 +67,7 @@ export class NavbarComponent implements OnInit {
 
   navigateToHelp() {
     this.toggle.emit(true);
-    window.open('https://www.docs.clothx.net', '_blank');
+    window.open('https://www.docs.spoteasy.in', '_blank');
   }
 
 }
