@@ -1,0 +1,76 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import ".././node_modules/bootstrap/dist/css/bootstrap.css";
+@import url('https://fonts.googleapis.com/css?family=Audiowide');
+@import url('https://fonts.googleapis.com/css?family=Roboto:400');
+@import url('https://fonts.googleapis.com/css?family=Raleway:500,600,700,900');
+
+input[type='number'] {
+  -moz-appearance:textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+body{
+  font-family: 'Roboto', sans-serif;
+}
+emptyspace{
+  height: 180px;
+  width: 100%;
+  display: block;
+}
+
+.form-group , .form-row{
+  max-width: 600px;
+  margin: 25px auto;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+}
+.form-control{
+  border-radius: 50px;
+}
+.form-control, small{
+  font-family: 'Montserrat', sans-serif;
+}
+.form-control:focus{
+  border-color: #06bca9;
+  box-shadow: 0 1px 1px #06bca9 inset, 0 0 8px #06bca9;
+  outline: 0 none;
+}
+form a p{
+  text-align: center;
+}
+.button{
+  max-width: 250px;
+  border-radius: 30px;
+  text-align: center;
+  cursor: pointer;
+  padding: 15px 20px ;
+  border: solid 4px #06bca9;
+  color: #214c3f;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  letter-spacing: 2px;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select:none;
+  user-select:none;
+  float: right;
+  margin: 25px;
+}
+.button:hover {
+  border: solid 4px aquamarine;
+}
+
+.button:active {
+  border: solid 4px #06bca9;
+}
+.material-icons{
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select:none;
+  user-select:none;
+}

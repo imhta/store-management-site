@@ -22,7 +22,7 @@ import {Router} from '@angular/router';
 @Component({
   selector: 'app-return-products',
   templateUrl: './return-products.component.html',
-  styleUrls: ['./return-products.component.scss']
+  styleUrls: ['./return-products.component.css']
 })
 export class ReturnProductsComponent implements OnInit {
   @Select('storeState') storeState$: Observable<object>;

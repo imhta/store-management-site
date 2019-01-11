@@ -20,7 +20,7 @@ import {GetAllProducts} from '../../shared/actions/product.actions';
 @Component({
   selector: 'app-discounts-manager',
   templateUrl: './discounts-manager.component.html',
-  styleUrls: ['./discounts-manager.component.scss'],
+  styleUrls: ['./discounts-manager.component.css'],
   providers: [NgbModalConfig, NgbModal]
 })
 export class DiscountsManagerComponent implements OnInit, OnDestroy {

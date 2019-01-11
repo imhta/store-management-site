@@ -5,7 +5,7 @@ import {SingleProductModel} from '../../shared/models/product.model';
 @Component({
   selector: 'app-store-table-view',
   templateUrl: './store-table-view.component.html',
-  styleUrls: ['./store-table-view.component.scss']
+  styleUrls: ['./store-table-view.component.css']
 })
 export class StoreTableViewComponent implements OnInit {
 

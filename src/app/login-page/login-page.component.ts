@@ -8,7 +8,7 @@ import {Observable} from 'rxjs';
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
-  styleUrls: ['./login-page.component.scss']
+  styleUrls: ['./login-page.component.css']
 })
 export class LoginPageComponent implements OnInit, OnDestroy {
 

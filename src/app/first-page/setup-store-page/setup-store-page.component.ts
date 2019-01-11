@@ -19,7 +19,7 @@ const indianStates = ['Arunachal Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar'
 @Component({
   selector: 'app-setup-store-page',
   templateUrl: './setup-store-page.component.html',
-  styleUrls: ['./setup-store-page.component.scss']
+  styleUrls: ['./setup-store-page.component.css']
 })
 export class SetupStorePageComponent implements OnInit, OnDestroy {
   @Select('user') user$: Observable<object>;

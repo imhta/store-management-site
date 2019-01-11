@@ -1,0 +1,80 @@
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+}
+
+.container {
+  max-width: 800px;
+}
+
+#add-ssp, #add-ssp input {
+  cursor: pointer;
+  opacity: 0.5;
+}
+.card {
+  width: 100%;
+  border: none;
+  padding: 15px;
+  margin-top: 20px;
+  border-radius: 20px;
+}
+
+.card h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+  text-align: center;
+  margin: 15px;
+}
+
+.material-icons {
+  z-index: 5;
+  left: 30px;
+  font-size: 45px;
+  color: green;
+}
+.badge {
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.badge-primary:hover {
+  background-color: rgba(255, 0, 0, 0.5);
+}
+
+.badge-primary:active {
+  background-color: red;
+}
+
+.remove-btn, .add-btn {
+  cursor: pointer;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.btn-center {
+  margin: 20px auto;
+  max-width: 225px;
+}
+
+form .card {
+  -webkit-box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.12);
+  -moz-box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.12);
+}
+::ng-deep .mat-form-field-appearance-legacy .mat-form-field-underline,
+.mat-form-field-appearance-legacy .mat-form-field-underline:active,
+.mat-form-field-appearance-legacy .mat-form-field-underline:focus {
+  background-color: transparent;
+}
+
+::ng-deep .mat-select-content {
+  border-radius: 10px;
+}
+
+input::placeholder {
+  text-transform: none;
+  font-size: 15px;
+}

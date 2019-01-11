@@ -1,0 +1,60 @@
+.container {
+  max-width: 1200px;
+  display: grid;
+  margin: 0 auto;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 250px));
+  grid-auto-rows: minmax(500px, auto);
+  gap: 20px;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.container .card {
+  -webkit-box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.12);
+  -moz-box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.12);
+  width: 100%;
+  border-radius: 6px 6px 20px 20px;
+  max-width: 250px;
+  max-height: 600px;
+  cursor: pointer;
+  border: solid 2px transparent;
+}
+
+.container .card:hover {
+  border: solid 2px #007bff;
+}
+
+.container .card:active {
+  border: solid 2px #007bff;
+}
+.card-content {
+  margin: 30px 20px 0;
+
+}
+
+.qr-code {
+  margin: -22px;
+}
+
+@supports (display: grid) {
+  .container > * {
+    margin: 0;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .container {
+    max-width: 280px;
+  }
+
+  .form-group {
+    margin: 10px;
+  }
+
+  .title {
+    display: none;
+  }
+}
