@@ -84,28 +84,28 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
       distinctUntilChanged(),
       map(term => term.length < 1 ? []
         : tags.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-    );
+    )
   colors = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
       map(term => term.length < 2 ? []
-        : colors.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-    );
+        : colors.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10).reverse())
+    )
   occasionsCat = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
       map(term => term.length < 1 ? []
         : occasionsCat.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-    );
+    )
   styleCat = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
       map(term => term.length < 1 ? []
         : styleCat.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-    );
+    )
   constructor(private fb: FormBuilder, private store: Store) {
 
   }
