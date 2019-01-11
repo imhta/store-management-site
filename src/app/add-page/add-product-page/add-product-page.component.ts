@@ -34,7 +34,7 @@ const colors = ['AliceBlue', 'AntiqueWhite', 'Aqua', 'Aquamarine', 'Azure', 'Bei
   'PaleGreen', 'PaleTurquoise', 'PaleVioletRed', 'PapayaWhip', 'PeachPuff', 'Peru', 'Pink', 'Plum',
   'PowderBlue', 'Purple', 'Red', 'RosyBrown', 'RoyalBlue', 'SaddleBrown', 'Salmon', 'SandyBrown', 'SeaGreen', 'SeaShell',
   'Sienna', 'Silver', 'SkyBlue', 'SlateBlue', 'SlateGray', 'SlateGrey', 'Snow', 'SpringGreen', 'SteelBlue', 'Tan', 'Teal',
-  'Thistle', 'Tomato', 'Turquoise', 'Violet', 'Wheat', 'White', 'WhiteSmoke', 'Yellow', 'YellowGreen'];
+  'Thistle', 'Tomato', 'Turquoise', 'Violet', 'Wheat', 'White', 'Yellow', 'YellowGreen'];
 const occasionsCat = [
   'Casuals', 'Party', 'Lingerie & Night Wear', 'Sports', 'Formals', 'Wedding', 'Summer', 'Winter', 'Swim Wear'
 ];
@@ -44,7 +44,7 @@ const styleCat = [
 @Component({
   selector: 'app-add-product-page',
   templateUrl: './add-product-page.component.html',
-  styleUrls: ['./add-product-page.component.css'],
+  styleUrls: ['./add-product-page.component.scss'],
 })
 export class AddProductPageComponent implements OnInit, OnDestroy {
   @Select('user') user$: Observable<object>;
@@ -84,28 +84,28 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
       distinctUntilChanged(),
       map(term => term.length < 1 ? []
         : tags.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-    );
+    )
   colors = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
       map(term => term.length < 2 ? []
-        : colors.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-    );
+        : colors.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10).reverse())
+    )
   occasionsCat = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
       map(term => term.length < 1 ? []
         : occasionsCat.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-    );
+    )
   styleCat = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
       map(term => term.length < 1 ? []
         : styleCat.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-    );
+    )
   constructor(private fb: FormBuilder, private store: Store) {
 
   }

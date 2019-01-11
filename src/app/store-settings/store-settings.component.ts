@@ -21,7 +21,7 @@ import {environment} from '../../environments/environment';
 @Component({
   selector: 'app-store-settings',
   templateUrl: './store-settings.component.html',
-  styleUrls: ['./store-settings.component.css']
+  styleUrls: ['./store-settings.component.scss']
 })
 export class StoreSettingsComponent implements OnInit, OnDestroy {
   @Select('storeState') storeState$: Observable<object>;

@@ -14,7 +14,7 @@ import {Router} from '@angular/router';
 @Component({
   selector: 'app-store-page',
   templateUrl: './store-page.component.html',
-  styleUrls: ['./store-page.component.css']
+  styleUrls: ['./store-page.component.scss']
 })
 export class StorePageComponent implements OnInit, OnDestroy {
   @Select(StoreState.uid) storeId$: Observable<string>;

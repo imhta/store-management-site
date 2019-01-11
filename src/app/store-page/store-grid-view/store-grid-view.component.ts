@@ -4,7 +4,7 @@ import {SingleProductModel} from '../../shared/models/product.model';
 @Component({
   selector: 'app-store-grid-view',
   templateUrl: './store-grid-view.component.html',
-  styleUrls: ['./store-grid-view.component.css']
+  styleUrls: ['./store-grid-view.component.scss']
 })
 export class StoreGridViewComponent implements OnInit {
   @Input() allProducts: SingleProductModel[];

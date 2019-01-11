@@ -5,7 +5,7 @@ import {AngularFireStorage, AngularFireUploadTask} from '@angular/fire/storage';
 @Component({
   selector: 'app-logo-upload',
   templateUrl: './logo-upload.component.html',
-  styleUrls: ['./logo-upload.component.css']
+  styleUrls: ['./logo-upload.component.scss']
 })
 export class LogoUploadComponent implements OnInit, OnDestroy {
 

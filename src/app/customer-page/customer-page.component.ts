@@ -14,7 +14,7 @@ import {FirestoreService} from '../shared/service/firestore/firestore.service';
 @Component({
   selector: 'app-customer-page',
   templateUrl: './customer-page.component.html',
-  styleUrls: ['./customer-page.component.css']
+  styleUrls: ['./customer-page.component.scss']
 })
 export class CustomerPageComponent implements OnInit {
   @Select(StoreState.uid) storeUid$: Observable<string>;

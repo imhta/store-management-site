@@ -21,7 +21,7 @@ import {DiscountModel} from '../shared/models/discount.model';
 @Component({
   selector: 'app-billing-page',
   templateUrl: './sales-page.component.html',
-  styleUrls: ['./sales-page.component.css'],
+  styleUrls: ['./sales-page.component.scss'],
 
 })
 export class SalesPageComponent implements OnInit, OnDestroy {
@@ -56,7 +56,7 @@ export class SalesPageComponent implements OnInit, OnDestroy {
       distinctUntilChanged(),
       map(term => term.length < 1 ? []
         : this.allProducts.map(v => v['prn']).filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).reverse().slice(0, 10))
-    );
+    )
 
   ngOnInit() {
     this.uid$.subscribe((uid) => this.invoice.billedBy = uid);

@@ -18,7 +18,7 @@ import {AuthState} from '../../shared/state/auth.state';
 @Component({
   selector: 'app-linked-store',
   templateUrl: './linked-store.component.html',
-  styleUrls: ['./linked-store.component.css']
+  styleUrls: ['./linked-store.component.scss']
 })
 export class LinkedStoreComponent implements OnInit, OnDestroy {
   @Select('storeState') storeState$: Observable<UserStoreState>;

@@ -5,7 +5,7 @@ import {AngularFireStorage, AngularFireUploadTask} from '@angular/fire/storage';
 @Component({
   selector: 'app-file-upload',
   templateUrl: './file-upload.component.html',
-  styleUrls: ['./file-upload.component.css']
+  styleUrls: ['./file-upload.component.scss']
 })
 export class FileUploadComponent implements OnInit, OnDestroy {
   @Input() storeId: string;

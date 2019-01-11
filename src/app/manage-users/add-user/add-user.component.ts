@@ -10,7 +10,7 @@ import {AddExtraUser} from '../../shared/actions/auth.actions';
 @Component({
   selector: 'app-add-user',
   templateUrl: './add-user.component.html',
-  styleUrls: ['./add-user.component.css']
+  styleUrls: ['./add-user.component.scss']
 })
 export class AddUserComponent implements OnInit, OnDestroy {
   @Select('user') user$: Observable<object>;

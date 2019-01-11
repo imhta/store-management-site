@@ -12,7 +12,7 @@ import {FirestoreService} from '../shared/service/firestore/firestore.service';
 @Component({
   selector: 'app-product-page',
   templateUrl: './product-page.component.html',
-  styleUrls: ['./product-page.component.css'],
+  styleUrls: ['./product-page.component.scss'],
   providers: [NgbModalConfig, NgbModal]
 })
 export class ProductPageComponent implements OnInit, OnDestroy {
