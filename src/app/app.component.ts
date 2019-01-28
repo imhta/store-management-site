@@ -6,6 +6,7 @@ import {MediaMatcher} from '@angular/cdk/layout';
 import {NavigationEnd, Router} from '@angular/router';
 import {filter} from 'rxjs/operators';
 
+
 declare var gtag;
 @Component({
   selector: 'app-root',
@@ -22,8 +23,12 @@ export class AppComponent implements OnInit, OnDestroy {
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,
     private actions$: Actions,
-    private router: Router
+    private router: Router,
+
   ) {
+    // updates.available.subscribe(event => {
+    //   updates.activateUpdate().then(() => document.location.reload());
+    // });
     this.store.dispatch([new LoadingTrue(), new CheckAuthState()]);
     this.actions$.pipe(ofActionDispatched(LoginSuccessful, Authenticated)).subscribe(() => this.auth = true);
     this.mobileQuery = media.matchMedia('(max-width: 600px)');

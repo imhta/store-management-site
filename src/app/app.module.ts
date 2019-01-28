@@ -53,7 +53,7 @@ import {InvoicePageComponent} from './invoice-page/invoice-page.component';
 import {CustomerPageComponent} from './customer-page/customer-page.component';
 import {DashboardPageComponent} from './dashboard-page/dashboard-page.component';
 import {BillingPageComponent} from './billing-page/billing-page.component';
-import {ServiceWorkerModule} from '@angular/service-worker';
+import {ServiceWorkerModule, SwUpdate} from '@angular/service-worker';
 import {PwaService} from './shared/service/pwa/pwa.service';
 import {RegisterGuard} from './shared/service/guard/role/register-guard/register-guard';
 import {SellingGuard} from './shared/service/guard/feature-guard/selling-guard/selling.guard';
@@ -83,6 +83,8 @@ import {PipesModule} from './shared/pipes/pipes.module';
 import {CommonModule} from '@angular/common';
 import {NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
 import {NgxsLoggerPluginModule} from '@ngxs/logger-plugin';
+import { MatGridListModule, MatCardModule } from '@angular/material';
+import { LayoutModule } from '@angular/cdk/layout';
 
 @NgModule({
   declarations: [
@@ -151,7 +153,10 @@ import {NgxsLoggerPluginModule} from '@ngxs/logger-plugin';
     MatSidenavModule,
     MatListModule,
     // ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
-    PipesModule
+    PipesModule,
+    MatGridListModule,
+    MatCardModule,
+    LayoutModule
 
   ],
   exports: [],

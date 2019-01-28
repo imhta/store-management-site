@@ -5,6 +5,7 @@ import {AngularFirestore} from 'angularfire2/firestore';
 import {LoginModel, User, UserModel} from '../../models/auth.model';
 import {switchMap} from 'rxjs/operators';
 import {Observable, of} from 'rxjs';
+import {environment} from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -55,7 +56,7 @@ export class AuthService {
     const userData = new LoginModel(authData);
     const ref = this.db.collection('users').doc(`${authData.user.email}`).ref;
     ref.onSnapshot((user) => {
-      console.log(userData);
+      if (!environment.production) { console.log(userData); }
       return ref.set(userData.toJson(), {merge: true});
 
     });

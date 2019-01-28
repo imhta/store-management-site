@@ -1,18 +1,23 @@
-<div class="page" [style.height]="this.windowHeight">
+<div class="page">
 
-<div class="text-center center" >
-    <form class="form-signin card">
-      <app-logo></app-logo>
-      <h1 class="toolbar">Omnikit</h1>
+  <div class="text-center ">
+    <form class="card">
+      <div class="center">
+        <app-logo></app-logo>
+        <h1 class="title">Omnikit</h1>
         <h4>console.spoteasy.in</h4>
 
-      <div class="google-login-button" (click)="loading? null: login()"  [ngClass]="{'disabled': loading}"></div>
-            <div class="terms-condition-container">
-              <p class="mt-5 mb-3 text-muted ">*By logging in, you agree to <a href="https://docs.spoteasy.in/terms-and-conditions" target="_blank">our Terms & Conditions & Privacy Policy</a>.</p>
-            </div>
-            <p class="mt-5 mb-3 text-muted">©2017-2018</p>
-        </form>
+      </div>
+      <div class="login-container-footer">
+        <div class="google-login-button" (click)="loading? null: login()" [ngClass]="{'disabled': loading}"></div>
+        <div class="terms-condition-container">
+          <p class="mt-5 mb-3">*By logging in, you agree to <a
+            href="https://docs.spoteasy.in/terms-and-conditions" target="_blank" >our Terms & Conditions & Privacy
+            Policy</a>.</p>
+        </div>
+      </div>
+    </form>
 
-</div>
+  </div>
 
 </div>

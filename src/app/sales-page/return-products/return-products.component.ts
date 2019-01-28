@@ -88,7 +88,10 @@ export class ReturnProductsComponent implements OnInit {
       });
     this.action$
       .pipe(ofActionDispatched(ErrorInReturningInvoice), take(1))
-      .subscribe(({err}) => this.hasErrorWhileReturning = true);
+      .subscribe(({err}) => {
+        this.hasErrorWhileReturning = true;
+        console.log(err);
+      });
   }
 
   returnAll() {
