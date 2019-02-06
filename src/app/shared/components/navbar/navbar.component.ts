@@ -1,11 +1,11 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {UserModel} from '../../shared/models/auth.model';
+import {UserModel} from '../../models/auth.model';
 import {Actions, ofActionDispatched, Select, Store} from '@ngxs/store';
-import {Logout} from '../../shared/actions/auth.actions';
-import {LoadingTrue} from '../../shared/state/loading.state';
-import {UserStoreState} from '../../shared/models/store.model';
+import {Logout} from '../../actions/auth.actions';
+import {LoadingTrue} from '../../state/loading.state';
+import {UserStoreState} from '../../models/store.model';
 import {Navigate} from '@ngxs/router-plugin';
-import {EmptyLinkedStore} from '../../shared/actions/store.actions';
+import {EmptyLinkedStore, ResetSelectedStore} from '../../actions/store.actions';
 import {ActivatedRoute, Router} from '@angular/router';
 
 
@@ -46,7 +46,7 @@ export class NavbarComponent implements OnInit {
 
   navigateToManageStore() {
     this.toggle.emit(true);
-    return this.store.dispatch(new Navigate(['select/store']));
+    return this.store.dispatch([new ResetSelectedStore(null), new Navigate(['home'])]);
   }
 
   navigateTo(path: string) {
@@ -62,7 +62,7 @@ export class NavbarComponent implements OnInit {
 
   navigateToSetupStore() {
     this.toggle.emit(true);
-    return this.store.dispatch(new Navigate(['store/setup']));
+    return this.store.dispatch(new Navigate(['setup/store']));
   }
 
   navigateToHelp() {

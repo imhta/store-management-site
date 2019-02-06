@@ -40,7 +40,7 @@ export class StorePageComponent implements OnInit, OnDestroy {
     this.isRegister = this.store.selectSnapshot(AuthState.isRegister);
     this.loading$.subscribe((loading) => this.loading = loading.valueOf());
     this.storeId$.pipe(first()).subscribe((storeId) => this.searchQuery.storeId = storeId);
-    this.storeDataSubscription = this.storeState$.subscribe((data) => {
+    this.storeDataSubscription = this.storeState$.pipe(take(1)).subscribe((data) => {
       this.storeState = new UserStoreState(data.valueOf());
       this.currentStore = this.storeState.linkedStores[this.storeState.selectedStore];
       this.store.dispatch([new GetAllProducts(this.currentStore['storeUid']), new LoadingTrue()]);
@@ -55,7 +55,6 @@ export class StorePageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.storeDataSubscription.unsubscribe();
   }
 
   navigateToProduct(productId: string) {

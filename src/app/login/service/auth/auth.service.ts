@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import * as firebase from 'firebase/app';
-import {AngularFireAuth} from 'angularfire2/auth';
-import {AngularFirestore} from 'angularfire2/firestore';
-import {LoginModel, User, UserModel} from '../../models/auth.model';
+import {AngularFireAuth} from '@angular/fire/auth';
+import {AngularFirestore} from '@angular/fire/firestore';
+import {LoginModel, User, UserModel} from '../../../shared/models/auth.model';
 import {switchMap} from 'rxjs/operators';
 import {Observable, of} from 'rxjs';
 import {environment} from '../../../../environments/environment';
@@ -36,12 +36,15 @@ export class AuthService {
   ///// SignIn - SignOut Process /////
 
   googleLogin() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    return this.afAuth.auth.signInWithPopup(provider)
-      .then(credential => {
-        this.setUser(credential);
-        return new User(credential);
-      });
+    return this.afAuth.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(() => {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      const user = this.afAuth.auth.signInWithPopup(provider)
+        .then(credential => {
+          this.setUser(credential);
+          return new User(credential);
+        });
+      return user;
+    });
   }
 
   signOut() {
@@ -56,7 +59,9 @@ export class AuthService {
     const userData = new LoginModel(authData);
     const ref = this.db.collection('users').doc(`${authData.user.email}`).ref;
     ref.onSnapshot((user) => {
-      if (!environment.production) { console.log(userData); }
+      if (!environment.production) {
+        console.log(userData);
+      }
       return ref.set(userData.toJson(), {merge: true});
 
     });

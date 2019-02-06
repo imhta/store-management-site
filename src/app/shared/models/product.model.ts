@@ -1,6 +1,6 @@
-import Timestamp = firebase.firestore.Timestamp;
-import GeoPoint = firebase.firestore.GeoPoint;
-import * as firebase from 'firebase';
+import {firestore} from 'firebase/app';
+
+
 
 export class SingleProductModel {
   productUid: string;
@@ -22,11 +22,11 @@ export class SingleProductModel {
   taxType: 'footwear' | 'textile' | 'other';
   otherTax: number;
   hsnCode: string;
-  storeDetails: { address: { city: string, pinCode: number, state: string, street: string }, location: GeoPoint, name: string };
+  storeDetails: { address: { city: string, pinCode: number, state: string, street: string }, location: firestore.GeoPoint, name: string };
   inclusiveAllTaxes: boolean;
-  createdOn: Timestamp;
+  createdOn: firestore.Timestamp;
   isListable: boolean;
-  lastModified: Timestamp;
+  lastModified: firestore.Timestamp;
 
   constructor() {
     this.isListable = false;
@@ -74,7 +74,7 @@ export class SingleProductModel {
       'addedBy': this.addedBy,
       'storeId': this.storeId,
       'storeDetails': this.storeDetails,
-      'createdOn': Timestamp.now(),
+      'createdOn': firestore.Timestamp.now(),
       'isListable': this.isListable,
       'isDeleted': false
     };

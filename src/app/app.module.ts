@@ -1,33 +1,29 @@
-
-import {AuthService} from './shared/service/auth/auth.service';
-import {LogoComponent} from './general-components/logo/logo.component';
 import {BrowserModule} from '@angular/platform-browser';
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {AppComponent} from './app.component';
-import {AppRoutingModule, routingComponent} from './shared/routing-module/app-routing.module';
-import {AngularFireAuthModule} from 'angularfire2/auth';
-import {AngularFireModule} from 'angularfire2';
-import {AngularFirestoreModule} from 'angularfire2/firestore';
-import {AngularFireStorageModule} from 'angularfire2/storage';
+import {AppRoutingModule} from './routing-module/app-routing.module';
+
+// firebase
+import {AngularFireAuthModule} from '@angular/fire/auth';
+import {AngularFireModule} from '@angular/fire';
+import {AngularFirestoreModule, FirestoreSettingsToken } from '@angular/fire/firestore';
+import {AngularFireStorageModule} from '@angular/fire/storage';
+
+// environment
 import {environment} from '../environments/environment';
-import {HomePageComponent} from './home-page/home-page.component';
-import {NavbarComponent} from './general-components/navbar/navbar.component';
-import {LoginPageComponent} from './login-page/login-page.component';
+
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {AuthGuard} from './shared/service/guard/auth/auth.guard';
 import {NgxsModule} from '@ngxs/store';
 import {NgxsRouterPluginModule} from '@ngxs/router-plugin';
 import {AuthState} from './shared/state/auth.state';
-import {ManageStorePageComponent} from './first-page/manage-store-page/manage-store-page.component';
-import {SetupStorePageComponent} from './first-page/setup-store-page/setup-store-page.component';
-import {LinkedStoreComponent} from './first-page/linked-store/linked-store.component';
+
 import {LoadingState} from './shared/state/loading.state';
 import {FirestoreService} from './shared/service/firestore/firestore.service';
 import {StoreState} from './shared/state/store.state';
-import {LoadingComponent} from './general-components/loading/loading.component';
 import {StorePageComponent} from './store-page/store-page.component';
 import {AddProductPageComponent} from './add-page/add-product-page/add-product-page.component';
 import {AllProductState} from './shared/state/allproduct.state';
@@ -47,7 +43,6 @@ import {QrPageComponent} from './qr-page/qr-page.component';
 import {ManageUsersComponent} from './manage-users/manage-users.component';
 import {AddUserComponent} from './manage-users/add-user/add-user.component';
 import {SalesPageComponent} from './sales-page/sales-page.component';
-import {QrScannerComponent} from './general-components/qr-scanner/qr-scanner.component';
 import {InvoicesState} from './shared/state/invoice.state';
 import {InvoicePageComponent} from './invoice-page/invoice-page.component';
 import {CustomerPageComponent} from './customer-page/customer-page.component';
@@ -67,7 +62,6 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {StoreSettingsComponent} from './store-settings/store-settings.component';
 import {LogoUploadComponent} from './store-settings/logo-upload/logo-upload.component';
 import {StorePicsUploadComponent} from './store-settings/store-pics-upload/store-pics-upload.component';
-import {NotFoundPageComponent} from './general-components/not-found-page/not-found-page.component';
 import {ReturnProductsComponent} from './sales-page/return-products/return-products.component';
 import {AddPageComponent} from './add-page/add-page.component';
 import {DiscountsManagerComponent} from './add-page/discounts-manager/discounts-manager.component';
@@ -85,19 +79,13 @@ import {NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
 import {NgxsLoggerPluginModule} from '@ngxs/logger-plugin';
 import { MatGridListModule, MatCardModule } from '@angular/material';
 import { LayoutModule } from '@angular/cdk/layout';
+import {SharedModule} from './shared/shared.module';
+import {LoginModule} from './login/login.module';
+import {HomeModule} from './home/home.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    routingComponent,
-    LogoComponent,
-    HomePageComponent,
-    NavbarComponent,
-    LoginPageComponent,
-    ManageStorePageComponent,
-    SetupStorePageComponent,
-    LinkedStoreComponent,
-    LoadingComponent,
     StorePageComponent,
     AddProductPageComponent,
     ProductPageComponent,
@@ -105,7 +93,6 @@ import { LayoutModule } from '@angular/cdk/layout';
     ManageUsersComponent,
     AddUserComponent,
     SalesPageComponent,
-    QrScannerComponent,
     InvoicePageComponent,
     CustomerPageComponent,
     DashboardPageComponent,
@@ -114,7 +101,6 @@ import { LayoutModule } from '@angular/cdk/layout';
     StoreSettingsComponent,
     LogoUploadComponent,
     StorePicsUploadComponent,
-    NotFoundPageComponent,
     ReturnProductsComponent,
     AddPageComponent,
     DiscountsManagerComponent,
@@ -130,6 +116,9 @@ import { LayoutModule } from '@angular/cdk/layout';
     MatProgressSpinnerModule,
     FormsModule,
     AppRoutingModule,
+    SharedModule,
+    LoginModule,
+    HomeModule,
     AngularFireAuthModule,
     AngularFirestoreModule,
     AngularFireStorageModule,
@@ -138,10 +127,10 @@ import { LayoutModule } from '@angular/cdk/layout';
     BrowserAnimationsModule,
     MatCheckboxModule,
     AngularFireModule.initializeApp(environment.firebase),
-    NgxsModule.forRoot([AuthState, LoadingState, StoreState, AllProductState, InvoicesState]),
+    NgxsModule.forRoot([AuthState, LoadingState, StoreState, AllProductState, InvoicesState], { developmentMode: !environment.production }),
     NgxsRouterPluginModule.forRoot(),
-    // NgxsLoggerPluginModule.forRoot(),
-    // NgxsReduxDevtoolsPluginModule.forRoot(),
+    NgxsLoggerPluginModule.forRoot( {disabled: environment.production}),
+    NgxsReduxDevtoolsPluginModule.forRoot({disabled: environment.production}),
     NgxKjuaModule,
     ZXingScannerModule,
     NgbModule,
@@ -161,7 +150,7 @@ import { LayoutModule } from '@angular/cdk/layout';
   ],
   exports: [],
   providers: [
-    AuthService,
+    { provide: FirestoreSettingsToken, useValue: {} },
     FirestoreService,
     HttpService,
     AuthGuard,

@@ -49,17 +49,6 @@ export class LinkedStoreComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.role$.subscribe((role) => {
-      if (role === 'Register' && !this.user.isEmployee) {
-        this.store.dispatch([new LoadingTrue(), new ResetSelectedStore(null), new GetLinkedStores(this.user['uid'])]);
-      } else if (role !== undefined || null && this.user.isEmployee) {
-        this.store.dispatch([new LoadingTrue(), new ResetSelectedStore(null), new GetEmployeeLinkedStores(this.user['employeeOf'])]);
-      } else if ((role && this.user.isEmployee && this.user.isRegister) === undefined || null) {
-        this.linkedStoreEmpty = true;
-        this.store.dispatch([new EmptyLinkedStore()]);
-      }
-
-    });
     this.actions$
       .pipe(ofActionDispatched(EmptyLinkedStore))
       .subscribe(() => this.linkedStoreEmpty = true);
@@ -81,6 +70,6 @@ export class LinkedStoreComponent implements OnInit, OnDestroy {
   }
 
   navigateToSetupStore() {
-    return this.store.dispatch(new Navigate(['store/setup']));
+    return this.store.dispatch(new Navigate(['setup/store']));
   }
 }

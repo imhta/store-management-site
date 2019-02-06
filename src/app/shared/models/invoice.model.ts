@@ -1,7 +1,6 @@
-import Timestamp = firebase.firestore.Timestamp;
-import GeoPoint = firebase.firestore.GeoPoint;
 import {ReturnModel} from './return.model';
-import * as firebase from 'firebase';
+import {firestore} from 'firebase/app';
+
 
 export class BillsModel {
   invoices: InvoiceModel[];
@@ -24,8 +23,14 @@ export class InvoiceModel {
   totalTax: number;
   storeUid: string;
   sendSms: boolean;
-  storeDetails: { storeName: string, mobileNumber: string, address: object, location: GeoPoint, gstNumber: string, storeLogo: string };
-  createdOn: Timestamp;
+  storeDetails: {
+    storeName: string,
+    mobileNumber: string,
+    address: object,
+    location: firestore.GeoPoint,
+    gstNumber: string,
+    storeLogo: string };
+  createdOn: firestore.Timestamp;
   billedBy: string;
 
   constructor() {
@@ -85,7 +90,7 @@ export class InvoiceModel {
       'storeUid': this.storeUid,
       'sendSms': this.sendSms,
       'storeDetails': this.storeDetails,
-      'createdOn': Timestamp.now(),
+      'createdOn': firestore.Timestamp.now(),
       'invoiceId': this.invoiceId ? this.invoiceId : '',
       'pending': true
     };

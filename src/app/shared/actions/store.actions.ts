@@ -30,7 +30,14 @@ export class SelectStore {
   static readonly type = '[Store] Select store';
   constructor(public index: number) {}
 }
-
+export class SelectStoreOnly {
+  static readonly type = '[Store] set selected store in state (only)';
+  constructor(public index: number) {}
+}
+export class GetSelectedStoreByUrl {
+  static readonly type = '[Store] Get Selected store by url';
+  constructor(public index: number) {}
+}
 export class UploadStoreLogo {
   static readonly type = '[Store] Uploading store logo';
 

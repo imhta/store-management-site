@@ -1,5 +1,6 @@
-<div class="mat-container" [class.is-mobile]="mobileQuery.matches">
 
+<div class="mat-container" [class.is-mobile]="mobileQuery.matches">
+  <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
   <mat-sidenav-container class="sidenav-container">
     <mat-sidenav   #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
                  [fixedInViewport]="mobileQuery.matches" fixedTopGap="0" [opened]="!mobileQuery.matches && auth" >

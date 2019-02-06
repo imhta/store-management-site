@@ -37,7 +37,7 @@
     <tbody>
     <tr *ngFor="let product of allProducts; let i = index" (click)="navigateToProduct(product.productUid)">
       <th scope="row">{{i + 1}}</th>
-      <td><img *ngIf="!(product.picturesUrl.length > 0)" src="../../../assets/logo/logo.png" class="grey-icon"
+      <td><img *ngIf="!(product.picturesUrl.length > 0)" src="../../../assets/logo/logo-120x120.png" class="grey-icon"
                width="50px">
         <img *ngIf="product.picturesUrl.length > 0" [src]="product.picturesUrl[0]" width="50px">
       </td>

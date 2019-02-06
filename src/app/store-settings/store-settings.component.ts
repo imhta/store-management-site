@@ -36,9 +36,7 @@ export class StoreSettingsComponent implements OnInit, OnDestroy {
   storeDescription: string;
   isAvailable = true;
   previewUrl = environment.firebase.projectId;
-  constructor(private store: Store, private actions$: Actions, private router: Router) {
-    this.store.dispatch([new GetLinkedStores(this.store.selectSnapshot(AuthState.uid))]);
-  }
+  constructor(private store: Store, private actions$: Actions, private router: Router) {}
 
   ngOnInit() {
     this.loading$.subscribe((loading) => this.loading = loading.valueOf());

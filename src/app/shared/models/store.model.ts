@@ -1,6 +1,4 @@
-import GeoPoint = firebase.firestore.GeoPoint;
-import Timestamp = firebase.firestore.Timestamp;
-import * as firebase from 'firebase';
+import {firestore} from 'firebase/app';
 
 
 export class UserStoreState {
@@ -28,11 +26,11 @@ export class ShopRegistrationForm {
     'fashion designer' |
     'fashion brand';
   address: object;
-  location: GeoPoint;
+  location: firestore.GeoPoint;
   locationAccuracy: number;
   locationTimeStamp: number;
   verificationStatus?: string;
-  createdAt?: Timestamp;
+  createdAt?: firestore.Timestamp;
   uploads?: object;
 
   constructor() {
@@ -62,7 +60,7 @@ export class ShopRegistrationForm {
       'address': this.address,
       'location': this.location,
       'locationTimeStamp': this.locationTimeStamp,
-      'createdAt': Timestamp.now(),
+      'createdAt': firestore.Timestamp.now(),
     };
   }
 

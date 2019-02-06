@@ -1,7 +1,7 @@
 <div class="nav-list bg-dark">
 <mat-toolbar class="bg-dark text-white navbar">
   <div>
-    <img src="../../../assets/logo/logo.png" class="logo align-top" alt="">
+    <img src="../../../assets/logo/logo-120x120.png" class="logo align-top" alt="">
     <h4 class="logo-title">Omnikit</h4>
   </div>
 </mat-toolbar>
@@ -20,7 +20,7 @@
     <!--<p mat-line> </p>-->
   </mat-list-item>
 
-  <mat-list-item (click)="navigateToManageStore()" [disabled]="storeState.selectedStore === null">
+  <mat-list-item (click)="navigateToManageStore()" *ngIf="storeState.selectedStore !== null" [disabled]="storeState.selectedStore === null">
     <mat-icon mat-list-icon>store</mat-icon>
     <h4 mat-line>Manage Stores</h4>
     <!--<p mat-line> </p>-->

@@ -1,5 +1,5 @@
 import {Injectable, OnDestroy} from '@angular/core';
-import {AngularFirestore} from 'angularfire2/firestore';
+import {AngularFirestore} from '@angular/fire/firestore';
 import {ShopRegistrationForm} from '../../models/store.model';
 import {Store} from '@ngxs/store';
 import {
@@ -82,17 +82,8 @@ export class FirestoreService {
       });
   }
 
-  async getLinkedStore(uid) {
-    this.stores = [];
-    await this.db.collection('stores', ref => ref.where('registerUid', '==', uid)).valueChanges()
-      .subscribe((data) => {
-        if (data.length > 0) {
-          return this.store.dispatch([new GotLinkedStores(data)]);
-        } else {
-          return this.store.dispatch([new EmptyLinkedStore()]);
-        }
-      });
-
+   getLinkedStore(uid) {
+    return this.db.collection('stores', ref => ref.where('registerUid', '==', uid)).valueChanges();
   }
 
   setupNewStore(store: ShopRegistrationForm) {

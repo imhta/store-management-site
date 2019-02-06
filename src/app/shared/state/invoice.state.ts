@@ -57,10 +57,12 @@ export class InvoicesState {
   }
 
   @Action(GotAllInvoiceSuccessfully)
-  gotAllInvoiceSuccessfully(cxt: StateContext<any>, {allInvoices}: GotAllInvoiceSuccessfully) {
+  gotAllInvoiceSuccessfully(
+    cxt: StateContext<{ invoices: InvoiceModel[], returnBills: ReturnModel[] }>,
+    {allInvoices}: GotAllInvoiceSuccessfully
+  ) {
     const state = cxt.getState();
-    state.invoices = allInvoices;
-    cxt.setState({...state});
+    cxt.setState({...state, invoices: allInvoices});
     this.store.dispatch([new LoadingFalse()]);
   }
 
@@ -90,8 +92,7 @@ export class InvoicesState {
   gotAllReturnsSuccessfully(
     cxt: StateContext<{ invoices: InvoiceModel[], returnBills: ReturnModel[] }>, {allReturns}: GotAllReturnsSuccessfully) {
     const state = cxt.getState();
-    state.returnBills = allReturns;
-    cxt.setState({...state});
+    cxt.setState({...state, returnBills: allReturns});
     this.store.dispatch([new LoadingFalse()]);
   }
 

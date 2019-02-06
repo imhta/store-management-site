@@ -1,4 +1,4 @@
-import {Action, Selector, State, StateContext, Store} from '@ngxs/store';
+import {Action, Actions, ofActionSuccessful, Selector, State, StateContext, Store} from '@ngxs/store';
 import {UserModel} from '../models/auth.model';
 import {
   AddExtraUser,
@@ -14,12 +14,20 @@ import {
   LogoutSuccessful,
   NotAuthenticated
 } from '../actions/auth.actions';
-import {AuthService} from '../service/auth/auth.service';
+import {AuthService} from '../../login/service/auth/auth.service';
 import {Navigate} from '@ngxs/router-plugin';
 import {LoadingFalse} from './loading.state';
 import {FirestoreService} from '../service/firestore/firestore.service';
-import {delay} from 'rxjs/operators';
+import {delay, take} from 'rxjs/operators';
 import {ActivatedRoute, Router} from '@angular/router';
+import {
+  EmptyLinkedStore,
+  GetEmployeeLinkedStores,
+  GetLinkedStores, GotEmployeeLinkedStoresSuccessfully,
+  GotLinkedStores,
+  ResetSelectedStore,
+  SelectStoreOnly
+} from '../actions/store.actions';
 
 
 @State<UserModel>({
@@ -32,7 +40,8 @@ export class AuthState {
     private  store: Store,
     private dbService: FirestoreService,
     private route: ActivatedRoute,
-    private router: Router) {
+    private router: Router,
+    private actions$: Actions) {
   }
 
   @Selector()
@@ -59,6 +68,7 @@ export class AuthState {
   static token(state: UserModel) {
     return state.token;
   }
+
 
   @Action(CheckAuthState)
   async checkAuthState({setState}: StateContext<UserModel>) {
@@ -104,12 +114,84 @@ export class AuthState {
   @Action([LoginSuccessful, Authenticated])
   navigateToHome(ctx: StateContext<UserModel>) {
     const state = ctx.getState();
-    console.log(this.route.snapshot.queryParamMap.get('returnUrl'));
-    return this.store
-      .dispatch([
-        new Navigate(['authenticated'], {}, {replaceUrl: true}),
-        new LoadingFalse()
-      ]);
+
+    if (state.role === 'Register' && !state.isEmployee) {
+      this.store.dispatch([new ResetSelectedStore(null), new GetLinkedStores(state.uid)]);
+      this.actions$.pipe(ofActionSuccessful(GotLinkedStores), take(1)).subscribe(() => {
+        const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+        if (returnUrl) {
+          const returnUrlAsArray = returnUrl.split('/');
+
+          if (returnUrlAsArray[1] === 'u') {
+            this.store.dispatch(new SelectStoreOnly(+returnUrlAsArray[2]));
+            this.actions$.pipe(ofActionSuccessful(SelectStoreOnly), take(1)).subscribe(() => {
+              return this.store
+                .dispatch([
+                  new Navigate([returnUrl], {}, {replaceUrl: true}),
+                  new LoadingFalse()
+                ]);
+            });
+
+          } else {
+
+            return this.store
+              .dispatch([
+                new Navigate([returnUrl], {}, {replaceUrl: true}),
+                new LoadingFalse()
+              ]);
+          }
+
+
+        } else {
+          return this.store
+            .dispatch([
+              new Navigate(['authenticated'], {}, {replaceUrl: true}),
+              new LoadingFalse()
+            ]);
+        }
+      });
+
+
+    } else if (state.isEmployee) {
+      this.store.dispatch([new ResetSelectedStore(null), new GetEmployeeLinkedStores(state.employeeOf)]);
+      this.actions$.pipe(ofActionSuccessful(GotEmployeeLinkedStoresSuccessfully), take(1)).subscribe(() => {
+        const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+        if (returnUrl) {
+          const returnUrlAsArray = returnUrl.split('/');
+
+          if (returnUrlAsArray[1] === 'u') {
+            this.store.dispatch(new SelectStoreOnly(+returnUrlAsArray[2]));
+            this.actions$.pipe(ofActionSuccessful(SelectStoreOnly), take(1)).subscribe(() => {
+              return this.store
+                .dispatch([
+                  new Navigate([returnUrl], {}, {replaceUrl: true}),
+                  new LoadingFalse()
+                ]);
+            });
+
+          } else {
+
+            return this.store
+              .dispatch([
+                new Navigate([returnUrl], {}, {replaceUrl: true}),
+                new LoadingFalse()
+              ]);
+          }
+
+
+        } else {
+          return this.store
+            .dispatch([
+              new Navigate(['authenticated'], {}, {replaceUrl: true}),
+              new LoadingFalse()
+            ]);
+        }
+      });
+    } else if ((state.role && state.isEmployee && state.isRegister) === undefined || null) {
+      this.store.dispatch([new EmptyLinkedStore()]);
+    }
+
+
   }
 
   @Action([LogoutSuccessful])

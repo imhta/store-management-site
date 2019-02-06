@@ -1,28 +1,27 @@
-import {LoginPageComponent} from '../../login-page/login-page.component';
+import {LoginPageComponent} from '../login/login-page/login-page.component';
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule, Routes} from '@angular/router';
-import {HomePageComponent} from '../../home-page/home-page.component';
-import {AuthGuard} from '../service/guard/auth/auth.guard';
-import {ManageStorePageComponent} from '../../first-page/manage-store-page/manage-store-page.component';
-import {SetupStorePageComponent} from '../../first-page/setup-store-page/setup-store-page.component';
-import {StorePageComponent} from '../../store-page/store-page.component';
-import {ProductPageComponent} from '../../product-page/product-page.component';
-import {QrPageComponent} from '../../qr-page/qr-page.component';
-import {ManageUsersComponent} from '../../manage-users/manage-users.component';
-import {AddUserComponent} from '../../manage-users/add-user/add-user.component';
-import {RegisterGuard} from '../service/guard/role/register-guard/register-guard';
-import {SalesPageComponent} from '../../sales-page/sales-page.component';
-import {InvoicePageComponent} from '../../invoice-page/invoice-page.component';
-import {CustomerPageComponent} from '../../customer-page/customer-page.component';
-import {DashboardPageComponent} from '../../dashboard-page/dashboard-page.component';
-import {BillingPageComponent} from '../../billing-page/billing-page.component';
-import {SellingGuard} from '../service/guard/feature-guard/selling-guard/selling.guard';
-import {StoreCreatorGuard} from '../service/guard/feature-guard/store-creator-guard/store-creator.guard';
-import {StoreResolver} from '../service/resolver/store.resolver';
-import {StoreSettingsComponent} from '../../store-settings/store-settings.component';
-import {NotFoundPageComponent} from '../../general-components/not-found-page/not-found-page.component';
-import {AddPageComponent} from '../../add-page/add-page.component';
+import {AuthGuard} from '../shared/service/guard/auth/auth.guard';
+import {SetupStorePageComponent} from '../home/setup-store-page/setup-store-page.component';
+import {StorePageComponent} from '../store-page/store-page.component';
+import {ProductPageComponent} from '../product-page/product-page.component';
+import {QrPageComponent} from '../qr-page/qr-page.component';
+import {ManageUsersComponent} from '../manage-users/manage-users.component';
+import {AddUserComponent} from '../manage-users/add-user/add-user.component';
+import {RegisterGuard} from '../shared/service/guard/role/register-guard/register-guard';
+import {SalesPageComponent} from '../sales-page/sales-page.component';
+import {InvoicePageComponent} from '../invoice-page/invoice-page.component';
+import {CustomerPageComponent} from '../customer-page/customer-page.component';
+import {DashboardPageComponent} from '../dashboard-page/dashboard-page.component';
+import {BillingPageComponent} from '../billing-page/billing-page.component';
+import {SellingGuard} from '../shared/service/guard/feature-guard/selling-guard/selling.guard';
+import {StoreCreatorGuard} from '../shared/service/guard/feature-guard/store-creator-guard/store-creator.guard';
+import {StoreResolver} from '../shared/service/resolver/store.resolver';
+import {StoreSettingsComponent} from '../store-settings/store-settings.component';
+import {NotFoundPageComponent} from '../shared/components/not-found-page/not-found-page.component';
+import {AddPageComponent} from '../add-page/add-page.component';
+import {LinkedStoreComponent} from '../home/linked-store/linked-store.component';
 
 
 const routes: Routes = [
@@ -34,17 +33,17 @@ const routes: Routes = [
   },
   {
     path: 'authenticated',
-    redirectTo: '/select/store',
+    redirectTo: 'home',
     pathMatch: 'full',
     canActivate: [AuthGuard]
   },
   {
-    path: 'select/store',
-    component: ManageStorePageComponent,
+    path: 'home',
+    component: LinkedStoreComponent,
     canActivate: [AuthGuard]
   },
   {
-    path: 'store/setup',
+    path: 'setup/store',
     component: SetupStorePageComponent,
     canActivate: [AuthGuard, StoreCreatorGuard]
   },
@@ -148,4 +147,3 @@ const routes: Routes = [
 export class AppRoutingModule {
 }
 
-export const routingComponent = [HomePageComponent];

@@ -144,7 +144,9 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
     }
 
   }
+  createVariants() {
 
+  }
   getHsn() {
     switch (this.productForm.get('taxType').value) {
       case 'textile': {

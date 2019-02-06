@@ -1,17 +1,18 @@
-import {Action, Select, Selector, State, StateContext, Store} from '@ngxs/store';
+import {Select, Selector, State, StateContext, Store, Action, Actions} from '@ngxs/store';
 import {UserStoreState} from '../models/store.model';
 import {
   DeleteEmployee,
-  EmployeeDeletedSuccessfully,
+  EmployeeDeletedSuccessfully, EmptyLinkedStore,
   GetAllEmployees,
   GetEmployeeLinkedStores,
   GetLinkedStores,
+  GetSelectedStoreByUrl,
   GotEmployeeLinkedStoresSuccessfully,
   GotLinkedStores,
   NewStoreSetupNotSuccessful,
   NewStoreSetupSuccessfully,
   ResetSelectedStore,
-  SelectStore,
+  SelectStore, SelectStoreOnly,
   SetupNewStore,
   UpdateStoreDescription,
   UpdateUniqueStoreName,
@@ -23,11 +24,10 @@ import {Navigate} from '@ngxs/router-plugin';
 import {LoadingFalse} from './loading.state';
 import {GetProductByUid} from '../actions/product.actions';
 import {DeleteADiscount, GetAllDiscounts, UploadDiscount} from '../actions/discount.actions';
-import {AuthState} from './auth.state';
 import {Observable} from 'rxjs';
 import {take} from 'rxjs/operators';
 import {UserModel} from '../models/auth.model';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 
 @State<UserStoreState>({
@@ -40,7 +40,12 @@ import {Router} from '@angular/router';
 export class StoreState {
   @Select('user') user$: Observable<UserModel>;
   user: UserModel;
-  constructor(private dbService: FirestoreService, private  store: Store, private router: Router) {
+
+  constructor(private dbService: FirestoreService,
+              private  store: Store,
+              private router: Router,
+              private route: ActivatedRoute,
+              private actions$: Actions) {
     this.user$.pipe(take(5)).subscribe((data) => this.user = data);
   }
 
@@ -53,18 +58,36 @@ export class StoreState {
   static hasNoGstNumber(state: UserStoreState) {
     return state.linkedStores[state.selectedStore]['hasNoGstNumber'];
   }
+
   @Action(GetLinkedStores)
   getLinkedStores(ctx: StateContext<any>, {uid}: GetLinkedStores) {
-    this.dbService.getLinkedStore(uid).then().catch((err) => console.log(err));
+
+    this.dbService.getLinkedStore(uid)
+      .subscribe((data) => {
+      if (data.length > 0) {
+        return this.store.dispatch([new GotLinkedStores(data)]);
+      } else {
+        return this.store.dispatch([new EmptyLinkedStore()]);
+      }
+    });
   }
 
   @Action(GotLinkedStores)
   gotLinkedStores(ctx: StateContext<UserStoreState>, {stores}: GotLinkedStores) {
     const state = ctx.getState();
-    state.linkedStores = stores;
-    ctx.setState({...state});
-    this.store.dispatch([new LoadingFalse()]);
+    ctx.setState({...state, linkedStores: stores});
 
+  }
+
+  @Action(GetEmployeeLinkedStores)
+  getEmployeeLinkedStores(ctx: StateContext<any>, {linkedStores}: GetEmployeeLinkedStores) {
+    return this.dbService.GetEmployeeLinkedStore(linkedStores);
+  }
+
+  @Action(GotEmployeeLinkedStoresSuccessfully)
+  gotEmployeeLinkedStoresSuccessfully(ctx: StateContext<UserStoreState>, {stores}: GotEmployeeLinkedStoresSuccessfully) {
+    const state = ctx.getState();
+    ctx.setState({...state, linkedStores: stores});
   }
 
   @Action(SetupNewStore)
@@ -76,7 +99,7 @@ export class StoreState {
 
   @Action(NewStoreSetupSuccessfully)
   newStoreSetupSuccessfully() {
-   return this.store.dispatch([new LoadingFalse(), new Navigate(['select/store'])]);
+    return this.store.dispatch([new LoadingFalse(), new Navigate(['home'])]);
   }
 
   @Action(NewStoreSetupNotSuccessful)
@@ -88,37 +111,31 @@ export class StoreState {
   @Action(SelectStore)
   selectStore(ctx: StateContext<UserStoreState>, action: SelectStore) {
     const state = ctx.getState();
-    state.selectedStore = action.index;
-    ctx.setState({...state});
+    ctx.setState({...state, selectedStore: action.index});
     if (this.user.role === 'Register') {
       return this.store.dispatch([new Navigate(['u', action.index, 'dashboard'])]);
     } else {
       return this.store.dispatch([new Navigate([`u/${action.index}/store`])]);
     }
   }
+  @Action(SelectStoreOnly)
+  selectStoreOnly(ctx: StateContext<UserStoreState>, action: SelectStoreOnly) {
+    const state = ctx.getState();
+    ctx.setState({...state, selectedStore: action.index});
+  }
+  @Action(GetSelectedStoreByUrl)
+  getSelectedStoreByUrl(ctx: StateContext<UserStoreState>, action: SelectStore) {
+    const state = ctx.getState();
+    ctx.setState({...state, selectedStore: action.index});
+  }
 
   @Action(ResetSelectedStore)
   resetSelectedStore(ctx: StateContext<UserStoreState>, action: ResetSelectedStore) {
     const state = ctx.getState();
-    state.selectedStore = action.index;
-    ctx.setState({...state});
+    ctx.setState({...state, selectedStore: action.index});
     return this.store.dispatch([new LoadingFalse()]);
   }
 
-  @Action(GetEmployeeLinkedStores)
-  getEmployeeLinkedStores(ctx: StateContext<any>, {linkedStores}: GetEmployeeLinkedStores) {
-    return this.dbService.GetEmployeeLinkedStore(linkedStores);
-  }
-
-  @Action(GotEmployeeLinkedStoresSuccessfully)
-  gotEmployeeLinkedStoresSuccessfully(ctx: StateContext<UserStoreState>, {stores}: GotEmployeeLinkedStoresSuccessfully) {
-    const state = ctx.getState();
-    state.linkedStores = stores;
-    console.log(stores.length);
-    ctx.setState({...state});
-    this.store.dispatch([new LoadingFalse()]);
-
-  }
 
   @Action(GetAllEmployees)
   getAllEmployees(ctx: StateContext<any>, {storeUid}: GetAllEmployees) {
@@ -173,4 +190,5 @@ export class StoreState {
   deleteADiscount(ctx: StateContext<any>, {discountUid}: DeleteADiscount) {
     this.dbService.deleteDiscount(discountUid);
   }
+
 }
