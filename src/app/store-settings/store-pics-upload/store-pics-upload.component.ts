@@ -1,6 +1,8 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {Observable} from 'rxjs';
 import {AngularFireStorage, AngularFireUploadTask} from '@angular/fire/storage';
+import {OpenSnackBarWithoutCustomAction} from '../../shared/state/app-general.state';
+import {Store} from '@ngxs/store';
 
 @Component({
   selector: 'app-store-pics-upload',
@@ -22,7 +24,7 @@ export class StorePicsUploadComponent implements OnInit, OnDestroy {
 
   snapshot: Observable<any>;
 
-  constructor(private storage: AngularFireStorage) {
+  constructor(private storage: AngularFireStorage, private store: Store) {
   }
 
   ngOnInit(): void {
@@ -69,7 +71,7 @@ export class StorePicsUploadComponent implements OnInit, OnDestroy {
 
 
     } else {
-      console.log('upload limit exceeded');
+      this.store.dispatch([new OpenSnackBarWithoutCustomAction('Upload limit exceeded')]);
     }
 
 

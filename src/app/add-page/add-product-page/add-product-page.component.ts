@@ -5,8 +5,8 @@ import {UserModel} from '../../shared/models/auth.model';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {UserStoreState} from '../../shared/models/store.model';
 import {SingleProductModel} from '../../shared/models/product.model';
-import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
-import {LoadingTrue} from '../../shared/state/loading.state';
+import {debounceTime, distinctUntilChanged, map, take} from 'rxjs/operators';
+import {LoadingTrue} from '../../shared/state/app-general.state';
 import {UploadSingleProduct} from '../../shared/actions/product.actions';
 
 
@@ -41,6 +41,7 @@ const occasionsCat = [
 const styleCat = [
   'Full Hand', 'Half Hand', 'Sleeveless', 'V-Neck', 'U-Neck', 'Tight', 'Designer', 'Custom', 'HipHop', 'Polo', 'Boxer', 'Leggings'
 ];
+
 @Component({
   selector: 'app-add-product-page',
   templateUrl: './add-product-page.component.html',
@@ -78,37 +79,42 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
     hsnCode: ['']
   });
   product = new SingleProductModel();
+
+  constructor(private fb: FormBuilder, private store: Store) {
+
+  }
+
   tags = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
       map(term => term.length < 1 ? []
         : tags.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-    )
+    );
+
   colors = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
       map(term => term.length < 2 ? []
         : colors.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10).reverse())
-    )
+    );
+
   occasionsCat = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
       map(term => term.length < 1 ? []
         : occasionsCat.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-    )
+    );
+
   styleCat = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
       map(term => term.length < 1 ? []
         : styleCat.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-    )
-  constructor(private fb: FormBuilder, private store: Store) {
-
-  }
+    );
 
   ngOnInit() {
     this.variants = this.productForm.get('variants') as FormArray;
@@ -144,9 +150,7 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
     }
 
   }
-  createVariants() {
 
-  }
   getHsn() {
     switch (this.productForm.get('taxType').value) {
       case 'textile': {
@@ -161,7 +165,7 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
   }
 
   addStoreId() {
-    this.storeDataSubscription = this.storeState$.subscribe((data) => {
+    this.storeDataSubscription = this.storeState$.pipe(take(1)).subscribe((data) => {
       const storeState = new UserStoreState(data.valueOf());
       this.currentStore = storeState.linkedStores[storeState.selectedStore];
       this.productForm.patchValue(

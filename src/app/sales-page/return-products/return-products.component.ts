@@ -3,7 +3,7 @@ import {Actions, ofActionDispatched, Select, Store} from '@ngxs/store';
 import {Observable, Subscription} from 'rxjs';
 import {UserStoreState} from '../../shared/models/store.model';
 import {AuthState} from '../../shared/state/auth.state';
-import {LoadingTrue} from '../../shared/state/loading.state';
+import {LoadingTrue} from '../../shared/state/app-general.state';
 import {
   ErrorInReturningInvoice,
   GetInvoice,

@@ -16,7 +16,7 @@ import {
 } from '../actions/auth.actions';
 import {AuthService} from '../../login/service/auth/auth.service';
 import {Navigate} from '@ngxs/router-plugin';
-import {LoadingFalse} from './loading.state';
+import {LoadingFalse} from './app-general.state';
 import {FirestoreService} from '../service/firestore/firestore.service';
 import {delay, take} from 'rxjs/operators';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -28,6 +28,7 @@ import {
   ResetSelectedStore,
   SelectStoreOnly
 } from '../actions/store.actions';
+import {el} from '@angular/platform-browser/testing/src/browser_util';
 
 
 @State<UserModel>({
@@ -122,8 +123,8 @@ export class AuthState {
         if (returnUrl) {
           const returnUrlAsArray = returnUrl.split('/');
 
-          if (returnUrlAsArray[1] === 'u') {
-            this.store.dispatch(new SelectStoreOnly(+returnUrlAsArray[2]));
+          if (returnUrlAsArray[2] === 'u') {
+            this.store.dispatch(new SelectStoreOnly(+returnUrlAsArray[3]));
             this.actions$.pipe(ofActionSuccessful(SelectStoreOnly), take(1)).subscribe(() => {
               return this.store
                 .dispatch([
@@ -159,8 +160,8 @@ export class AuthState {
         if (returnUrl) {
           const returnUrlAsArray = returnUrl.split('/');
 
-          if (returnUrlAsArray[1] === 'u') {
-            this.store.dispatch(new SelectStoreOnly(+returnUrlAsArray[2]));
+          if (returnUrlAsArray[2] === 'u') {
+            this.store.dispatch(new SelectStoreOnly(+returnUrlAsArray[3]));
             this.actions$.pipe(ofActionSuccessful(SelectStoreOnly), take(1)).subscribe(() => {
               return this.store
                 .dispatch([
@@ -196,12 +197,18 @@ export class AuthState {
 
   @Action([LogoutSuccessful])
   refreshAndNavigateToLogin() {
-    window.location.replace('/');
+    this.store.dispatch([new Navigate(['login'], {}, {replaceUrl: true})]);
   }
 
   @Action([NotAuthenticated])
   navigateToLogin() {
-    return this.store.dispatch([new LoadingFalse()]);
+    const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+    if (returnUrl) {
+      return this.store.dispatch([new LoadingFalse(), new Navigate(['login', {returnUrl : returnUrl}])]);
+    } else {
+      return this.store.dispatch([new LoadingFalse(), new Navigate(['login'])]);
+    }
+
   }
 
   @Action(AddExtraUser)

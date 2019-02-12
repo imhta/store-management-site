@@ -1,0 +1,33 @@
+<div class="container">
+  <div class="box">
+    <div class="input-group ">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroupFile">Upload store pictures</span>
+      </div>
+      <div class="custom-file">
+        <input type="file" class="custom-file-input" id="inputFile" aria-describedby="inputGroupFile"
+               (change)="startUpload($event.target?.files)" accept=".png,.jpg,.jpeg">
+        <label class="custom-file-label" for="inputFile">Choose file</label>
+      </div>
+    </div>
+    <div *ngIf="percentage | async as pct">
+
+      <mat-progress-bar mode="determinate" [value]="pct"></mat-progress-bar>
+      <span *ngIf="pct !== 100">{{ pct | number }}%</span>
+      <span *ngIf="pct === 100" class="text-success"><i class="material-icons">done</i>Done !</span>
+    </div>
+    <p *ngIf="data.localDownloadUrls.length === 0">No store pictures has been uploaded</p>
+
+  </div>
+
+  <img [src]="pictureUrl" *ngFor="let pictureUrl of data.localDownloadUrls; let i = index" width="100" class="preview"
+       (click)="removePicture(i)">
+
+
+  <!--<div *ngIf="snapshot | async as snap" >-->
+  <!--{{ snap.bytesTransferred | fileSize }} of {{ snap.totalBytes | fileSize }}-->
+
+
+  <!--</div>-->
+
+</div>

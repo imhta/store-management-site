@@ -11,7 +11,7 @@ import {
   SingleProductUploadedSuccessfully,
   UploadSingleProduct
 } from '../actions/product.actions';
-import {LoadingFalse} from './loading.state';
+import {LoadingFalse} from './app-general.state';
 import {Navigate} from '@ngxs/router-plugin';
 import {AddOnlineProductTag, GetOnlineProductTags, RemoveOnlineProductTag} from '../actions/online-product-tag.actions';
 import {HttpService} from '../service/http/http.service';

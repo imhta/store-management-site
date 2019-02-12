@@ -1,20 +1,18 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {Observable} from 'rxjs';
 import {AngularFireStorage, AngularFireUploadTask} from '@angular/fire/storage';
-import {Store} from '@ngxs/store';
-import {OpenSnackBarWithoutCustomAction} from '../../shared/state/app-general.state';
 
 @Component({
-  selector: 'app-logo-upload',
-  templateUrl: './logo-upload.component.html',
-  styleUrls: ['./logo-upload.component.css']
+  selector: 'app-firestorage-upload',
+  templateUrl: './firestorage-upload.component.html',
+  styleUrls: ['./firestorage-upload.component.css']
 })
-export class LogoUploadComponent implements OnInit, OnDestroy {
-
+export class FirestorageUploadComponent implements OnInit, OnDestroy {
   @Input() storeId: string;
-  @Input() inData: { localDownloadUrl: string, localPictureRef: string };
+  @Input() inData: { localDownloadUrls: string[], localPictureRefs: string[] };
   @Output() outData = new EventEmitter<object>();
-  data: { localDownloadUrl: string, localPictureRef: string } = {localDownloadUrl: '', localPictureRef: ''};
+  data: { localDownloadUrls: string[], localPictureRefs: string[] } = {localDownloadUrls: [], localPictureRefs: []};
+
 
   // Main task
   task: AngularFireUploadTask;
@@ -24,35 +22,32 @@ export class LogoUploadComponent implements OnInit, OnDestroy {
 
   snapshot: Observable<any>;
 
-  constructor(private storage: AngularFireStorage, private store: Store) {
+  constructor(private storage: AngularFireStorage) {
   }
 
   ngOnInit(): void {
     console.log(this.inData);
-    this.data.localPictureRef = this.inData.localPictureRef ? this.inData.localPictureRef : '';
-    this.data.localDownloadUrl = this.inData.localDownloadUrl ? this.inData.localDownloadUrl : '';
-
+    this.data.localPictureRefs = this.inData.localPictureRefs.length > 0 ? this.inData.localPictureRefs : [];
+    this.data.localDownloadUrls = this.inData.localDownloadUrls.length > 0 ? this.inData.localDownloadUrls : [];
   }
 
   ngOnDestroy(): void {
-    console.log(this.inData);
-    this.data.localPictureRef = '';
-    this.data.localDownloadUrl = '';
+    this.data.localPictureRefs = [];
+    this.data.localDownloadUrls = [];
   }
 
   sentData(data: object) {
     this.outData.emit(data);
   }
 
-
   startUpload(event: FileList) {
     // The File object
-    if (event.length === 1) {
+    if (event.length < 5 && this.data.localDownloadUrls.length < 5) {
 
       const file = event.item(0);
 
       // The storage path
-      const path = `stores/${this.storeId}/logo`;
+      const path = `stores/${this.storeId}/store-pics/${Date.now()}_${file.name}`;
 
       // Totally optional metadata
       const customMetadata = {app: 'clothx store website'};
@@ -64,9 +59,9 @@ export class LogoUploadComponent implements OnInit, OnDestroy {
       this.snapshot = this.task.snapshotChanges();
 
       this.task.then(async (data) => {
-        this.data.localPictureRef = data.ref.fullPath;
+        this.data.localPictureRefs.push(data.ref.fullPath);
         await data.ref.getDownloadURL().then((downloadUrl) => {
-          this.data.localDownloadUrl = downloadUrl.valueOf();
+          this.data.localDownloadUrls.push(downloadUrl.valueOf());
         }).catch((err) => console.log(err));
       }).then(() => {
         this.sentData(this.data);
@@ -74,7 +69,7 @@ export class LogoUploadComponent implements OnInit, OnDestroy {
 
 
     } else {
-      this.store.dispatch([new OpenSnackBarWithoutCustomAction('Upload limit exceeded')]);
+      console.log('upload limit exceeded');
     }
 
 
@@ -84,12 +79,14 @@ export class LogoUploadComponent implements OnInit, OnDestroy {
   // isActive(snapshot) {
   //   return snapshot.state === 'running' && snapshot.bytesTransferred < snapshot.totalBytes;
   // }
-  async removePicture() {
-    await this.storage.ref(this.data.localPictureRef).delete();
-    this.data.localDownloadUrl = '';
-    this.data.localPictureRef = '';
-    this.sentData(this.data);
-
+  async removePicture(i: number) {
+    if (i !== -1) {
+      await this.storage.ref(this.data.localPictureRefs[i]).delete();
+      this.data.localDownloadUrls.splice(i, 1);
+      this.data.localPictureRefs.splice(i, 1);
+      this.sentData(this.data);
+    }
 
   }
+
 }

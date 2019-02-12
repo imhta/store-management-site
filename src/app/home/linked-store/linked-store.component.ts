@@ -10,7 +10,7 @@ import {
 } from '../../shared/actions/store.actions';
 import {Observable, Subscription} from 'rxjs';
 import {UserStoreState} from '../../shared/models/store.model';
-import {LoadingTrue} from '../../shared/state/loading.state';
+import {LoadingTrue} from '../../shared/state/app-general.state';
 import {UserModel} from '../../shared/models/auth.model';
 import {Register} from 'ts-node';
 import {AuthState} from '../../shared/state/auth.state';
@@ -32,6 +32,7 @@ export class LinkedStoreComponent implements OnInit, OnDestroy {
 
 
   constructor(private store: Store, private actions$: Actions) {
+
     this.linkedStoreEmpty = false;
 
     this.storeSub$ = this.storeState$

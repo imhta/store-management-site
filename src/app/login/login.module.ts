@@ -13,7 +13,7 @@ import {SharedModule} from '../shared/shared.module';
     SharedModule,
     LoginRoutingModule,
   ],
-  exports: [LoginPageComponent],
+  exports: [],
   providers: [
     AuthService
   ],

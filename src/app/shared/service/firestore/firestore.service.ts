@@ -31,7 +31,7 @@ import {
   OnlineProductTagSuccessfullyAdded,
   RemovedOnlineProductTagSuccessfully
 } from '../../actions/online-product-tag.actions';
-import {LoadingFalse} from '../../state/loading.state';
+import {LoadingFalse} from '../../state/app-general.state';
 import {
   ErrorInGettingInvoice,
   ErrorInReturningInvoice,

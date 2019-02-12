@@ -8,7 +8,7 @@ import {UserStoreState} from '../shared/models/store.model';
 import {Navigate} from '@ngxs/router-plugin';
 import {GetAllReturns} from '../shared/actions/return.actions';
 import {ReturnModel} from '../shared/models/return.model';
-import {LoadingTrue} from '../shared/state/loading.state';
+import {LoadingTrue} from '../shared/state/app-general.state';
 import {Router} from '@angular/router';
 
 @Component({

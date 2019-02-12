@@ -1,7 +1,7 @@
 import {Action, State, StateContext, Store} from '@ngxs/store';
 import {FirestoreService} from '../service/firestore/firestore.service';
 
-import {LoadingFalse} from './loading.state';
+import {LoadingFalse} from './app-general.state';
 import {Navigate} from '@ngxs/router-plugin';
 import {InvoiceModel} from '../models/invoice.model';
 import {

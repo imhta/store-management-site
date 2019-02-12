@@ -11,7 +11,7 @@ import {
   UploadStoreLogo,
   UploadStorePictures
 } from '../shared/actions/store.actions';
-import {LoadingTrue} from '../shared/state/loading.state';
+import {LoadingTrue} from '../shared/state/app-general.state';
 import {AuthState} from '../shared/state/auth.state';
 import {Router} from '@angular/router';
 import {environment} from '../../environments/environment';

@@ -3,7 +3,7 @@ import {ActivatedRouteSnapshot, CanActivate, CanDeactivate, RouterStateSnapshot}
 import {Observable} from 'rxjs';
 import {Store} from '@ngxs/store';
 import {AuthState} from '../../../state/auth.state';
-import {LoadingFalse} from '../../../state/loading.state';
+import {LoadingFalse} from '../../../state/app-general.state';
 import {Navigate} from '@ngxs/router-plugin';
 
 @Injectable({

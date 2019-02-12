@@ -1,127 +1,173 @@
-
 <div class="container">
   <div class="card">
     <h2>Tell us about your store</h2>
 
     <form [formGroup]="storeForm">
-      <div class="form-group card">
-        <label for="type">Type of store</label>
-        <mat-form-field>
-          <mat-select formControlName="typeOfStore" id="type">
-            <mat-option [value]="type['value']" *ngFor="let type of typeOfStores">{{type['title']}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="form-group">
-        <label for="store-name">Store Name</label>
-        <input class="form-control form-control-lg" id="store-name" type="text" formControlName="storeName">
-        <div
-          *ngIf="storeName.invalid && (storeName.dirty || storeName.touched)">
-          <small class="form-text text-danger" *ngIf="storeName.errors.required">
-            Store name is required.
-          </small>
-          <small class="form-text text-danger" *ngIf="storeName.errors.minlength">
-            Store name should contain minimum {{storeName.errors.minlength.requiredLength}} characters.
-          </small>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="Inputmobilenumber">Mobile Number</label>
-        <input type="number" class="form-control form-control-lg" id="Inputmobilenumber" aria-describedby="mobileNumber"
-               formControlName="mobileNumber">
-        <div
-          *ngIf="mobileNumber.invalid && (mobileNumber.dirty || mobileNumber.touched)">
-          <small class="form-text text-danger" *ngIf="mobileNumber.errors.required">
-            Mobile number is required and it should contains 10 digits number.
-          </small>
-          <small class="form-text text-danger" *ngIf="mobileNumber.errors.minlength">
-            Mobile number should contains {{mobileNumber.errors.minlength.requiredLength}} digits number.
-          </small>
-        </div>
-      </div>
 
 
-      <!--<div class="form-group">-->
-        <!--<label for="InputPhonenumber">Contact Number</label>-->
-        <!--<input type="number" class="form-control form-control-lg" id="InputPhonenumber" aria-describedby="contactNumber"-->
-               <!--formControlName="contactNumber">-->
-        <!--<div-->
-          <!--*ngIf="contactNumber.invalid && (contactNumber.dirty || contactNumber.touched)">-->
-          <!--<small class="form-text text-danger" *ngIf="contactNumber.errors.required">-->
-            <!--Contact number is required.-->
-          <!--</small>-->
-          <!--<small class="form-text text-danger" *ngIf="contactNumber.errors.minlength">-->
-            <!--Contact number should contains minimum of {{contactNumber.errors.minlength.requiredLength}} digits number.-->
-            <!--digits number.-->
-          <!--</small>-->
+      <mat-form-field>
+        <mat-select formControlName="typeOfStore" id="type" placeholder="Type of store" required>
+          <mat-option [value]="type['value']" *ngFor="let type of typeOfStores$ | async">{{type['key']}}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-        <!--</div>-->
-      <!--</div>-->
+      <mat-form-field hintLabel="Min 5 characters">
+        <input matInput
+               id="store-name"
+               type="text"
+               placeholder="Store name"
+               formControlName="storeName"
+               [errorStateMatcher]="TouchedMatcher"
+               required
+        >
+        <mat-hint align="end">{{usn.value?.length || 0}}</mat-hint>
+        <mat-error *ngIf="storeName.hasError('minlength') && !storeName.hasError('required')">
+          Store name should contain minimum {{storeName.errors['minlength']['requiredLength']}} characters.
+        </mat-error>
+        <mat-error *ngIf="storeName.hasError('required')">
+          Store Name is <strong>required</strong>
+        </mat-error>
 
-      <div class="form-group">
-        <mat-checkbox class="m-1 float-right" formControlName="hasNoGstNumber">I don't have GST Number</mat-checkbox>
-        <label for="InputGSTnumber">GST Number</label>
-        <input type="text" class="form-control form-control-lg" id="InputGSTnumber" style="text-transform:uppercase"
+      </mat-form-field>
+      <mat-form-field hintLabel="Min 5 characters">
+        <input matInput
+               id="usn"
+               type="text"
+               formControlName="usn"
+               placeholder="Unique Store name"
+               required
+        >
+        <mat-hint align="end">{{usn.value?.length || 0}}</mat-hint>
+        <mat-error *ngIf="usn.hasError('minlength') && !usn.hasError('required')">
+          Unique store name should contain minimum {{usn.errors['minlength']['requiredLength']}} characters.
+        </mat-error>
+        <mat-error *ngIf="usn.hasError('required')&&( usn.touched || usn.dirty)">
+          Unique store name is <strong>required</strong>
+        </mat-error>
+        <mat-error class="form-text text-danger"
+                   *ngIf=" usn.touched && usn.invalid && !usn.hasError('required') && !usn.hasError('minlength')">
+          This Unique Store Name is already taken.
+        </mat-error>
+        <mat-error class="form-text text-success" *ngIf="usn.valid">
+          This Unique Store Name is available
+        </mat-error>
+
+      </mat-form-field>
+
+      <mat-form-field>
+
+        <input matInput
+               type="number"
+               id="inputMobileNumber"
+               placeholder="Mobile Number"
+               [errorStateMatcher]="TouchedMatcher"
+               formControlName="mobileNumber"
+               required
+        >
+        <mat-hint align="end">{{mobileNumber.value?.toString().length || 0 }} / 10</mat-hint>
+        <mat-error class="form-text text-danger" *ngIf="mobileNumber.hasError('required')">
+          Mobile number is required.
+        </mat-error>
+        <mat-error class="form-text text-danger"
+                   *ngIf="mobileNumber.value?.toString().length  !== 10 && !mobileNumber.hasError('required')">
+          Mobile number should contains 10 digits number.
+        </mat-error>
+
+      </mat-form-field>
+
+
+      <mat-form-field hintLabel="If you dont't have GST number leave, You can enter it later.">
+
+        <input matInput type="text"
+               placeholder="GST Numbers"
+               id="inputGSTNumber"
+               style="text-transform:uppercase"
                aria-describedby="GSTNumber"
-               formControlName="gstNumber" [attr.disabled]="storeForm.get('hasNoGstNumber').value ? '' : null">
-        <div
-          *ngIf="gstNumber.invalid && (gstNumber.dirty || gstNumber.touched)">
-          <small class="form-text text-danger" *ngIf="gstNumber.errors.pattern">
-            Enter a valid GST number.
-          </small>
-        </div>
-      </div>
+               formControlName="gstNumber"
+               [attr.disabled]="storeForm.get('hasNoGstNumber').value ? '' : null"
+               [errorStateMatcher]="TouchedMatcher"
+        >
+
+        <mat-error class="form-text text-danger" *ngIf="gstNumber.hasError('pattern')">
+          Enter a valid GST number, If you don't have GST number leave it empty.
+        </mat-error>
+
+      </mat-form-field>
       <div formGroupName="address">
-        <div class="form-group">
-          <label for="address">Street Address</label>
-          <input type="email" class="form-control form-control-lg" id="address" formControlName="street">
-          <div
-            *ngIf="street.invalid && (street.dirty || street.touched)">
-            <small class="form-text text-danger" *ngIf="street.errors.required">
-              Street is required.
-            </small>
-          </div>
-        </div>
-        <div class="form-row ">
-          <div class="form-group col">
-            <label for="inputCity">City</label>
-            <input type="text" class="form-control form-control-lg" id="inputCity" formControlName="city">
-            <div
-              *ngIf="city.invalid && (city.dirty || city.touched)">
-              <small class="form-text text-danger" *ngIf="city.errors.required">
-                City is required.
-              </small>
-              <small class="form-text text-danger" *ngIf="city.errors.pattern">
-                City should not contains number.
-              </small>
-            </div>
-          </div>
-          <div class="form-group col">
-            <label for="inputState">State</label>
-            <input type="text" class="form-control form-control-lg" id="inputState" formControlName="state"
-                   [ngbTypeahead]="stateSearch">
-            <div
-              *ngIf="state.invalid && (state.dirty || state.touched)">
-              <small class="form-text text-danger" *ngIf="state.errors.required">
-                State is required.
-              </small>
-              <small class="form-text text-danger" *ngIf="state.errors.pattern">
-                State should not contains number .
-              </small>
-            </div>
-          </div>
+        <mat-form-field>
+
+          <input matInput
+                 type="email"
+                 id="address"
+                 formControlName="street"
+                 placeholder="Street Address"
+                 required
+                 [errorStateMatcher]="TouchedMatcher"
+          >
+
+          <mat-error class="form-text text-danger" *ngIf="street.hasError('required')">
+            Street is required.
+          </mat-error>
+
+        </mat-form-field>
+        <div class="row ">
+          <mat-form-field class="col">
+            <input matInput
+                   type="text"
+                   id="inputCity"
+                   formControlName="city"
+                   placeholder="City"
+                   required
+                   [errorStateMatcher]="TouchedMatcher"
+            >
+
+            <mat-error class="form-text text-danger" *ngIf="city.hasError('required')">
+              City is required.
+            </mat-error>
+            <mat-error class="form-text text-danger" *ngIf="city.hasError('pattern')">
+              City should not contains number.
+            </mat-error>
+
+          </mat-form-field>
+          <mat-form-field class="col">
+            <input matInput
+                   type="text"
+                   id="inputState"
+                   formControlName="state"
+                   placeholder="State"
+                   [matAutocomplete]="auto"
+                   required
+                   [errorStateMatcher]="TouchedMatcher"
+            >
+            <mat-autocomplete #auto="matAutocomplete" >
+              <mat-option *ngFor="let state of filteredState$ | async" [value]="state">
+                {{state}}
+              </mat-option>
+            </mat-autocomplete>
+            <mat-error class="form-text text-danger" *ngIf="state.hasError('required')">
+              State is required.
+            </mat-error>
+            <mat-error class="form-text text-danger" *ngIf="state.hasError('pattern')">
+              State should not contains number.
+            </mat-error>
+          </mat-form-field>
 
         </div>
-        <div class="form-group ">
-          <label for="inputPin">Pin Code</label>
-          <input type="number" class="form-control form-control-lg" id="inputPin" formControlName="pinCode">
-          <div
-            *ngIf="pinCode.invalid && (pinCode.dirty || pinCode.touched)">
-            <small class="form-text text-danger" *ngIf="pinCode.errors.required || pinCode.errors.pattern">
-              Pin code is required and it should contains minimum of 6 digits of number.
-            </small>
-          </div>
-        </div>
+        <mat-form-field>
+          <input matInput
+                 type="number"
+                 id="inputPin"
+                 formControlName="pinCode"
+                 placeholder="Pin Code"
+                 required
+                 [errorStateMatcher]="TouchedMatcher"
+          >
+
+          <mat-error class="form-text text-danger" *ngIf="pinCode.errors['required'] || pinCode.hasError('pattern')">
+            Pin code is required and it should contains minimum of 6 digits of number.
+          </mat-error>
+
+        </mat-form-field>
       </div>
 
       <div class="alert alert-info text-center" *ngIf="!isLocated">
@@ -129,7 +175,8 @@
         <div class="button location-btn" (click)="locateStore()"> Locate store</div>
       </div>
       <div class="text-success text-center" *ngIf="isLocated">We got your location</div>
-      <a><p>*By signing up you agree to <a href="https://docs.spoteasy.in/terms-and-conditions" target="_blank">our store privacy policy and store terms of use</a>.</p></a>
+      <a><p>*By signing up you agree to <a href="https://docs.spoteasy.in/terms-and-conditions" target="_blank">our
+        store privacy policy and store terms of use</a>.</p></a>
       <div class="button" (click)="isLocated? onSubmit() : null"> Let's get started</div>
     </form>
 

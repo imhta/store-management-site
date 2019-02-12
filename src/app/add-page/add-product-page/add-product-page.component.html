@@ -129,7 +129,7 @@
                [ngbTypeahead]="tags">
         <small id="tagHelp" class="form-text text-muted">Press ENTER to add tag to your product.</small>
       </div>
-      <div class="form-group card" *ngIf="!currentStore.hasNoGstNumber">
+      <div class="form-group card" *ngIf="!currentStore?.hasNoGstNumber">
         <label for="type">Tax Type</label>
         <mat-form-field>
           <mat-select formControlName="taxType" id="type">

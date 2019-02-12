@@ -16,6 +16,6 @@ export class NotFoundPageComponent implements OnInit {
   }
 
   navigateToHome() {
-    this.store.dispatch([new Navigate(['select/store'])]);
+    this.store.dispatch([new Navigate(['check'])]);
   }
 }

@@ -1,9 +1,7 @@
-import {LoginPageComponent} from '../login/login-page/login-page.component';
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule, Routes} from '@angular/router';
 import {AuthGuard} from '../shared/service/guard/auth/auth.guard';
-import {SetupStorePageComponent} from '../home/setup-store-page/setup-store-page.component';
 import {StorePageComponent} from '../store-page/store-page.component';
 import {ProductPageComponent} from '../product-page/product-page.component';
 import {QrPageComponent} from '../qr-page/qr-page.component';
@@ -16,113 +14,37 @@ import {CustomerPageComponent} from '../customer-page/customer-page.component';
 import {DashboardPageComponent} from '../dashboard-page/dashboard-page.component';
 import {BillingPageComponent} from '../billing-page/billing-page.component';
 import {SellingGuard} from '../shared/service/guard/feature-guard/selling-guard/selling.guard';
-import {StoreCreatorGuard} from '../shared/service/guard/feature-guard/store-creator-guard/store-creator.guard';
-import {StoreResolver} from '../shared/service/resolver/store.resolver';
 import {StoreSettingsComponent} from '../store-settings/store-settings.component';
 import {NotFoundPageComponent} from '../shared/components/not-found-page/not-found-page.component';
 import {AddPageComponent} from '../add-page/add-page.component';
-import {LinkedStoreComponent} from '../home/linked-store/linked-store.component';
+import {AuthCheckLoadingPageComponent} from '../auth-check-loading-page/auth-check-loading-page.component';
 
 
 const routes: Routes = [
-
   {
     path: '',
-    component: LoginPageComponent,
-    canDeactivate: [AuthGuard]
+    component: AuthCheckLoadingPageComponent
+  },
+  {
+    path: 'go',
+    loadChildren: '../home/home.module#HomeModule',
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'login',
+    loadChildren: '../login/login.module#LoginModule'
   },
   {
     path: 'authenticated',
-    redirectTo: 'home',
+    redirectTo: 'go',
     pathMatch: 'full',
     canActivate: [AuthGuard]
   },
   {
-    path: 'home',
-    component: LinkedStoreComponent,
-    canActivate: [AuthGuard]
+    path: 'check',
+    component: AuthCheckLoadingPageComponent
   },
-  {
-    path: 'setup/store',
-    component: SetupStorePageComponent,
-    canActivate: [AuthGuard, StoreCreatorGuard]
-  },
-  {
-    path: 'u/:id',
-    children: [
-      {
-        path: '',
-        redirectTo: 'store',
-        pathMatch: 'full'
-      },
-      {
-        path: 'dashboard',
-        component: DashboardPageComponent,
-        canActivate: [AuthGuard, RegisterGuard]
-      },
-      {
-        path: 'store',
-        canActivate: [AuthGuard],
-        // resolve: {getAllProducts: StoreResolver},
-        children: [
-          {
-            path: '',
-            component: StorePageComponent
-          },
-          {
-            path: 'profile',
-            component: StoreSettingsComponent,
-            canActivate: [AuthGuard, RegisterGuard]
-          }
-        ]
-      },
-      {
-        path: 'sales',
-        component: SalesPageComponent,
-        canActivate: [AuthGuard, SellingGuard]
-      },
-      {
-        path: 'billing',
-        component: BillingPageComponent,
-        canActivate: [AuthGuard, RegisterGuard]
-      },
-      {
-        path: 'add',
-        component: AddPageComponent,
-        canActivate: [AuthGuard]
-      },
-      {
-        path: 'invoice',
-        component: InvoicePageComponent,
-        canActivate: [AuthGuard, SellingGuard]
-      },
-      {
-        path: 'customers',
-        component: CustomerPageComponent,
-        canActivate: [AuthGuard, SellingGuard]
-      },
-      {
-        path: 'store/product',
-        component: ProductPageComponent,
-        canActivate: [AuthGuard]
-      },
-      {
-        path: 'generated/qr',
-        component: QrPageComponent,
-        canActivate: [AuthGuard]
-      },
-      {
-        path: 'manage/users',
-        component: ManageUsersComponent,
-        canActivate: [AuthGuard, RegisterGuard]
-      },
-      {
-        path: 'add/user',
-        component: AddUserComponent,
-        canActivate: [AuthGuard, RegisterGuard]
-      }
-    ]
-  },
+
 
   {
     path: '**',

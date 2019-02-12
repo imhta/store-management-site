@@ -21,7 +21,7 @@ import {
 } from '../actions/store.actions';
 import {FirestoreService} from '../service/firestore/firestore.service';
 import {Navigate} from '@ngxs/router-plugin';
-import {LoadingFalse} from './loading.state';
+import {LoadingFalse} from './app-general.state';
 import {GetProductByUid} from '../actions/product.actions';
 import {DeleteADiscount, GetAllDiscounts, UploadDiscount} from '../actions/discount.actions';
 import {Observable} from 'rxjs';
@@ -113,9 +113,9 @@ export class StoreState {
     const state = ctx.getState();
     ctx.setState({...state, selectedStore: action.index});
     if (this.user.role === 'Register') {
-      return this.store.dispatch([new Navigate(['u', action.index, 'dashboard'])]);
+      return this.store.dispatch([new Navigate(['go/u', action.index, 'dashboard'])]);
     } else {
-      return this.store.dispatch([new Navigate([`u/${action.index}/store`])]);
+      return this.store.dispatch([new Navigate([`go/u/${action.index}/store`])]);
     }
   }
   @Action(SelectStoreOnly)
@@ -146,7 +146,7 @@ export class StoreState {
   deleteEmployee(ctx: StateContext<any>, {email}: DeleteEmployee) {
     const id = +this.router.routerState.snapshot.url.split('/')[2];
     this.dbService.deleteExtraUser(email)
-      .then(() => this.store.dispatch([new EmployeeDeletedSuccessfully(), new Navigate([`u/${id}/manage/users`])]));
+      .then(() => this.store.dispatch([new EmployeeDeletedSuccessfully(), new Navigate([`go/u/${id}/manage/users`])]));
   }
 
   @Action(GetProductByUid)

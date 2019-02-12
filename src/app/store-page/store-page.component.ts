@@ -5,7 +5,7 @@ import {Observable, Subscription} from 'rxjs';
 import {GetAllProducts, ProductFounded, SearchForProduct} from '../shared/actions/product.actions';
 import {SingleProductModel} from '../shared/models/product.model';
 import {Navigate} from '@ngxs/router-plugin';
-import {LoadingFalse, LoadingTrue} from '../shared/state/loading.state';
+import {LoadingFalse, LoadingTrue} from '../shared/state/app-general.state';
 import {AuthState} from '../shared/state/auth.state';
 import {first, take} from 'rxjs/operators';
 import {StoreState} from '../shared/state/store.state';

@@ -41,8 +41,8 @@ export class ManageUsersComponent implements OnInit, OnDestroy {
   }
 
   navigateToAddUser() {
-    const id = +this.router.routerState.snapshot.url.split('/')[2];
-    return this.store.dispatch([new Navigate([`u/${id}/add/user`])]);
+    const id = +this.router.routerState.snapshot.url.split('/')[3];
+    return this.store.dispatch([new Navigate([`go/u/${id}/add/user`])]);
 
   }
 

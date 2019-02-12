@@ -5,7 +5,7 @@ import {Actions, ofActionDispatched, Store} from '@ngxs/store';
 import {DeleteAProduct, GetProductByUid, GotProductByUid} from '../shared/actions/product.actions';
 import {OnlineProductTagModel} from '../shared/models/online-product-tag.model';
 import {AddOnlineProductTag, GetOnlineProductTags, GotOnlineProductTagsSuccessfully} from '../shared/actions/online-product-tag.actions';
-import {LoadingTrue} from '../shared/state/loading.state';
+import {LoadingTrue} from '../shared/state/app-general.state';
 import {NgbModal, NgbModalConfig} from '@ng-bootstrap/ng-bootstrap';
 import {FirestoreService} from '../shared/service/firestore/firestore.service';
 

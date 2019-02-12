@@ -1,11 +1,11 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {UserModel} from '../../models/auth.model';
+import {UserModel} from '../../../shared/models/auth.model';
 import {Actions, ofActionDispatched, Select, Store} from '@ngxs/store';
-import {Logout} from '../../actions/auth.actions';
-import {LoadingTrue} from '../../state/loading.state';
-import {UserStoreState} from '../../models/store.model';
+import {Logout} from '../../../shared/actions/auth.actions';
+import {LoadingTrue} from '../../../shared/state/app-general.state';
+import {UserStoreState} from '../../../shared/models/store.model';
 import {Navigate} from '@ngxs/router-plugin';
-import {EmptyLinkedStore, ResetSelectedStore} from '../../actions/store.actions';
+import {EmptyLinkedStore, ResetSelectedStore} from '../../../shared/actions/store.actions';
 import {ActivatedRoute, Router} from '@angular/router';
 
 
@@ -46,13 +46,13 @@ export class NavbarComponent implements OnInit {
 
   navigateToManageStore() {
     this.toggle.emit(true);
-    return this.store.dispatch([new ResetSelectedStore(null), new Navigate(['home'])]);
+    return this.store.dispatch([new ResetSelectedStore(null), new Navigate(['go'])]);
   }
 
   navigateTo(path: string) {
-    const id = +this.router.routerState.snapshot.url.split('/')[2];
+    const id = +this.router.routerState.snapshot.url.split('/')[3];
     this.toggle.emit(true);
-    return this.store.dispatch([new Navigate([`u/${id}/${path}`])]);
+    return this.store.dispatch([new Navigate([`go/u/${id}/${path}`])]);
   }
 
   logout() {
@@ -62,12 +62,12 @@ export class NavbarComponent implements OnInit {
 
   navigateToSetupStore() {
     this.toggle.emit(true);
-    return this.store.dispatch(new Navigate(['setup/store']));
+    return this.store.dispatch(new Navigate(['go/setup/store']));
   }
 
   navigateToHelp() {
     this.toggle.emit(true);
-    window.open('https://docs.spoteasy.in', '_blank');
+    window.open('https://docs.spoteasy.in/guide/general', '_blank');
   }
 
 }

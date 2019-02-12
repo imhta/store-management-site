@@ -4,7 +4,7 @@ import {Observable, Subscription} from 'rxjs';
 import {ExtraUser} from '../../shared/models/auth.model';
 import {UserStoreState} from '../../shared/models/store.model';
 import {FormBuilder, Validators} from '@angular/forms';
-import {LoadingTrue} from '../../shared/state/loading.state';
+import {LoadingTrue} from '../../shared/state/app-general.state';
 import {AddExtraUser} from '../../shared/actions/auth.actions';
 
 @Component({
