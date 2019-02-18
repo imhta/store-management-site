@@ -4,10 +4,10 @@ import {SetupStorePageComponent} from './setup-store-page/setup-store-page.compo
 import {LinkedStoreComponent} from './linked-store/linked-store.component';
 import {
   MatAutocompleteModule,
-  MatButtonModule,
+  MatButtonModule, MatButtonToggleModule,
   MatCardModule,
   MatCheckboxModule,
-  MatChipsModule,
+  MatChipsModule, MatDialogModule, MatExpansionModule,
   MatFormFieldModule,
   MatGridListModule,
   MatIconModule,
@@ -16,6 +16,7 @@ import {
   MatMenuModule,
   MatProgressBarModule,
   MatProgressSpinnerModule,
+  MatRadioModule,
   MatSelectModule,
   MatSidenavModule,
   MatSnackBarModule,
@@ -54,6 +55,8 @@ import {NgxKjuaModule} from 'ngx-kjua';
 import {ZXingScannerModule} from '@zxing/ngx-scanner';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {LayoutModule} from '@angular/cdk/layout';
+import { UniversalMicroAddDialogComponent } from './dialogs/universal-micro-add-dialog/universal-micro-add-dialog.component';
+import {UniversalMicroAddService} from './services/universal-micro-add/universal-micro-add.service';
 
 
 
@@ -83,6 +86,7 @@ import {LayoutModule} from '@angular/cdk/layout';
     DiscountsManagerComponent,
     StoreTableViewComponent,
     StoreGridViewComponent,
+    UniversalMicroAddDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -109,6 +113,10 @@ import {LayoutModule} from '@angular/cdk/layout';
     MatGridListModule,
     MatCardModule,
     MatAutocompleteModule,
+    MatButtonToggleModule,
+    MatRadioModule,
+    MatDialogModule,
+    MatExpansionModule,
 
     LayoutModule,
     NgxKjuaModule,
@@ -119,13 +127,14 @@ import {LayoutModule} from '@angular/cdk/layout';
     SharedModule,
     HomeRoutingModule
   ],
+  entryComponents: [UniversalMicroAddDialogComponent,],
   exports: [],
   schemas: [
     NO_ERRORS_SCHEMA,
     CUSTOM_ELEMENTS_SCHEMA
   ],
   providers: [
-
+    UniversalMicroAddService
   ]
 })
 export class HomeModule {

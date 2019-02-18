@@ -1,82 +1,82 @@
-<div class="container">
-  <!--<div class="container">-->
-  <!--<div class="row">-->
-  <!--<div class="col">-->
-  <!--<div class="card text-white bg-danger mb-3" >-->
-  <!--<div class="card-body">-->
-  <!--<h5 class="card-title">Products with zero stock</h5>-->
-  <!--<p class="card-text"></p>-->
-  <!--</div>-->
-  <!--</div>-->
-  <!--</div>-->
-  <!--<div class="col">-->
-  <!--<div class="card text-white bg-info mb-3" >-->
-  <!--<div class="card-body">-->
-  <!--<h5 class="card-title">Under 5 item in Stock</h5>-->
-  <!--<p class="card-text"></p>-->
-  <!--</div>-->
-  <!--</div>-->
-  <!--</div>-->
-  <!--</div>-->
+<!--<div class="container">-->
+  <!--&lt;!&ndash;<div class="container">&ndash;&gt;-->
+  <!--&lt;!&ndash;<div class="row">&ndash;&gt;-->
+  <!--&lt;!&ndash;<div class="col">&ndash;&gt;-->
+  <!--&lt;!&ndash;<div class="card text-white bg-danger mb-3" >&ndash;&gt;-->
+  <!--&lt;!&ndash;<div class="card-body">&ndash;&gt;-->
+  <!--&lt;!&ndash;<h5 class="card-title">Products with zero stock</h5>&ndash;&gt;-->
+  <!--&lt;!&ndash;<p class="card-text"></p>&ndash;&gt;-->
+  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+  <!--&lt;!&ndash;<div class="col">&ndash;&gt;-->
+  <!--&lt;!&ndash;<div class="card text-white bg-info mb-3" >&ndash;&gt;-->
+  <!--&lt;!&ndash;<div class="card-body">&ndash;&gt;-->
+  <!--&lt;!&ndash;<h5 class="card-title">Under 5 item in Stock</h5>&ndash;&gt;-->
+  <!--&lt;!&ndash;<p class="card-text"></p>&ndash;&gt;-->
+  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+  <!--&lt;!&ndash;</div>&ndash;&gt;-->
 
-  <table class="table table-responsive-lg table-hover ">
-    <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col"></th>
-      <th scope="col">PRN</th>
-      <th scope="col">Product Name</th>
-      <th scope="col">Sizes</th>
-      <th scope="col">Stocks</th>
-      <th scope="col">Price</th>
-      <th scope="col">isListable</th>
-      <!--<th scope="col">Tags</th>-->
+  <!--<table class="table table-responsive-lg table-hover ">-->
+    <!--<thead>-->
+    <!--<tr>-->
+      <!--<th scope="col">#</th>-->
       <!--<th scope="col"></th>-->
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let product of allProducts; let i = index" (click)="navigateToProduct(product.productUid)">
-      <th scope="row">{{i + 1}}</th>
-      <td><img *ngIf="!(product.picturesUrl.length > 0)" src="../../../assets/logo/logo-120x120.png" class="grey-icon"
-               width="50px">
-        <img *ngIf="product.picturesUrl.length > 0" [src]="product.picturesUrl[0]" width="50px">
-      </td>
-      <td>
-        <mat-chip-list>
-          <mat-chip>{{product.prn}}</mat-chip>
-        </mat-chip-list>
-      </td>
-      <td>{{product.productName}}</td>
-      <td>
-        <mat-chip-list *ngFor="let variant of product.variants">
-          <mat-chip>{{variant.size | uppercase}}</mat-chip>
-        </mat-chip-list>
-      </td>
-      <td>
-        <mat-chip-list *ngFor="let variant of product.variants">
-          <mat-chip>{{variant.stock}}</mat-chip>
-        </mat-chip-list>
-      </td>
-      <td>
+      <!--<th scope="col">PRN</th>-->
+      <!--<th scope="col">Product Name</th>-->
+      <!--<th scope="col">Sizes</th>-->
+      <!--<th scope="col">Stocks</th>-->
+      <!--<th scope="col">Price</th>-->
+      <!--<th scope="col">isListable</th>-->
+      <!--&lt;!&ndash;<th scope="col">Tags</th>&ndash;&gt;-->
+      <!--&lt;!&ndash;<th scope="col"></th>&ndash;&gt;-->
+    <!--</tr>-->
+    <!--</thead>-->
+    <!--<tbody>-->
+    <!--<tr *ngFor="let product of allProducts; let i = index" (click)="navigateToProduct(product.productUid)">-->
+      <!--<th scope="row">{{i + 1}}</th>-->
+      <!--<td><img *ngIf="!(product.picturesUrl.length > 0)" src="../../../assets/logo/logo-120x120.png" class="grey-icon"-->
+               <!--width="50px">-->
+        <!--<img *ngIf="product.picturesUrl.length > 0" [src]="product.picturesUrl[0]" width="50px">-->
+      <!--</td>-->
+      <!--<td>-->
+        <!--<mat-chip-list>-->
+          <!--<mat-chip>{{product.prn}}</mat-chip>-->
+        <!--</mat-chip-list>-->
+      <!--</td>-->
+      <!--<td>{{product.productName}}</td>-->
+      <!--<td>-->
+        <!--<mat-chip-list *ngFor="let variant of product.variants">-->
+          <!--<mat-chip>{{variant.size | uppercase}}</mat-chip>-->
+        <!--</mat-chip-list>-->
+      <!--</td>-->
+      <!--<td>-->
+        <!--<mat-chip-list *ngFor="let variant of product.variants">-->
+          <!--<mat-chip>{{variant.stock}}</mat-chip>-->
+        <!--</mat-chip-list>-->
+      <!--</td>-->
+      <!--<td>-->
 
-        <div *ngIf="!product.isVariantsWithSamePrice">
-          <mat-chip-list *ngFor="let variant of product.variants">
-            <mat-chip>&#8377;{{variant.sellingPrice}}</mat-chip>
-          </mat-chip-list>
-        </div>
-        <div *ngIf="product.isVariantsWithSamePrice">
-          <mat-chip-list *ngIf="product.isVariantsWithSamePrice">
-            <mat-chip>&#8377;{{product.variants[0].sellingPrice}}</mat-chip>
-          </mat-chip-list>
-        </div>
+        <!--<div *ngIf="!product.isVariantsWithSamePrice">-->
+          <!--<mat-chip-list *ngFor="let variant of product.variants">-->
+            <!--<mat-chip>&#8377;{{variant.sellingPrice}}</mat-chip>-->
+          <!--</mat-chip-list>-->
+        <!--</div>-->
+        <!--<div *ngIf="product.isVariantsWithSamePrice">-->
+          <!--<mat-chip-list *ngIf="product.isVariantsWithSamePrice">-->
+            <!--<mat-chip>&#8377;{{product.variants[0].sellingPrice}}</mat-chip>-->
+          <!--</mat-chip-list>-->
+        <!--</div>-->
 
-      </td>
-      <td><span style="font-size: 40px" [ngClass]="product.isListable ? 'text-success' : 'text-danger'">&#8226;</span>
-      </td>
-      <!--<td><mat-chip-list *ngFor="let tag of product.tags"><mat-chip>{{tag}}</mat-chip></mat-chip-list></td>-->
-      <!--<td><a><i class="material-icons">more_vert</i> </a></td>-->
-    </tr>
+      <!--</td>-->
+      <!--<td><span style="font-size: 40px" [ngClass]="product.isListable ? 'text-success' : 'text-danger'">&#8226;</span>-->
+      <!--</td>-->
+      <!--&lt;!&ndash;<td><mat-chip-list *ngFor="let tag of product.tags"><mat-chip>{{tag}}</mat-chip></mat-chip-list></td>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td><a><i class="material-icons">more_vert</i> </a></td>&ndash;&gt;-->
+    <!--</tr>-->
 
-    </tbody>
-  </table>
-</div>
+    <!--</tbody>-->
+  <!--</table>-->
+<!--</div>-->

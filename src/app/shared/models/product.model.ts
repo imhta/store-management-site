@@ -6,48 +6,67 @@ export class SingleProductModel {
   productUid: string;
   productName: string;
   prn: string;
+  groupId: string;
   brandName: string;
-  categories: { category1: string, category2: string, colorCategory: string };
+  categories: string[];
   description: string;
-  gender: 'Men' | 'Women' | 'Boy' | 'Girl';
   picturesUrl: string[] = [];
   picturesPath: string[] = [];
   isDeleted: boolean;
   isVariantsWithSamePrice: boolean;
   hasNoGstNumber: boolean;
-  variants: { size: string, stock: number, purchasedPrice: number, sellingPrice: number }[];
+  typeOfProduct: string;
+  supplierName: string;
+  supplierCode: string;
+  trackProductInventory: boolean;
+  stock: number;
+  unit: string;
+  reOrderPoint: number;
+  taxInPercentage: number;
+  taxName: string;
+  inclusiveAllTaxes: boolean;
+  purchasedPrice: number;
+  sellingPrice: number;
+  marginInPercentage: number;
+  attributes: string[];
   addedBy: string;
   storeId: string;
   tags: string[];
-  taxType: 'footwear' | 'textile' | 'other';
-  otherTax: number;
-  hsnCode: string;
   storeDetails: { address: { city: string, pinCode: number, state: string, street: string }, location: firestore.GeoPoint, name: string };
-  inclusiveAllTaxes: boolean;
   createdOn: firestore.Timestamp;
   isListable: boolean;
   lastModified: firestore.Timestamp;
 
   constructor() {
     this.isListable = false;
+    this.trackProductInventory = false;
   }
 
   fromFromData(data) {
-    this.gender = data.gender;
+    this.typeOfProduct = data.typeOfProduct;
     this.brandName = data.brandName;
     this.productName = data.productName;
     this.categories = data.categories;
     this.description = data.description;
-    this.variants = data.variants;
+    this.supplierName = data.supplierName;
     this.addedBy = data.addedBy;
     this.storeId = data.storeId;
     this.tags = data.tags;
-    this.taxType = data.taxType;
-    this.hsnCode = data.hsnCode;
-    this.otherTax = +data.otherTax;
+    this.supplierCode = data.supplierCode;
+    this.trackProductInventory = data.trackProductInventory;
+    this.unit = data.unit;
     this.inclusiveAllTaxes = data.inclusiveAllTaxes;
     this.isVariantsWithSamePrice = data.isVariantsWithSamePrice;
     this.hasNoGstNumber = data.hasNoGstNumber;
+    this.stock = +data.stock;
+    this.reOrderPoint = +data.reOrderPoint;
+    this.taxInPercentage = +data.taxInPercentage;
+    this.taxName = data.taxName;
+    this.purchasedPrice = +data.purchasedPrice;
+    this.sellingPrice = +data.sellingPrice;
+    this.marginInPercentage = +data.marginInPercentage;
+    this.attributes = data.attributes;
+
   }
 
   fromStoreDate(storeDetails) {
@@ -58,18 +77,28 @@ export class SingleProductModel {
     return {
       'brandName': this.brandName,
       'productName': this.productName,
+      'prn': this.prn,
+      'groupId' : this.groupId,
       'description': this.description,
       'categories': this.categories,
-      'gender': this.gender,
+      'typeOfProduct' : this.typeOfProduct,
       'isVariantsWithSamePrice': this.isVariantsWithSamePrice,
-      'variants': this.variants,
+      'supplierName': this.supplierName,
+      'supplierCode' : this.supplierCode,
       'picturesPath': this.picturesPath,
       'picturesUrl': this.picturesUrl,
       'tags': this.tags,
       'hasNoGstNumber': this.hasNoGstNumber,
-      'taxType': this.taxType,
-      'otherTax': this.otherTax,
-      'hsnCode': this.hsnCode,
+      'trackProductInventory': this.trackProductInventory,
+      'stock' : this.stock,
+      'unit' : this.unit,
+      'reOrderPoint' : this.reOrderPoint,
+      'taxInPercentage' : this.taxInPercentage,
+      'taxName' : this.taxName,
+      'purchasedPrice': this.purchasedPrice,
+      'sellingPrice': this.sellingPrice,
+      'marginInPercentage' : this.marginInPercentage,
+      'attributes': this.attributes,
       'inclusiveAllTaxes': this.inclusiveAllTaxes,
       'addedBy': this.addedBy,
       'storeId': this.storeId,

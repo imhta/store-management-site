@@ -9,7 +9,7 @@ import {
   ErrorInStorePicturesUpload,
   ErrorInUpdateStoreDescription,
   ErrorInUpdateUniqueStoreName,
-  GotAllEmployeesSuccessfully,
+  GotAllEmployeesSuccessfully, GotConfig,
   GotEmployeeLinkedStoresSuccessfully,
   GotLinkedStores,
   StoreLogoUploadedSuccessfully,
@@ -80,6 +80,7 @@ export class FirestoreService {
           // ...
         }
       });
+
   }
 
    getLinkedStore(uid) {
@@ -422,4 +423,14 @@ export class FirestoreService {
       .update({'variants': FieldValue.arrayUnion(variant)});
   }
 
+  // selected store selected store
+
+  getAllConfig(storeId) {
+    const listOfConfigs = ['brands', 'attributes', 'categories', 'suppliers', 'units', 'taxes'];
+    listOfConfigs.forEach((config) => {
+      return this.db.collection(`stores/${storeId}/${config}`).valueChanges().subscribe((data) => {
+        this.store.dispatch([new GotConfig(config, data)]);
+      });
+    });
+  }
 }

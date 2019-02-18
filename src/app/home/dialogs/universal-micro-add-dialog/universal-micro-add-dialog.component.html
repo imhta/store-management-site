@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Add New {{data.type}}</h1>
+<div mat-dialog-content>
+  <mat-form-field>
+    <input matInput [(ngModel)]="data.name"  placeholder="{{data.type}} Name">
+  </mat-form-field>
+  <mat-form-field  *ngIf="data.type === 'Tax'" >
+    <input matInput [(ngModel)]="data.taxInPercentage" placeholder="Tax in percentage">
+    <span matSuffix>%</span>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="data"  (click)="addToDb()">Ok</button>
+</div>

@@ -34,10 +34,7 @@ export class SelectStoreOnly {
   static readonly type = '[Store] set selected store in state (only)';
   constructor(public index: number) {}
 }
-export class GetSelectedStoreByUrl {
-  static readonly type = '[Store] Get Selected store by url';
-  constructor(public index: number) {}
-}
+
 export class UploadStoreLogo {
   static readonly type = '[Store] Uploading store logo';
 
@@ -142,4 +139,12 @@ export class DeleteEmployee {
 }
 export class EmployeeDeletedSuccessfully {
   static readonly type = '[Store] Employee deleted successfully ';
+}
+export class GetConfig {
+  static readonly type = '[Store] Get Config';
+  constructor(public storeId: string) {}
+}
+export class GotConfig {
+  static readonly type = '[Store] Got Config';
+  constructor(public type: string, public data: {}[]) {}
 }

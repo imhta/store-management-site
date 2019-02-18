@@ -2,12 +2,16 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Select, Store} from '@ngxs/store';
 import {Observable, Subscription} from 'rxjs';
 import {UserModel} from '../../shared/models/auth.model';
-import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, Validators} from '@angular/forms';
 import {UserStoreState} from '../../shared/models/store.model';
 import {SingleProductModel} from '../../shared/models/product.model';
-import {debounceTime, distinctUntilChanged, map, take} from 'rxjs/operators';
-import {LoadingTrue} from '../../shared/state/app-general.state';
-import {UploadSingleProduct} from '../../shared/actions/product.actions';
+
+import {MatChipInputEvent, MatDialog} from '@angular/material';
+import {UniversalMicroAddDialogComponent} from '../../home/dialogs/universal-micro-add-dialog/universal-micro-add-dialog.component';
+
+import {FirestoreService} from '../../shared/service/firestore/firestore.service';
+import {AddProductUiModel} from '../../shared/ui-model/add-product.ui.model';
+import {take} from 'rxjs/operators';
 
 
 const tags = ['Shirt', 'T- Shirt', 'Track', 'Casuals', 'Formals', 'Full Pant', 'Half Pant',
@@ -54,72 +58,66 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
   storeDataSubscription: Subscription;
   user: UserModel;
   currentStore;
+  storeState: UserStoreState;
   variants: FormArray;
-  tagVal: string;
-  tagsArray = [];
   productForm = this.fb.group({
-    gender: ['Men', Validators.compose([Validators.required])],
-    brandName: ['', Validators.compose([Validators.required])],
-    productName: ['', Validators.compose([Validators.required])],
-    categories: this.fb.group({
-      category1: [''],
-      category2: [''],
-      colorCategory: [''],
-    }),
+    prn: [''],
+    prnMode: ['auto'],
+    productName: ['', [Validators.required]],
+    brandName: [''],
     description: [''],
-    storeId: ['', Validators.compose([Validators.required])],
-    tags: [['']],
-    isVariantsWithSamePrice: [true],
-    hasNoGstNumber: [true],
-    taxType: ['textile', Validators.compose([Validators.required])],
-    inclusiveAllTaxes: [true, Validators.compose([Validators.required])],
-    otherTax: ['0', Validators.compose([Validators.required])],
-    addedBy: ['', Validators.compose([Validators.required])],
-    variants: this.fb.array([this.createVariant()]),
-    hsnCode: ['']
+    supplier: [''],
+    taxName: [''],
+    taxInPercentage: [''],
+    storeId: ['', [Validators.required]],
+    purchasedPrice: [],
+    sellingPrice: [],
+    stock: [],
+    unit: ['nos'],
+    addedBy: ['', [Validators.required]],
   });
   product = new SingleProductModel();
 
-  constructor(private fb: FormBuilder, private store: Store) {
+  uiModel = new AddProductUiModel();
 
+  constructor(private fb: FormBuilder, private store: Store, public dialog: MatDialog, private db: FirestoreService) {
   }
 
-  tags = (text$: Observable<string>) =>
-    text$.pipe(
-      debounceTime(200),
-      distinctUntilChanged(),
-      map(term => term.length < 1 ? []
-        : tags.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-    );
+  get prn() {
+    return this.productForm.get('prn');
+  }
 
-  colors = (text$: Observable<string>) =>
-    text$.pipe(
-      debounceTime(200),
-      distinctUntilChanged(),
-      map(term => term.length < 2 ? []
-        : colors.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10).reverse())
-    );
+  get prnMode() {
+    return this.productForm.get('prnMode');
+  }
 
-  occasionsCat = (text$: Observable<string>) =>
-    text$.pipe(
-      debounceTime(200),
-      distinctUntilChanged(),
-      map(term => term.length < 1 ? []
-        : occasionsCat.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-    );
+  get brandName() {
+    return this.productForm.get('brandName');
+  }
 
-  styleCat = (text$: Observable<string>) =>
-    text$.pipe(
-      debounceTime(200),
-      distinctUntilChanged(),
-      map(term => term.length < 1 ? []
-        : styleCat.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-    );
+  get supplier() {
+    return this.productForm.get('supplier');
+  }
+  get tax() {
+    return this.productForm.get('tax');
+  }
+  step = 0;
 
+  setStep(index: number) {
+    this.step = index;
+  }
+
+  nextStep() {
+    this.step++;
+  }
+
+  prevStep() {
+    this.step--;
+  }
   ngOnInit() {
-    this.variants = this.productForm.get('variants') as FormArray;
     this.addStoreId();
     this.addAddedBy();
+
   }
 
   ngOnDestroy() {
@@ -127,47 +125,68 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
     this.storeDataSubscription.unsubscribe();
   }
 
+  openNewUniversalAddDialog(type: string, src: string, index?: number): void {
+    const dialogRef = this.dialog.open(UniversalMicroAddDialogComponent, {
+      closeOnNavigation: true,
+      autoFocus: true,
+      width: '350px',
+      data: {storeId: this.currentStore['storeUid'], type: type, name: '', src: src}
+    });
+
+    dialogRef.afterClosed().pipe(take(1)).subscribe(result => {
+      switch (result.src) {
+        case 'brands': {
+          this.brandName.patchValue(result.name);
+          break;
+        }
+        case 'categories': {
+          this.uiModel.categories[index] = result.name;
+          break;
+        }
+        case 'suppliers': {
+          this.supplier.patchValue(result.name);
+          break;
+        }
+        // case 'taxes': {
+        //   break;
+        // }
+        case 'attributes': {
+          this.uiModel.attributeValues[index] = result.name;
+          break;
+        }
+      }
+    });
+  }
+
   onSubmit() {
-    this.getHsn();
-    if (this.productForm.valid) {
-      this.addStoreId();
-      this.addAddedBy();
-      this.product.fromStoreDate({
-        address: this.currentStore.address,
-        location: this.currentStore.location,
-        name: this.currentStore.storeName
-      });
-      this.product.fromFromData(this.productForm.value);
-      this.product.picturesUrl.length > 0 ? this.product.isListable = true : this.product.isListable = false;
-      this.store.dispatch([new LoadingTrue(), new UploadSingleProduct(this.product)]);
-      this.productForm.reset();
-      this.tagsArray = [];
-      this.tagVal = '';
-    } else {
-      Object.keys(this.productForm.controls).forEach(key => {
-        this.productForm.controls[key].markAsDirty();
-      });
-    }
+    // this.getHsn();
+    // if (this.productForm.valid) {
+    //   this.addStoreId();
+    //   this.addAddedBy();
+    //   this.product.fromStoreDate({
+    //     address: this.currentStore.address,
+    //     location: this.currentStore.location,
+    //     name: this.currentStore.storeName
+    //   });
+    //   this.product.fromFromData(this.productForm.value);
+    //   this.product.picturesUrl.length > 0 ? this.product.isListable = true : this.product.isListable = false;
+    //   this.store.dispatch([new LoadingTrue(), new UploadSingleProduct(this.product)]);
+    //   this.productForm.reset();
+    //   this.tagsArray = [];
+    //   this.tagVal = '';
+    // } else {
+    //   Object.keys(this.productForm.controls).forEach(key => {
+    //     this.productForm.controls[key].markAsDirty();
+    //   });
+    // }
 
   }
 
-  getHsn() {
-    switch (this.productForm.get('taxType').value) {
-      case 'textile': {
-        this.productForm.patchValue({hsnCode: '61'});
-        break;
-      }
-      case 'footwear': {
-        this.productForm.patchValue({hsnCode: '64'});
-        break;
-      }
-    }
-  }
 
   addStoreId() {
-    this.storeDataSubscription = this.storeState$.pipe(take(1)).subscribe((data) => {
-      const storeState = new UserStoreState(data.valueOf());
-      this.currentStore = storeState.linkedStores[storeState.selectedStore];
+    this.storeDataSubscription = this.storeState$.subscribe((data) => {
+      this.storeState = new UserStoreState(data.valueOf());
+      this.currentStore = this.storeState.linkedStores[this.storeState.selectedStore];
       this.productForm.patchValue(
         {
           storeId: this.currentStore['storeUid'],
@@ -183,29 +202,6 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
     });
   }
 
-  createVariant(): FormGroup {
-    return this.fb.group({
-      size: [''],
-      stock: [],
-      purchasedPrice: [],
-      sellingPrice: []
-    });
-  }
-
-  addItem(): void {
-    this.variants.push(this.createVariant());
-  }
-
-  removeItem(i): void {
-    if (i !== 0) {
-      this.variants.removeAt(i);
-    }
-  }
-
-  selectGender(selectedGender): void {
-    this.productForm.patchValue({gender: selectedGender});
-  }
-
   getDownloadUrls(downloadUrls: string[]) {
     this.product.picturesUrl = downloadUrls;
 
@@ -215,26 +211,52 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
     this.product.picturesPath = picturePath;
   }
 
-  addTag() {
-    const isWhitespace = (this.tagVal || '').trim().length === 0;
-    if (!isWhitespace) {
-      if (this.tagsArray.length < 5) {
-        this.tagsArray.push(this.tagVal);
-        this.tagVal = '';
-        this.productForm.patchValue({tags: this.tagsArray});
-      } else {
-        console.log('tag is full');
-      }
-    } else {
-      console.log('cannot add empty tag');
+  add(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+
+    // Add our tags
+    if ((value || '').trim()) {
+      this.uiModel.tags.push(value.trim());
+    }
+
+    // Reset the input value
+    if (input) {
+      input.value = '';
     }
   }
 
-  removeTag(index: number) {
-    if (index > -1) {
-      this.tagsArray.splice(index, 1);
-      this.productForm.patchValue({tags: this.tagsArray});
+  remove(tag: string): void {
+    const index = this.uiModel.tags.indexOf(tag);
+
+    if (index >= 0) {
+      this.uiModel.tags.splice(index, 1);
     }
+  }
+
+  addAttributeVal(event: MatChipInputEvent, index: number): void {
+    const input = event.input;
+    const value = event.value;
+
+    // Add our tags
+    if ((value || '').trim()) {
+      this.uiModel.attributes[index].push(value.trim());
+    }
+
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+    this.uiModel.updateAtt();
+  }
+
+  removeAttributeVal(tag: string, i: number): void {
+    const index = this.uiModel.attributes[i].indexOf(tag);
+
+    if (index >= 0) {
+      this.uiModel.attributes[i].splice(index, 1);
+    }
+    this.uiModel.updateAtt();
   }
 
 }

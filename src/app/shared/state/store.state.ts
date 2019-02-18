@@ -1,18 +1,20 @@
-import {Select, Selector, State, StateContext, Store, Action, Actions} from '@ngxs/store';
+import {Action, Actions, Select, Selector, State, StateContext, Store} from '@ngxs/store';
 import {UserStoreState} from '../models/store.model';
 import {
   DeleteEmployee,
-  EmployeeDeletedSuccessfully, EmptyLinkedStore,
-  GetAllEmployees,
+  EmployeeDeletedSuccessfully,
+  EmptyLinkedStore,
+  GetAllEmployees, GetConfig,
   GetEmployeeLinkedStores,
   GetLinkedStores,
-  GetSelectedStoreByUrl,
+  GotConfig,
   GotEmployeeLinkedStoresSuccessfully,
   GotLinkedStores,
   NewStoreSetupNotSuccessful,
   NewStoreSetupSuccessfully,
   ResetSelectedStore,
-  SelectStore, SelectStoreOnly,
+  SelectStore,
+  SelectStoreOnly,
   SetupNewStore,
   UpdateStoreDescription,
   UpdateUniqueStoreName,
@@ -34,7 +36,15 @@ import {ActivatedRoute, Router} from '@angular/router';
   name: 'storeState',
   defaults: {
     linkedStores: null,
-    selectedStore: null
+    selectedStore: null,
+    currentStoreConfig: {
+      brands: [],
+      attributes: [],
+      categories: [],
+      suppliers: [],
+      units: [],
+      taxes: []
+    }
   }
 })
 export class StoreState {
@@ -47,6 +57,7 @@ export class StoreState {
               private route: ActivatedRoute,
               private actions$: Actions) {
     this.user$.pipe(take(5)).subscribe((data) => this.user = data);
+
   }
 
   @Selector()
@@ -64,12 +75,12 @@ export class StoreState {
 
     this.dbService.getLinkedStore(uid)
       .subscribe((data) => {
-      if (data.length > 0) {
-        return this.store.dispatch([new GotLinkedStores(data)]);
-      } else {
-        return this.store.dispatch([new EmptyLinkedStore()]);
-      }
-    });
+        if (data.length > 0) {
+          return this.store.dispatch([new GotLinkedStores(data)]);
+        } else {
+          return this.store.dispatch([new EmptyLinkedStore()]);
+        }
+      });
   }
 
   @Action(GotLinkedStores)
@@ -113,21 +124,26 @@ export class StoreState {
     const state = ctx.getState();
     ctx.setState({...state, selectedStore: action.index});
     if (this.user.role === 'Register') {
-      return this.store.dispatch([new Navigate(['go/u', action.index, 'dashboard'])]);
+      return this.store.dispatch([
+        new Navigate(['go/u', action.index, 'dashboard']),
+        new GetConfig(state.linkedStores[action.index]['storeUid'])
+      ]);
     } else {
-      return this.store.dispatch([new Navigate([`go/u/${action.index}/store`])]);
+      return this.store.dispatch([
+        new Navigate([`go/u/${action.index}/store`]),
+        new GetConfig(state.linkedStores[action.index]['storeUid'])
+      ]);
     }
   }
+
   @Action(SelectStoreOnly)
   selectStoreOnly(ctx: StateContext<UserStoreState>, action: SelectStoreOnly) {
     const state = ctx.getState();
     ctx.setState({...state, selectedStore: action.index});
+    this.store.dispatch([ new GetConfig(state.linkedStores[action.index]['storeUid'])]);
   }
-  @Action(GetSelectedStoreByUrl)
-  getSelectedStoreByUrl(ctx: StateContext<UserStoreState>, action: SelectStore) {
-    const state = ctx.getState();
-    ctx.setState({...state, selectedStore: action.index});
-  }
+
+
 
   @Action(ResetSelectedStore)
   resetSelectedStore(ctx: StateContext<UserStoreState>, action: ResetSelectedStore) {
@@ -190,5 +206,39 @@ export class StoreState {
   deleteADiscount(ctx: StateContext<any>, {discountUid}: DeleteADiscount) {
     this.dbService.deleteDiscount(discountUid);
   }
+  @Action(GetConfig)
+  getConfig(ctx: StateContext<UserStoreState>, {storeId}: GetConfig) {
+    this.dbService.getAllConfig(storeId);
+  }
+  @Action(GotConfig)
+  gotConfig(ctx: StateContext<UserStoreState>, {type, data}: GotConfig) {
+    const state = ctx.getState();
+    switch (type) {
+      case 'brands': {
+        ctx.setState({...state, currentStoreConfig: {...state.currentStoreConfig, brands: data}});
+        break;
+      }
+      case 'attributes': {
+        ctx.setState({...state, currentStoreConfig: {...state.currentStoreConfig, attributes: data}});
+        break;
+      }
+      case 'categories': {
+        ctx.setState({...state, currentStoreConfig: {...state.currentStoreConfig, categories: data}});
+        break;
+      }
+      case 'suppliers': {
+        ctx.setState({...state, currentStoreConfig: {...state.currentStoreConfig, suppliers: data}});
+        break;
+      }
+      case 'units': {
+        ctx.setState({...state, currentStoreConfig: {...state.currentStoreConfig, units: data}});
+        break;
+      }
+      case 'taxes': {
+        ctx.setState({...state, currentStoreConfig: {...state.currentStoreConfig, taxes: data}});
+        break;
+      }
+    }
 
+  }
 }

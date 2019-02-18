@@ -4,9 +4,19 @@ import {firestore} from 'firebase/app';
 export class UserStoreState {
   linkedStores: any[];
   selectedStore: number; // index of selected store in stores array
+  currentStoreConfig: {
+    brands: {}[],
+    attributes: {}[],
+    categories: {}[],
+    suppliers: {}[],
+    units: {}[],
+    taxes: {}[]
+  }
   constructor(data) {
     this.linkedStores = data.linkedStores;
     this.selectedStore = data.selectedStore;
+    this.currentStoreConfig = data.currentStoreConfig;
+
   }
 }
 
