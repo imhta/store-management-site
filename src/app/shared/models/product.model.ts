@@ -10,25 +10,25 @@ export class SingleProductModel {
   brandName: string;
   categories: string[];
   description: string;
-  picturesUrl: string[] = [];
-  picturesPath: string[] = [];
+  pictures: {url: [], path: []};
   isDeleted: boolean;
-  isVariantsWithSamePrice: boolean;
+  isVariantsWithSamePriceAndTax: boolean;
   hasNoGstNumber: boolean;
   typeOfProduct: string;
-  supplierName: string;
+  supplier: string;
   supplierCode: string;
-  trackProductInventory: boolean;
+  trackThisProduct: boolean;
   stock: number;
   unit: string;
-  reOrderPoint: number;
+  reorderPoint: number;
   taxInPercentage: number;
   taxName: string;
-  inclusiveAllTaxes: boolean;
+  inclusiveOfAllTaxes: boolean;
   purchasedPrice: number;
   sellingPrice: number;
   marginInPercentage: number;
-  attributes: string[];
+  attributeTemplate: string[];
+  attributeValues: string[];
   addedBy: string;
   storeId: string;
   tags: string[];
@@ -39,39 +39,40 @@ export class SingleProductModel {
 
   constructor() {
     this.isListable = false;
-    this.trackProductInventory = false;
+    this.trackThisProduct = false;
   }
 
   fromFromData(data) {
     this.typeOfProduct = data.typeOfProduct;
+    this.prn = data.prn;
+    this.groupId = data.groupId;
     this.brandName = data.brandName;
     this.productName = data.productName;
     this.categories = data.categories;
     this.description = data.description;
-    this.supplierName = data.supplierName;
-    this.addedBy = data.addedBy;
-    this.storeId = data.storeId;
     this.tags = data.tags;
-    this.supplierCode = data.supplierCode;
-    this.trackProductInventory = data.trackProductInventory;
+    this.supplier = data.supplier;
+    this.attributeValues = data.attributeValues;
+    this.attributeTemplate = data.attributeTemplate;
     this.unit = data.unit;
-    this.inclusiveAllTaxes = data.inclusiveAllTaxes;
-    this.isVariantsWithSamePrice = data.isVariantsWithSamePrice;
+    this.pictures = data.pictures;
+    this.supplierCode = data.supplierCode;
+    this.trackThisProduct = data.trackThisProduct;
+    this.storeDetails = data.storeDetails;
+    this.inclusiveOfAllTaxes = data.inclusiveOfAllTaxes;
+    this.isVariantsWithSamePriceAndTax = data.isVariantsWithSamePriceAndTax;
     this.hasNoGstNumber = data.hasNoGstNumber;
     this.stock = +data.stock;
-    this.reOrderPoint = +data.reOrderPoint;
+    this.reorderPoint = +data.reorderPoint;
     this.taxInPercentage = +data.taxInPercentage;
     this.taxName = data.taxName;
     this.purchasedPrice = +data.purchasedPrice;
     this.sellingPrice = +data.sellingPrice;
     this.marginInPercentage = +data.marginInPercentage;
-    this.attributes = data.attributes;
-
+    this.addedBy = data.addedBy;
+    this.storeId = data.storeId;
   }
 
-  fromStoreDate(storeDetails) {
-    this.storeDetails = storeDetails;
-  }
 
   toJson() {
     return {
@@ -81,25 +82,24 @@ export class SingleProductModel {
       'groupId' : this.groupId,
       'description': this.description,
       'categories': this.categories,
-      'typeOfProduct' : this.typeOfProduct,
-      'isVariantsWithSamePrice': this.isVariantsWithSamePrice,
-      'supplierName': this.supplierName,
+      'isVariantsWithSamePriceAndTax': this.isVariantsWithSamePriceAndTax,
+      'supplier': this.supplier,
       'supplierCode' : this.supplierCode,
-      'picturesPath': this.picturesPath,
-      'picturesUrl': this.picturesUrl,
+      'pictures': this.pictures,
       'tags': this.tags,
       'hasNoGstNumber': this.hasNoGstNumber,
-      'trackProductInventory': this.trackProductInventory,
+      'trackThisProduct': this.trackThisProduct,
       'stock' : this.stock,
       'unit' : this.unit,
-      'reOrderPoint' : this.reOrderPoint,
+      'reorderPoint' : this.reorderPoint,
       'taxInPercentage' : this.taxInPercentage,
       'taxName' : this.taxName,
       'purchasedPrice': this.purchasedPrice,
       'sellingPrice': this.sellingPrice,
       'marginInPercentage' : this.marginInPercentage,
-      'attributes': this.attributes,
-      'inclusiveAllTaxes': this.inclusiveAllTaxes,
+      'attributeValues': this.attributeValues,
+      'attributeTemplate': this.attributeTemplate,
+      'inclusiveOfAllTaxes': this.inclusiveOfAllTaxes,
       'addedBy': this.addedBy,
       'storeId': this.storeId,
       'storeDetails': this.storeDetails,

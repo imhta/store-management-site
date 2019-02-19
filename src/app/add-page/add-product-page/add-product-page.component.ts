@@ -2,9 +2,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Select, Store} from '@ngxs/store';
 import {Observable, Subscription} from 'rxjs';
 import {UserModel} from '../../shared/models/auth.model';
-import {FormArray, FormBuilder, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {UserStoreState} from '../../shared/models/store.model';
-import {SingleProductModel} from '../../shared/models/product.model';
 
 import {MatChipInputEvent, MatDialog} from '@angular/material';
 import {UniversalMicroAddDialogComponent} from '../../home/dialogs/universal-micro-add-dialog/universal-micro-add-dialog.component';
@@ -12,39 +11,8 @@ import {UniversalMicroAddDialogComponent} from '../../home/dialogs/universal-mic
 import {FirestoreService} from '../../shared/service/firestore/firestore.service';
 import {AddProductUiModel} from '../../shared/ui-model/add-product.ui.model';
 import {take} from 'rxjs/operators';
+import {UploadSingleProduct} from '../../shared/actions/product.actions';
 
-
-const tags = ['Shirt', 'T- Shirt', 'Track', 'Casuals', 'Formals', 'Full Pant', 'Half Pant',
-  'Trouser', 'Jeans', 'Full Hand', 'Half Hand', 'Saree', 'Silk',
-  'Cotton', 'Wool', 'Chudidar', 'Tops', 'Inner Wears', 'Watches', 'Wallets', 'Shoes', 'Designer', 'Western Wear',
-  'Ethnic Wear', 'Sports Wear', 'Lingerie & Nightwear', 'Handbags', 'Sunglasses', 'New Trend', 'Celeb Fashion', 'Scandals',
-  'Party Wear', 'Fitness', 'Blazers', 'Chinos', 'Loafers', 'Camouflage Print', 'Joggers', 'Shorts',
-  'Kurtas', 'Dhotis, Mundus & Lungis', 'Swim Wear', 'Jackets', 'Palau', 'Vests', 'Lounge Wear', 'Boxers',
-  'Briefs', 'Salwar suits', 'Tees', 'Jeggings', 'Capris', 'Panties', 'Bras', 'Sports Bras',
-  'Tights', 'Summer Wear', 'Winter Wear', 'Sweatshirts'];
-const colors = ['AliceBlue', 'AntiqueWhite', 'Aqua', 'Aquamarine', 'Azure', 'Beige',
-  'Bisque', 'Black', 'BlanchedAlmond', 'Blue', 'BlueViolet', 'Brown', 'BurlyWood', 'CadetBlue',
-  'Chartreuse', 'Chocolate', 'Coral', 'CornflowerBlue', 'Cornsilk', 'Crimson', 'Cyan', 'DarkBlue',
-  'DarkCyan', 'DarkGoldenRod', 'DarkGray', 'DarkGrey', 'DarkGreen', 'DarkKhaki', 'DarkMagenta', 'DarkOliveGreen',
-  'Darkorange', 'DarkOrchid', 'DarkRed', 'DarkSalmon', 'DarkSeaGreen', 'DarkSlateBlue', 'DarkSlateGray', 'DarkSlateGrey',
-  'DarkTurquoise', 'DarkViolet', 'DeepPink', 'DeepSkyBlue', 'DimGray', 'DimGrey', 'DodgerBlue', 'FireBrick', 'FloralWhite',
-  'ForestGreen', 'Fuchsia', 'Gainsboro', 'GhostWhite', 'Gold', 'GoldenRod', 'Gray', 'Grey', 'Green', 'GreenYellow', 'HoneyDew',
-  'HotPink', 'IndianRed', 'Indigo', 'Ivory', 'Khaki', 'Lavender', 'LavenderBlush', 'LawnGreen', 'LemonChiffon', 'LightBlue',
-  'LightCoral', 'LightCyan', 'LightGoldenRodYellow', 'LightGray', 'LightGrey', 'LightGreen', 'LightPink', 'LightSalmon',
-  'LightSeaGreen', 'LightSkyBlue', 'LightSlateGray', 'LightSlateGrey', 'LightSteelBlue', 'LightYellow', 'Lime', 'LimeGreen',
-  'Linen', 'Magenta', 'Maroon', 'MediumAquaMarine', 'MediumBlue', 'MediumOrchid', 'MediumPurple', 'MediumSeaGreen', 'MediumSlateBlue',
-  'MediumSpringGreen', 'MediumTurquoise', 'MediumVioletRed', 'MidnightBlue', 'MintCream', 'MistyRose', 'Moccasin', 'NavajoWhite', 'Navy',
-  'OldLace', 'Olive', 'OliveDrab', 'Orange', 'OrangeRed', 'Orchid', 'PaleGoldenRod',
-  'PaleGreen', 'PaleTurquoise', 'PaleVioletRed', 'PapayaWhip', 'PeachPuff', 'Peru', 'Pink', 'Plum',
-  'PowderBlue', 'Purple', 'Red', 'RosyBrown', 'RoyalBlue', 'SaddleBrown', 'Salmon', 'SandyBrown', 'SeaGreen', 'SeaShell',
-  'Sienna', 'Silver', 'SkyBlue', 'SlateBlue', 'SlateGray', 'SlateGrey', 'Snow', 'SpringGreen', 'SteelBlue', 'Tan', 'Teal',
-  'Thistle', 'Tomato', 'Turquoise', 'Violet', 'Wheat', 'White', 'WhiteSmoke', 'Yellow', 'YellowGreen'];
-const occasionsCat = [
-  'Casuals', 'Party', 'Lingerie & Night Wear', 'Sports', 'Formals', 'Wedding', 'Summer', 'Winter', 'Swim Wear'
-];
-const styleCat = [
-  'Full Hand', 'Half Hand', 'Sleeveless', 'V-Neck', 'U-Neck', 'Tight', 'Designer', 'Custom', 'HipHop', 'Polo', 'Boxer', 'Leggings'
-];
 
 @Component({
   selector: 'app-add-product-page',
@@ -56,29 +24,38 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
   @Select('storeState') storeState$: Observable<object>;
   userDataSubscription: Subscription;
   storeDataSubscription: Subscription;
+  childrenSubscription: Subscription;
+  isListableSubscription: Subscription;
   user: UserModel;
   currentStore;
   storeState: UserStoreState;
-  variants: FormArray;
   productForm = this.fb.group({
     prn: [''],
+    groupId: [''],
     prnMode: ['auto'],
     productName: ['', [Validators.required]],
     brandName: [''],
     description: [''],
+    tags: this.fb.array([]),
+    categories: this.fb.array([this.createCategory('')]),
     supplier: [''],
-    taxName: [''],
-    taxInPercentage: [''],
-    storeId: ['', [Validators.required]],
-    purchasedPrice: [],
-    sellingPrice: [],
-    stock: [],
+    trackThisProduct: [false],
+    isVariantsWithSamePriceAndTax: [true],
     unit: ['nos'],
+    attributeTemplate: [''],
+    pictures: this.fb.group({
+      path: [[]],
+      url: [[]]
+    }),
+    isListable: false,
+    children: this.fb.array([this.createChild('')]),
+    hasNoGstNumber: [''],
+    storeDetails: {},
+    storeId: ['', [Validators.required]],
     addedBy: ['', [Validators.required]],
   });
-  product = new SingleProductModel();
-
   uiModel = new AddProductUiModel();
+  step = 0;
 
   constructor(private fb: FormBuilder, private store: Store, public dialog: MatDialog, private db: FirestoreService) {
   }
@@ -98,10 +75,75 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
   get supplier() {
     return this.productForm.get('supplier');
   }
-  get tax() {
-    return this.productForm.get('tax');
+
+  get pictures() {
+    return this.productForm.get('pictures');
   }
-  step = 0;
+
+  get isVariantsWithSamePriceAndTax() {
+    return this.productForm.get('isVariantsWithSamePriceAndTax');
+  }
+
+  get tags() {
+    return this.productForm.get('tags') as FormArray;
+  }
+
+  get categories() {
+    return this.productForm.get('categories') as FormArray;
+  }
+
+  get attributeTemplate() {
+    return this.productForm.get('attributeTemplate');
+  }
+
+  get children() {
+    return this.productForm.get('children') as FormArray;
+  }
+
+  get firstChildAttribute() {
+    return this.children.at(0).get('attributeValues') as FormArray;
+  }
+
+
+  childAttribute(index) {
+    return this.children.at(index).get('attributeValues') as FormArray;
+  }
+
+  ngOnInit() {
+    this.addStoreDetails();
+    this.addAddedBy();
+    this.childrenSubscription = this.children.at(0).valueChanges.subscribe((data) => {
+      if (this.isVariantsWithSamePriceAndTax.value) {
+        for (let i = 1; i < this.children.controls.length; i++) {
+          this.children.at(i).patchValue({
+            taxName: this.children.at(0).get('taxName').value,
+            taxInPercentage: this.children.at(0).get('taxInPercentage').value,
+            inclusiveOfAllTaxes: this.children.at(0).get('inclusiveOfAllTaxes').value,
+            purchasedPrice: this.children.at(0).get('purchasedPrice').value,
+            marginInPercentage: this.children.at(0).get('marginInPercentage').value,
+            sellingPrice: this.children.at(0).get('sellingPrice').value
+          });
+        }
+      }
+    });
+
+    this.isListableSubscription = this.pictures.valueChanges.subscribe((data) => {
+      if (data.url.length > 0 || data.path.length > 0) {
+        this.productForm.get('isListable').patchValue(true);
+      } else {
+        this.productForm.get('isListable').patchValue(false);
+      }
+    });
+
+  }
+
+  ngOnDestroy() {
+    this.userDataSubscription.unsubscribe();
+    this.storeDataSubscription.unsubscribe();
+    this.childrenSubscription.unsubscribe();
+    this.isListableSubscription.unsubscribe();
+  }
+
 
   setStep(index: number) {
     this.step = index;
@@ -114,16 +156,7 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
   prevStep() {
     this.step--;
   }
-  ngOnInit() {
-    this.addStoreId();
-    this.addAddedBy();
 
-  }
-
-  ngOnDestroy() {
-    this.userDataSubscription.unsubscribe();
-    this.storeDataSubscription.unsubscribe();
-  }
 
   openNewUniversalAddDialog(type: string, src: string, index?: number): void {
     const dialogRef = this.dialog.open(UniversalMicroAddDialogComponent, {
@@ -140,18 +173,20 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
           break;
         }
         case 'categories': {
-          this.uiModel.categories[index] = result.name;
+          this.categories.at(index).patchValue(result.name);
           break;
         }
         case 'suppliers': {
           this.supplier.patchValue(result.name);
           break;
         }
-        // case 'taxes': {
-        //   break;
-        // }
+        case 'taxes': {
+          this.children.at(index).get('taxInPercentage').patchValue(result.taxInPercentage);
+          this.children.at(index).get('taxName').patchValue(result.name);
+          break;
+        }
         case 'attributes': {
-          this.uiModel.attributeValues[index] = result.name;
+          this.attributeTemplate.patchValue(result.name);
           break;
         }
       }
@@ -159,21 +194,13 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    // this.getHsn();
+
+   this.store.dispatch([new UploadSingleProduct(this.uiModel.createProducts(this.productForm.value, this.currentStore))]) ;
+
     // if (this.productForm.valid) {
-    //   this.addStoreId();
+    //   this.addStoreDetails();
     //   this.addAddedBy();
-    //   this.product.fromStoreDate({
-    //     address: this.currentStore.address,
-    //     location: this.currentStore.location,
-    //     name: this.currentStore.storeName
-    //   });
-    //   this.product.fromFromData(this.productForm.value);
-    //   this.product.picturesUrl.length > 0 ? this.product.isListable = true : this.product.isListable = false;
-    //   this.store.dispatch([new LoadingTrue(), new UploadSingleProduct(this.product)]);
     //   this.productForm.reset();
-    //   this.tagsArray = [];
-    //   this.tagVal = '';
     // } else {
     //   Object.keys(this.productForm.controls).forEach(key => {
     //     this.productForm.controls[key].markAsDirty();
@@ -183,14 +210,19 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
   }
 
 
-  addStoreId() {
+  addStoreDetails() {
     this.storeDataSubscription = this.storeState$.subscribe((data) => {
       this.storeState = new UserStoreState(data.valueOf());
       this.currentStore = this.storeState.linkedStores[this.storeState.selectedStore];
       this.productForm.patchValue(
         {
           storeId: this.currentStore['storeUid'],
-          hasNoGstNumber: this.currentStore['hasNoGstNumber']
+          hasNoGstNumber: this.currentStore['hasNoGstNumber'],
+          storeDetails: {
+            address: this.currentStore.address,
+            location: this.currentStore.location,
+            name: this.currentStore.storeName
+          }
         });
     });
   }
@@ -203,21 +235,67 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
   }
 
   getDownloadUrls(downloadUrls: string[]) {
-    this.product.picturesUrl = downloadUrls;
+    this.productForm.get('pictures').get('url').patchValue(downloadUrls);
 
   }
 
   getPicturePath(picturePath: string[]) {
-    this.product.picturesPath = picturePath;
+    this.productForm.get('pictures').get('path').patchValue(picturePath);
   }
 
-  add(event: MatChipInputEvent): void {
+  createChild(type: string): FormGroup {
+    switch (type) {
+      case 'SAME': {
+        return this.fb.group({
+          attributeValues: this.fb.array([]),
+          supplierCode: [''],
+          stock: [''],
+          reorderPoint: [''],
+          taxName: [this.children.at(0).get('taxName').value],
+          taxInPercentage: [this.children.at(0).get('taxInPercentage').value],
+          inclusiveOfAllTaxes: [this.children.at(0).get('inclusiveOfAllTaxes').value],
+          purchasedPrice: [this.children.at(0).get('purchasedPrice').value],
+          marginInPercentage: [this.children.at(0).get('marginInPercentage').value],
+          sellingPrice: [this.children.at(0).get('sellingPrice').value]
+        });
+      }
+      default: {
+        return this.fb.group({
+          attributeValues: this.fb.array([]),
+          supplierCode: [''],
+          stock: [''],
+          reorderPoint: [''],
+          taxName: '',
+          taxInPercentage: [''],
+          inclusiveOfAllTaxes: false,
+          purchasedPrice: [''],
+          marginInPercentage: [''],
+          sellingPrice: ['']
+        });
+      }
+    }
+
+  }
+
+  createTag(value): FormControl {
+    return this.fb.control(value);
+  }
+
+  createCategory(value): FormControl {
+    return this.fb.control(value);
+  }
+
+  createAttribute(value): FormControl {
+    return this.fb.control(value);
+  }
+
+  addTag(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
 
     // Add our tags
     if ((value || '').trim()) {
-      this.uiModel.tags.push(value.trim());
+      this.tags.push(this.createTag(value.trim()));
     }
 
     // Reset the input value
@@ -226,11 +304,10 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  remove(tag: string): void {
-    const index = this.uiModel.tags.indexOf(tag);
+  removeTag(index: number): void {
 
     if (index >= 0) {
-      this.uiModel.tags.splice(index, 1);
+      this.tags.removeAt(index);
     }
   }
 
@@ -240,23 +317,21 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
 
     // Add our tags
     if ((value || '').trim()) {
-      this.uiModel.attributes[index].push(value.trim());
+      this.childAttribute(index).push(this.createAttribute(value.trim().toUpperCase()));
     }
 
     // Reset the input value
     if (input) {
       input.value = '';
     }
-    this.uiModel.updateAtt();
   }
 
-  removeAttributeVal(tag: string, i: number): void {
-    const index = this.uiModel.attributes[i].indexOf(tag);
+  removeAttributeVal(index: number): void {
+
 
     if (index >= 0) {
-      this.uiModel.attributes[i].splice(index, 1);
+      this.childAttribute(index).removeAt(index);
     }
-    this.uiModel.updateAtt();
   }
 
 }

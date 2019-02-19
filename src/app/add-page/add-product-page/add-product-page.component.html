@@ -1,80 +1,6 @@
 <div class="page">
 
 
-
-  <mat-accordion class="example-headers-align">
-    <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Personal data
-        </mat-panel-title>
-        <mat-panel-description>
-          Type your name and age
-          <mat-icon>account_circle</mat-icon>
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-
-      <mat-form-field>
-        <input matInput placeholder="First name">
-      </mat-form-field>
-
-      <mat-form-field>
-        <input matInput type="number" min="1" placeholder="Age">
-      </mat-form-field>
-
-      <mat-action-row>
-        <button mat-button color="primary" (click)="nextStep()">Next</button>
-      </mat-action-row>
-    </mat-expansion-panel>
-
-    <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Destination
-        </mat-panel-title>
-        <mat-panel-description>
-          Type the country name
-          <mat-icon>map</mat-icon>
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-
-      <mat-form-field>
-        <input matInput placeholder="Country">
-      </mat-form-field>
-
-      <mat-action-row>
-        <button mat-button color="warn" (click)="prevStep()">Previous</button>
-        <button mat-button color="primary" (click)="nextStep()">Next</button>
-      </mat-action-row>
-    </mat-expansion-panel>
-
-    <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Day of the trip
-        </mat-panel-title>
-        <mat-panel-description>
-          Inform the date you wish to travel
-          <mat-icon>date_range</mat-icon>
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-
-      <mat-form-field>
-        <input matInput placeholder="Date" [matDatepicker]="picker" (focus)="picker.open()" readonly>
-      </mat-form-field>
-      <mat-datepicker #picker></mat-datepicker>
-
-      <mat-action-row>
-        <button mat-button color="warn" (click)="prevStep()">Previous</button>
-        <button mat-button color="primary" (click)="nextStep()">End</button>
-      </mat-action-row>
-    </mat-expansion-panel>
-
-  </mat-accordion>
-
-
-
-
   <div class="container">
 
     <h2>New Product</h2>
@@ -83,374 +9,495 @@
                      (pictureRefs)="getPicturePath($event)"></app-file-upload>
     <form [formGroup]="productForm">
 
-      <div class="row">
-        <mat-form-field class="col">
-          <input matInput
-                 id="product-name"
-                 type="text"
-                 placeholder="Product name"
-                 required
-                 formControlName="productName">
-        </mat-form-field>
-        <mat-form-field class="col">
-          <mat-select placeholder="Brand"
-                      formControlName="brandName">
-            <mat-option (click)=" openNewUniversalAddDialog('Brand', 'brands')">Add New Brand</mat-option>
-            <mat-option *ngFor="let brand of storeState.currentStoreConfig.brands"
-                        [value]="brand.name">{{brand.name}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <mat-form-field>
-        <input matInput
-               type="text"
-               id="description"
-               placeholder="Description"
-               formControlName="description">
-      </mat-form-field>
-      <mat-form-field>
-        <mat-chip-list #tagsList>
-          <mat-chip *ngFor="let tag of uiModel.tags" [selectable]="uiModel.selectable"
-                    [removable]="uiModel.removable" (removed)="remove(tag)">
-            {{tag}}
-            <mat-icon matChipRemove *ngIf="uiModel.removable">cancel</mat-icon>
-          </mat-chip>
-          <input placeholder="Tags"
-                 [matChipInputFor]="tagsList"
-                 [matChipInputSeparatorKeyCodes]="uiModel.separatorKeysCodes"
-                 [matChipInputAddOnBlur]="uiModel.addOnBlur"
-                 (matChipInputTokenEnd)="add($event)">
-        </mat-chip-list>
-        <mat-hint align="start">Describe the product using relevant keyword for easy filtering</mat-hint>
-      </mat-form-field>
+      <mat-accordion class=" headers-align">
+        <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Basic product data
+            </mat-panel-title>
+          </mat-expansion-panel-header>
 
-      <div class="row" *ngFor="let cat of uiModel.categories; let i = index">
-        <mat-form-field class="col-9">
-          <mat-select placeholder="Product Category (level - {{i + 1}})" [(ngModel)]="uiModel.categories[i]"
-                      [ngModelOptions]="{standalone: true}">
-            <mat-option (click)=" openNewUniversalAddDialog('Product Category', 'categories', i)">Add New Product Category
-            </mat-option>
-            <mat-option *ngFor="let cat of storeState.currentStoreConfig.categories"
-                        [value]="cat.name">{{cat.name}}</mat-option>
-          </mat-select>
-          <mat-hint align="start">Categories your product with types that can be used to filter sale and inventory
-            report
-          </mat-hint>
-        </mat-form-field>
-        <div class="col-3">
-          <button mat-mini-fab color="warn" (click)="uiModel.categories.splice(i, 1);" *ngIf="i !== 0">
-            <mat-icon aria-label="delete">delete</mat-icon>
-          </button>
-        </div>
-      </div>
-      <br>
-      <hr>
-      <div class="row">
-        <a class="col-8"
-           style="color: #06bca9; cursor: pointer"
-           (click)="uiModel.categories.push('')">
-          <span style="background-color: #06bca9; color: white; border-radius: 5px; padding: 5px; margin: 5px">+</span>
-          Add another level of category.</a>
-        <a class="col-4"><span *ngFor="let cat of uiModel.categories; let i = index">{{cat}} {{ uiModel.categories.length !== (i+1) ? '/' : ''}}</span></a>
-      </div>
-      <hr>
-      <!--*******************************************************************************************************************************************-->
-      <!--*******************************************************************************************************************************************-->
-      <!--<h4><strong>Product Type</strong></h4>-->
-
-      <!--<p>Standard Product</p>-->
-      <!--<p class="text-muted">(This product has one PRN with its own inventory.)</p>-->
-      <!--<p>Product with Variants</p>-->
-      <!--<p class="text-muted">(These products have different attributes, like size or color. Each variant has a unique PRN and inventory level.)</p>-->
-      <!--<p>Composite Product</p>-->
-      <!--<p class="text-muted">(A composite contains one or more standard products. It has one PRN but adjusts inventory levels for each standard product.)-->
-      <!--</p>-->
-
-      <!--<mat-form-field>-->
-        <!--<mat-select placeholder="Product Type"-->
-                    <!--name="productType"-->
-                    <!--aria-label="product type"-->
-                    <!--[(ngModel)]="uiModel.productType"-->
-                    <!--[ngModelOptions]="{standalone: true}">-->
-          <!--<mat-option [value]="productType.value"-->
-                      <!--*ngFor="let productType of uiModel.productTypes">-->
-            <!--{{productType.name}}-->
-          <!--</mat-option>-->
-        <!--</mat-select>-->
-      <!--</mat-form-field>-->
-      <!--<hr>-->
-      <!--<br>-->
-      <!--<br>-->
-
-      <!--*******************************************************************************************************************************************-->
-      <!--*******************************************************************************************************************************************-->
-
-
-      <mat-radio-group formControlName="prnMode">
-        <mat-radio-button value="auto">
-          Automatically Generate a PRN
-        </mat-radio-button>
-        <p class="text-muted">A PRN will automatically be generated once this product has been saved.</p>
-
-        <mat-radio-button value="manual">
-          Enter a custom PRN
-        </mat-radio-button>
-      </mat-radio-group>
-
-      <div class="row" *ngIf="prnMode.value === 'manual'">
-        <!--<div class="col-1">-->
-        <!--<button mat-mini-fab>-->
-        <!--<mat-icon aria-label="scanner">camera</mat-icon>-->
-        <!--</button>-->
-        <!--</div>-->
-        <mat-form-field>
-
-          <input matInput
-                 id="prn"
-                 type="text"
-                 placeholder="Product Reference Number (PRN) "
-                 disabled
-                 required
-                 formControlName="prn"
-          >
-        </mat-form-field>
-
-      </div>
-      <hr>
-      <!--*******************************************************************************************************************************************-->
-      <!--*******************************************************************************************************************************************-->
-      <h4><strong>Supplier details</strong></h4>
-      <p class="text-muted">This section is optional</p>
-      <hr>
-      <div class="row">
-        <mat-form-field class="col">
-          <mat-select placeholder="Supplier">
-            <mat-option (click)=" openNewUniversalAddDialog('Product Supplier', 'suppliers')">Add New Supplier
-            </mat-option>
-            <mat-option *ngFor="let supplier of storeState.currentStoreConfig.suppliers"
-                        [value]="supplier.name">{{supplier.name}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field class="col">
-          <input matInput placeholder="Supplier code">
-        </mat-form-field>
-      </div>
-      <mat-checkbox>Track inventory for this product</mat-checkbox>
-      <br/>
-      <mat-hint>
-        Manage orders, transfers and returns accurately, and get reports and insights on this product’s performance.
-      </mat-hint>
-      <hr>
-
-      <!--*******************************************************************************************************************************************-->
-      <!--*******************************************************************************************************************************************-->
-
-
-      <!--<div class="row">-->
-        <!--<mat-form-field class="col">-->
-          <!--<input matInput-->
-                 <!--formControlName="stock"-->
-                 <!--placeholder="Stock"-->
-                 <!--type="number">-->
-        <!--</mat-form-field>-->
-        <!--<mat-form-field class="col-2">-->
-          <!--<mat-select placeholder="Unit" formControlName="unit">-->
-            <!--<mat-option (click)=" openNewUniversalAddDialog('Stock unit', 'units')">Add New Unit</mat-option>-->
-            <!--<mat-option *ngFor="let unit of storeState.currentStoreConfig.units"-->
-                        <!--[value]="unit.name">{{unit.name}}</mat-option>-->
-            <!--<mat-option value="nos">Nos</mat-option>-->
-          <!--</mat-select>-->
-        <!--</mat-form-field>-->
-        <!--<mat-form-field class="col">-->
-          <!--<input matInput-->
-                 <!--placeholder="Re-order point"-->
-                 <!--type="number">-->
-        <!--</mat-form-field>-->
-      <!--</div>-->
-
-      <!--<div class="row" *ngIf="uiModel.productType === 'COMBO'">-->
-        <!--<div class="col-md">-->
-          <!--<mat-form-field>-->
-            <!--<input matInput-->
-                   <!--placeholder="Search for product"-->
-                   <!--type="text">-->
-            <!--<mat-hint>Add multiple products to create a composite product.</mat-hint>-->
-          <!--</mat-form-field>-->
-        <!--</div>-->
-        <!--<div class="col-md-2">-->
-          <!--<button mat-mini-fab>-->
-            <!--<mat-icon aria-label="add">add</mat-icon>-->
-          <!--</button>-->
-        <!--</div>-->
-      <!--</div>-->
-
-
-      <!--<mat-form-field>-->
-        <!--<mat-select placeholder="Tax">-->
-          <!--<mat-option (click)="openNewUniversalAddDialog('Tax', 'taxes')">Add New Tax</mat-option>-->
-          <!--<mat-option *ngFor="let tax of storeState.currentStoreConfig.taxes"-->
-                      <!--[value]="tax.taxInPercentage">{{tax.name}}</mat-option>-->
-        <!--</mat-select>-->
-      <!--</mat-form-field>-->
-      <!--<mat-checkbox>Inclusive of all taxes</mat-checkbox>-->
-      <!--<div class="row">-->
-
-        <!--<mat-form-field class="col">-->
-          <!--<input matInput-->
-                 <!--formControlName="purchasedPrice"-->
-                 <!--placeholder="Purchased Price"-->
-                 <!--type="number">-->
-          <!--<span matPrefix>&#8377;</span>-->
-        <!--</mat-form-field>-->
-        <!--<mat-form-field class="col">-->
-          <!--<input matInput-->
-                 <!--placeholder="Margin (%)"-->
-                 <!--type="number">-->
-          <!--<span matSuffix>%</span>-->
-        <!--</mat-form-field>-->
-        <!--<mat-form-field class="col">-->
-          <!--<input matInput-->
-                 <!--formControlName="sellingPrice"-->
-                 <!--placeholder="Selling Price"-->
-                 <!--type="number">-->
-          <!--<span matPrefix>&#8377;</span>-->
-        <!--</mat-form-field>-->
-      <!--</div>-->
-      <!--<hr>-->
-      <!--*******************************************************************************************************************************************-->
-      <!--variants section starts-->
-      <!--*******************************************************************************************************************************************-->
-
-      <div id="variants">
-        <h4><strong>Variants</strong></h4>
-
-        <p class="text-muted">Choose up to three variable attributes for this product to create and manage PRNs and
-          their
-          inventory
-          levels.</p>
-        <mat-checkbox class="m-2"
-                      [(ngModel)]="uiModel.isVariantsWithSamePriceAndTax"
-                      [ngModelOptions]="{standalone: true}" >
-          Variants with same price and taxes
-        </mat-checkbox>
-
-        <hr>
-
-        <div class="row" *ngFor="let att of uiModel.attributes; let pi = index">
-
-          <div class="col-md-3">
-            <mat-form-field>
-              <mat-select placeholder="Attribute (e.g. Colour)"
-                          [(ngModel)]="uiModel.attributeValues[pi]"
-                          [ngModelOptions]="{standalone: true}">
-                <mat-option (click)=" openNewUniversalAddDialog('Attribute', 'attributes', pi)">Add New Attribute
-                </mat-option>
-                <mat-option *ngFor="let attribute of storeState.currentStoreConfig.attributes"
-                            [value]="attribute.name">{{attribute.name}}</mat-option>
+          <div class="row">
+            <mat-form-field class="col">
+              <input matInput
+                     id="product-name"
+                     type="text"
+                     placeholder="Product name"
+                     required
+                     formControlName="productName">
+            </mat-form-field>
+            <mat-form-field class="col">
+              <mat-select placeholder="Brand"
+                          formControlName="brandName">
+                <mat-option (click)=" openNewUniversalAddDialog('Brand', 'brands')">Add New Brand</mat-option>
+                <mat-option *ngFor="let brand of storeState.currentStoreConfig.brands"
+                            [value]="brand.name">{{brand.name}}</mat-option>
               </mat-select>
             </mat-form-field>
           </div>
+          <mat-form-field>
+            <input matInput
+                   type="text"
+                   id="description"
+                   placeholder="Description"
+                   formControlName="description">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-chip-list #tagsList>
+              <mat-chip *ngFor="let tag of tags.controls; let i = index;" [selectable]="uiModel.selectable"
+                        [removable]="uiModel.removable" (removed)="removeTag(i)">
+                {{tag.value}}
+                <mat-icon matChipRemove *ngIf="uiModel.removable">cancel</mat-icon>
+              </mat-chip>
+              <input placeholder="Tags"
+                     [matChipInputFor]="tagsList"
+                     [matChipInputSeparatorKeyCodes]="uiModel.separatorKeysCodes"
+                     [matChipInputAddOnBlur]="uiModel.addOnBlur"
+                     (matChipInputTokenEnd)="addTag($event)">
+            </mat-chip-list>
+            <mat-hint align="start">Describe the product using relevant keyword for easy filtering</mat-hint>
+          </mat-form-field>
 
-          <div class="col">
-            <mat-form-field>
-              <mat-chip-list #attList>
-                <mat-chip *ngFor="let tag of att; let ci = index"
-                          [selectable]="uiModel.selectable"
-                          [removable]="uiModel.removable" (removed)="removeAttributeVal(tag, pi)">
-                  {{tag}}
-                  <mat-icon matChipRemove *ngIf="uiModel.removable">cancel</mat-icon>
-                </mat-chip>
-                <input placeholder="Value (e.g. Red, Blue, Green)"
-                       [matChipInputFor]="attList"
-                       [matChipInputSeparatorKeyCodes]="uiModel.separatorKeysCodes"
-                       [matChipInputAddOnBlur]="uiModel.addOnBlur"
-                       (matChipInputTokenEnd)="addAttributeVal($event, pi)">
-              </mat-chip-list>
-            </mat-form-field>
-          </div>
-          <div class="col-3">
-            <button mat-mini-fab color="warn" (click)="uiModel.attributes.splice(pi, 1);" *ngIf="pi !== 0">
-              <mat-icon aria-label="delete">delete</mat-icon>
-            </button>
-          </div>
-        </div>
-
-        <a style="color: #06bca9; cursor: pointer" (click)="uiModel.attributes.push([])"><span
-          style="background-color: #06bca9; color: white; border-radius: 5px; padding: 5px; margin: 5px">+</span> Add
-          another attribute.</a>
-
-
-        <!--<br>-->
-        <!--<br>-->
-        <!--<h4><strong>This product has {{uiModel.variants.length}} variants</strong></h4>-->
-        <!--*******************************************************************************************************************************************-->
-        <!--*******************************************************************************************************************************************-->
-        <mat-card *ngFor="let variant of uiModel.variants">
-          <mat-card-header>
-            <mat-card-title>
-              <strong><span *ngFor="let crumb of variant; let i = index">{{crumb}} {{ variant.length !== (i+1) ? '/' : ''}}</span></strong>
-            </mat-card-title>
-          </mat-card-header>
-          <div class="row" *ngIf="!uiModel.isVariantsWithSamePriceAndTax">
+          <div class="row" formArrayName="categories" *ngFor="let cat of categories.controls ; let i = index">
             <mat-form-field class="col">
-              <input matInput
-                     placeholder="Supplier code"
-                     type="text">
+              <mat-select placeholder="Product Category (level - {{i + 1}})" [formControlName]="i">
+                <mat-option (click)=" openNewUniversalAddDialog('Product Category', 'categories', i)">Add New Product
+                  Category
+                </mat-option>
+                <mat-option *ngFor="let cat of storeState.currentStoreConfig.categories"
+                            [value]="cat.name">{{cat.name}}</mat-option>
+              </mat-select>
+              <mat-hint align="start">Categories your product with types that can be used to filter sale and inventory
+                report
+              </mat-hint>
             </mat-form-field>
-            <mat-form-field class="col">
-              <input matInput
+            <div class="col-3" *ngIf="i !== 0">
+              <button mat-mini-fab color="warn" (click)="categories.removeAt(i);">
+                <mat-icon aria-label="delete">delete</mat-icon>
+              </button>
+            </div>
+          </div>
 
+
+          <br>
+          <div class="row">
+            <a class="col-8"
+               style="color: #06bca9; cursor: pointer"
+               (click)="categories.push(createCategory(''))">
+              <span
+                style="background-color: #06bca9; color: white; border-radius: 5px; padding: 5px; margin: 5px">+</span>
+              Add another level of category.</a>
+            <a class="col-4"><span
+              *ngFor="let cat of categories.controls; let i = index">{{cat.value}} {{ categories.controls.length !== (i + 1) ? '/' : ''}}</span></a>
+          </div>
+          <br>
+
+
+          <div class="row">
+
+            <div class="col-md-3">
+              <mat-form-field>
+                <mat-select placeholder="Attribute Template(e.g. Colour/Size/Material)"
+                            formControlName="attributeTemplate">
+                  <mat-option (click)=" openNewUniversalAddDialog('Attribute', 'attributes')">Add New Attribute
+                    Template
+                  </mat-option>
+                  <mat-option *ngFor="let attribute of storeState.currentStoreConfig.attributes"
+                              [value]="attribute.name">{{attribute.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="col" >
+              <mat-form-field>
+                <mat-chip-list #attList>
+                  <mat-chip *ngFor="let tag of firstChildAttribute.controls; let ci = index"
+                            [selectable]="uiModel.selectable"
+                            [removable]="uiModel.removable" (removed)="removeAttributeVal(0)">
+                    {{tag.value}}
+                    <mat-icon matChipRemove *ngIf="uiModel.removable">cancel</mat-icon>
+                  </mat-chip>
+                  <input placeholder="Value (e.g. Red/XL/Cotton)"
+                         [matChipInputFor]="attList"
+                         [matChipInputSeparatorKeyCodes]="uiModel.separatorKeysCodes"
+                         [matChipInputAddOnBlur]="uiModel.addOnBlur"
+                         (matChipInputTokenEnd)="addAttributeVal($event, 0)">
+                </mat-chip-list>
+              </mat-form-field>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="col" formArrayName="children">
+            <mat-form-field   formGroupName="0">
+              <input matInput
+                     formControlName="stock"
+                     placeholder="Stock"
+                     type="number">
+            </mat-form-field>
+            </div>
+            <mat-form-field class="col-2">
+              <mat-select placeholder="Unit" formControlName="unit">
+                <mat-option (click)=" openNewUniversalAddDialog('Stock unit', 'units')">Add New Unit</mat-option>
+                <mat-option *ngFor="let unit of storeState.currentStoreConfig.units"
+                            [value]="unit.name">{{unit.name}}</mat-option>
+                <mat-option value="nos">Nos</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div class="col" formArrayName="children">
+            <mat-form-field   formGroupName="0">
+              <input matInput
+                     formControlName="reorderPoint"
+                     placeholder="Re-order point"
+                     type="number">
+            </mat-form-field>
+            </div>
+          </div>
+
+          <!--<div class="row" *ngIf="uiModel.productType === 'COMBO'">-->
+          <!--<div class="col-md">-->
+          <!--<mat-form-field>-->
+          <!--<input matInput-->
+          <!--placeholder="Search for product"-->
+          <!--type="text">-->
+          <!--<mat-hint>Add multiple products to create a composite product.</mat-hint>-->
+          <!--</mat-form-field>-->
+          <!--</div>-->
+          <!--<div class="col-md-2">-->
+          <!--<button mat-mini-fab>-->
+          <!--<mat-icon aria-label="add">add</mat-icon>-->
+          <!--</button>-->
+          <!--</div>-->
+          <!--</div>-->
+
+          <div formArrayName="children">
+          <mat-form-field  formGroupName="0">
+            <mat-select placeholder="Tax"  formControlName="taxInPercentage">
+              <mat-option (click)="openNewUniversalAddDialog('Tax', 'taxes')">Add New Tax</mat-option>
+              <mat-option *ngFor="let tax of storeState.currentStoreConfig.taxes"
+                          [value]="tax.taxInPercentage">{{tax.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          </div>
+          <div formArrayName="children">
+            <div formGroupName="0">
+              <mat-checkbox formControlName="inclusiveOfAllTaxes">Inclusive of all taxes</mat-checkbox>
+            </div>
+          </div>
+
+          <div formArrayName="children">
+          <div class="row" formGroupName="0">
+
+            <mat-form-field class="col" >
+              <input matInput
+                     formControlName="purchasedPrice"
                      placeholder="Purchased Price"
                      type="number">
               <span matPrefix>&#8377;</span>
             </mat-form-field>
             <mat-form-field class="col">
               <input matInput
+                     formControlName="marginInPercentage"
                      placeholder="Margin (%)"
                      type="number">
               <span matSuffix>%</span>
             </mat-form-field>
             <mat-form-field class="col">
               <input matInput
+                     formControlName="sellingPrice"
                      placeholder="Selling Price"
                      type="number">
               <span matPrefix>&#8377;</span>
             </mat-form-field>
           </div>
+          </div>
+
+          <mat-action-row>
+            <button mat-button color="primary" (click)="nextStep()">Next</button>
+            <button mat-button color="primary" (click)="onSubmit()">Save</button>
+          </mat-action-row>
+        </mat-expansion-panel>
+
+
+        <!--*******************************************************************************************************************************************-->
+        <!--basic section ends-->
+        <!--*******************************************************************************************************************************************-->
+
+
+        <!--*******************************************************************************************************************************************-->
+        <!--prn section starts-->
+        <!--*******************************************************************************************************************************************-->
+
+
+        <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Custom PRN
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <mat-radio-group formControlName="prnMode">
+            <mat-radio-button value="auto">
+              Automatically Generate a PRN
+            </mat-radio-button>
+            <p class="text-muted">A PRN will automatically be generated once this product has been saved.</p>
+
+            <mat-radio-button value="manual">
+              Enter a custom PRN
+            </mat-radio-button>
+          </mat-radio-group>
+
+          <div class="row" *ngIf="prnMode.value === 'manual'">
+            <!--<div class="col-1">-->
+            <!--<button mat-mini-fab>-->
+            <!--<mat-icon aria-label="scanner">camera</mat-icon>-->
+            <!--</button>-->
+            <!--</div>-->
+            <mat-form-field>
+
+              <input matInput
+                     id="prn"
+                     type="text"
+                     placeholder="Product Reference Number (PRN) "
+                     disabled
+                     required
+                     formControlName="prn"
+              >
+            </mat-form-field>
+
+          </div>
+          <mat-action-row>
+            <button mat-button color="warn" (click)="prevStep()">Previous</button>
+            <button mat-button color="primary" (click)="nextStep()">Next</button>
+          </mat-action-row>
+        </mat-expansion-panel>
+
+
+        <!--*******************************************************************************************************************************************-->
+        <!--prn section ends-->
+        <!--*******************************************************************************************************************************************-->
+
+
+        <!--*******************************************************************************************************************************************-->
+        <!--Supplier section starts-->
+        <!--*******************************************************************************************************************************************-->
+
+
+        <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Supplier details
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <h4><strong>Supplier details</strong></h4>
+          <p class="text-muted">This section is optional</p>
+          <hr>
           <div class="row">
             <mat-form-field class="col">
-              <input matInput
-                     formControlName="stock"
-                     placeholder="Stock"
-                     type="number">
+              <mat-select placeholder="Supplier"
+                          formControlName="supplier">
+                <mat-option (click)=" openNewUniversalAddDialog('Product Supplier', 'suppliers')">Add New Supplier
+                </mat-option>
+                <mat-option *ngFor="let supplier of storeState.currentStoreConfig.suppliers"
+                            [value]="supplier.name">{{supplier.name}}</mat-option>
+              </mat-select>
             </mat-form-field>
-            <mat-form-field class="col">
-              <input matInput
-                     placeholder="Re-order point"
-                     type="number">
-            </mat-form-field>
-          </div>
-          <div class="row" *ngIf="!uiModel.isVariantsWithSamePriceAndTax">
-            <div class="col">
-              <mat-form-field>
-                <mat-select placeholder="Taxes">
-                  <mat-option (click)="openNewUniversalAddDialog('Tax', 'taxes')">Add New Tax</mat-option>
-                  <mat-option *ngFor="let tax of storeState.currentStoreConfig.taxes"
-                              [value]="tax.taxInPercentage">{{tax.name}}</mat-option>
-                </mat-select>
+            <div formArrayName="children">
+              <mat-form-field class="col"    formGroupName="0">
+                <input matInput placeholder="Supplier code"  formControlName="supplierCode">
               </mat-form-field>
+            </div>
+
+          </div>
+          <mat-checkbox>Track inventory for this product</mat-checkbox>
+          <br/>
+          <mat-hint>
+            Manage orders, transfers and returns accurately, and get reports and insights on this product’s performance.
+          </mat-hint>
+          <mat-action-row>
+            <button mat-button color="warn" (click)="prevStep()">Previous</button>
+            <button mat-button color="primary" (click)="nextStep()">End</button>
+          </mat-action-row>
+        </mat-expansion-panel>
+
+
+        <!--*******************************************************************************************************************************************-->
+        <!--Supplier section ends-->
+        <!--*******************************************************************************************************************************************-->
+
+
+        <!--*******************************************************************************************************************************************-->
+        <!--variants section starts-->
+        <!--*******************************************************************************************************************************************-->
+
+        <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Variants
+
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div id="variants">
+            <h4><strong>Variants</strong></h4>
+
+            <p class="text-muted">
+              Add variants with unique attribute to create and manage PRNs and their inventory.
+            </p>
+            <mat-checkbox class="m-2"
+                          formControlName="isVariantsWithSamePriceAndTax">
+              Variants with same price and taxes
+            </mat-checkbox>
+
+
+            <!--variant template starts-->
+            <!--****************************************************************************************************************************************************************-->
+            <div formArrayName="children" *ngFor="let child of children.controls; let vi = index;">
+            <mat-card [formGroupName]="vi" *ngIf="vi !== 0">
+              <mat-card-header>
+                <mat-card-title>
+                  <strong><span></span></strong>
+                </mat-card-title>
+              </mat-card-header>
+              <div class="row" >
+
+                <div class="col">
+                  <mat-form-field>
+                    <mat-chip-list #attList>
+                      <mat-chip *ngFor="let tag of child.get('attributeValues').controls"
+                                [selectable]="uiModel.selectable"
+                                [removable]="uiModel.removable" (removed)="removeAttributeVal(vi)">
+                        {{tag.value}}
+                        <mat-icon matChipRemove *ngIf="uiModel.removable">cancel</mat-icon>
+                      </mat-chip>
+                      <input placeholder="Value (e.g. Red, Blue, Green)"
+                             [matChipInputFor]="attList"
+                             [matChipInputSeparatorKeyCodes]="uiModel.separatorKeysCodes"
+                             [matChipInputAddOnBlur]="uiModel.addOnBlur"
+                             (matChipInputTokenEnd)="addAttributeVal($event, vi)">
+                    </mat-chip-list>
+                  </mat-form-field>
+                </div>
+
+              </div>
+
+              <div class="row" *ngIf="!isVariantsWithSamePriceAndTax.value">
+                <mat-form-field class="col">
+                  <input matInput
+                         formControlName="supplierCode"
+                         placeholder="Supplier code"
+                         type="text">
+                </mat-form-field>
+                <mat-form-field class="col">
+                  <input matInput
+                         formControlName="purchasedPrice"
+                         placeholder="Purchased Price"
+                         type="number">
+                  <span matPrefix>&#8377;</span>
+                </mat-form-field>
+                <mat-form-field class="col">
+                  <input matInput
+                         formControlName="marginInPercentage"
+                         placeholder="Margin (%)"
+                         type="number">
+                  <span matSuffix>%</span>
+                </mat-form-field>
+                <mat-form-field class="col">
+                  <input matInput
+                         formControlName="sellingPrice"
+                         placeholder="Selling Price"
+                         type="number">
+                  <span matPrefix>&#8377;</span>
+                </mat-form-field>
+              </div>
+              <div class="row" >
+                <mat-form-field class="col">
+                  <input matInput
+                         formControlName="stock"
+                         placeholder="Stock"
+                         type="number">
+                </mat-form-field>
+                <mat-form-field class="col">
+                  <input matInput
+                         formControlName="reorderPoint"
+                         placeholder="Re-order point"
+                         type="number">
+                </mat-form-field>
+              </div>
+              <div class="row" *ngIf="!isVariantsWithSamePriceAndTax.value" >
+                <div class="col">
+                  <mat-form-field>
+                    <mat-select placeholder="Taxes" formControlName="taxInPercentage">
+                      <mat-option (click)="openNewUniversalAddDialog('Tax', 'taxes')">Add New Tax</mat-option>
+                      <mat-option *ngFor="let tax of storeState.currentStoreConfig.taxes"
+                                  [value]="tax.taxInPercentage">{{tax.name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+
+
+                <mat-checkbox formControlName="inclusiveOfAllTaxes">Inclusive of all taxes</mat-checkbox>
+
+              <mat-card-actions align="end">
+                <button mat-mini-fab color="warn" (click)="children.removeAt(vi);">
+                  <mat-icon aria-label="delete">delete</mat-icon>
+                </button>
+              </mat-card-actions>
+
+            </mat-card>
             </div>
           </div>
 
-          <div *ngIf="!uiModel.isVariantsWithSamePriceAndTax">
-            <mat-checkbox>Inclusive of all taxes</mat-checkbox>
-          </div>
-        </mat-card>
-      </div>
-      <br>
-      <br>
-      <div class="button" (click)="onSubmit()">Save</div>
-      <div class="button" (click)="onSubmit()">Cancel</div>
+          <!--variant template ends-->
+          <!--****************************************************************************************************************************************************************-->
+
+
+          <br>
+          <a style="color: #06bca9; cursor: pointer" (click)="children.push(createChild(isVariantsWithSamePriceAndTax.value === true ? 'SAME' : ''))"><span
+            style="background-color: #06bca9; color: white; border-radius: 5px; padding: 5px; margin: 5px">+</span> Add
+            another variant.</a>
+          <br>
+
+          <mat-action-row>
+            <button mat-button color="warn" (click)="prevStep()">Previous</button>
+            <button mat-button color="primary" (click)="onSubmit()">Save</button>
+          </mat-action-row>
+        </mat-expansion-panel>
+
+      </mat-accordion>
+
     </form>
   </div>
 </div>
+
+
+<!--*******************************************************************************************************************************************-->
+<!--*******************************************************************************************************************************************-->
+<!--<h4><strong>Product Type</strong></h4>-->
+
+<!--<p>Standard Product</p>-->
+<!--<p class="text-muted">(This product has one PRN with its own inventory.)</p>-->
+<!--<p>Product with Variants</p>-->
+<!--<p class="text-muted">(These products have different attributes, like size or color. Each variant has a unique PRN and inventory level.)</p>-->
+<!--<p>Composite Product</p>-->
+<!--<p class="text-muted">(A composite contains one or more standard products. It has one PRN but adjusts inventory levels for each standard product.)-->
+<!--</p>-->
+
+<!--<mat-form-field>-->
+<!--<mat-select placeholder="Product Type"-->
+<!--name="productType"-->
+<!--aria-label="product type"-->
+<!--[(ngModel)]="uiModel.productType"-->
+<!--[ngModelOptions]="{standalone: true}">-->
+<!--<mat-option [value]="productType.value"-->
+<!--*ngFor="let productType of uiModel.productTypes">-->
+<!--{{productType.name}}-->
+<!--</mat-option>-->
+<!--</mat-select>-->
+<!--</mat-form-field>-->
+<!--<hr>-->
+<!--<br>-->
+<!--<br>-->
+

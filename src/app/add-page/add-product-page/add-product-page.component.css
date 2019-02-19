@@ -30,3 +30,7 @@ h2 {
 mat-card{
   margin-top: 10px;
 }
+
+mat-accordion{
+  margin-bottom: 20px ;
+}

@@ -1,24 +1,29 @@
-import {Injectable, OnDestroy} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {ShopRegistrationForm} from '../../models/store.model';
 import {Store} from '@ngxs/store';
 import {
-  EmptyLinkedStore,
   ErrorInGettingEmployeeLinkedStore,
   ErrorInStoreLogoUpload,
   ErrorInStorePicturesUpload,
   ErrorInUpdateStoreDescription,
   ErrorInUpdateUniqueStoreName,
-  GotAllEmployeesSuccessfully, GotConfig,
+  GotAllEmployeesSuccessfully,
+  GotConfig,
   GotEmployeeLinkedStoresSuccessfully,
-  GotLinkedStores,
   StoreLogoUploadedSuccessfully,
   StorePicturesUploadedSuccessfully,
   UpdatedStoreDescriptionSuccessfully,
   UpdateUniqueStoreNameSuccessful
 } from '../../actions/store.actions';
 import {SingleProductModel} from '../../models/product.model';
-import {GetAllProductsError, GotAllProducts, GotProductByUid} from '../../actions/product.actions';
+import {
+  GetAllProductsError,
+  GotAllProducts,
+  GotProductByUid,
+  SingleProductNotUploaded,
+  SingleProductUploadedSuccessfully
+} from '../../actions/product.actions';
 import {ExtraUser} from '../../models/auth.model';
 import {InvoiceModel} from '../../models/invoice.model';
 import {GotAllInvoiceSuccessfully} from '../../actions/invoice.actions';
@@ -51,9 +56,9 @@ import {
 } from '../../actions/discount.actions';
 import {CustomerExits, CustomerNotExits, NewCustomerOfStore, OldCustomerOfStore} from '../../actions/customers.actions';
 
-import FieldValue = firebase.firestore.FieldValue;
-
 import * as firebase from 'firebase';
+import FieldValue = firebase.firestore.FieldValue;
+import DocumentReference = firebase.firestore.DocumentReference;
 
 // @ts-ignore
 @Injectable({
@@ -69,7 +74,7 @@ export class FirestoreService {
 
   constructor(private db: AngularFirestore, private  store: Store) {
     firebase.firestore().enablePersistence()
-      .catch(function(err) {
+      .catch(function (err) {
         if (err.code === 'failed-precondition') {
           // Multiple tabs open, persistence can only be enabled
           // in one tab at a a time.
@@ -83,7 +88,39 @@ export class FirestoreService {
 
   }
 
-   getLinkedStore(uid) {
+// utility function
+
+  generatePRN(docRef: DocumentReference, storeId: string, groupId: string) {
+    let prn = '';
+    const possible = 'bcdfghjklmnpqrstvwxyz';
+
+    for (let i = 0; i < 4; i++) {
+      prn += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+
+    return this.checkAndUpdate(docRef, prn, storeId, groupId);
+  }
+
+  checkAndUpdate(docRef: DocumentReference, prn: string, storeId: string, groupId: string) {
+    return this.db.collection('products').ref
+      .where(storeId, '==', storeId)
+      .where(prn, '==', prn)
+      .get()
+      .then((data) => {
+        if (data.size === 0) {
+          return this.db.firestore.runTransaction((t) =>
+            t.get(docRef)
+              .then(() => {
+                t.update(docRef, {productUid: docRef.id, prn: prn, groupId: groupId === '' ? prn : groupId});
+                return prn;
+              }));
+        } else {
+          return this.generatePRN(docRef, storeId, groupId);
+        }
+      });
+  }
+
+  getLinkedStore(uid) {
     return this.db.collection('stores', ref => ref.where('registerUid', '==', uid)).valueChanges();
   }
 
@@ -93,10 +130,24 @@ export class FirestoreService {
       .then((docRef) => docRef.update({storeUid: docRef.id}));
   }
 
-  uploadSingleProduct(product: SingleProductModel) {
-    return this.db.collection(`products`)
-      .add(product.toJson())
-      .then((docRef) => docRef.update({productUid: docRef.id}));
+
+  async uploadSingleProduct(products: SingleProductModel[]) {
+    let groupId = '';
+    for (let i = 0; i < products.length; i++) {
+      await this.db.collection(`products`)
+        .add(products[i].toJson())
+        .then((docRef) =>
+          this.generatePRN(docRef, products[i].storeId, groupId)
+        ).then((prn) => {
+          if (groupId === '') {
+            groupId = prn;
+          }
+        }).then(() => {
+          this.store.dispatch([new SingleProductUploadedSuccessfully()]);
+        }).catch((err) => this.store.dispatch([new SingleProductNotUploaded(err)]));
+    }
+
+
   }
 
   getAllProducts(storeId: string) {

@@ -7,7 +7,7 @@ import {
   MatButtonModule, MatButtonToggleModule,
   MatCardModule,
   MatCheckboxModule,
-  MatChipsModule, MatDialogModule, MatExpansionModule,
+  MatChipsModule, MatDialogModule, MatDividerModule, MatExpansionModule,
   MatFormFieldModule,
   MatGridListModule,
   MatIconModule,
@@ -117,6 +117,7 @@ import {UniversalMicroAddService} from './services/universal-micro-add/universal
     MatRadioModule,
     MatDialogModule,
     MatExpansionModule,
+    MatDividerModule,
 
     LayoutModule,
     NgxKjuaModule,

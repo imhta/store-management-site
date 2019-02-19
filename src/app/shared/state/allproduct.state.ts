@@ -28,16 +28,14 @@ export class AllProductState {
 
 
   @Action(UploadSingleProduct)
-  uploadSingleProduct(cxt: StateContext<any[]>, {product}: UploadSingleProduct) {
-    this.dbService.uploadSingleProduct(product).then(() => {
-      this.store.dispatch([new SingleProductUploadedSuccessfully()]);
-    }).catch((err) => this.store.dispatch([new SingleProductNotUploaded(err)]));
+  uploadSingleProduct(cxt: StateContext<any[]>, {products}: UploadSingleProduct) {
+    this.dbService.uploadSingleProduct(products);
   }
 
   @Action(SingleProductUploadedSuccessfully)
   uploadSingleProductSuccessfully() {
-    const id = +this.router.routerState.snapshot.url.split('/')[2];
-    this.store.dispatch([new LoadingFalse(), new Navigate([`u/${id}/store`])]);
+    const id = +this.router.routerState.snapshot.url.split('/')[3];
+    this.store.dispatch([new LoadingFalse(), new Navigate([`go/u/${id}/store`])]);
   }
 
   @Action(GetAllProducts)

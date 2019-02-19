@@ -3,7 +3,7 @@ import {SingleProductModel} from '../models/product.model';
 export class UploadSingleProduct {
   static readonly type = '[Product] Upload single product';
 
-  constructor(public product: SingleProductModel) {
+  constructor(public products: SingleProductModel[]) {
   }
 }
 
