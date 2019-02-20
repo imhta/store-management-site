@@ -50,6 +50,7 @@ export class SalesPageComponent implements OnInit, OnDestroy {
     this.invoice.typeOfPayment = 'Cash';
     this.screenWidth = window.screen.width;
   }
+
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
 
@@ -59,6 +60,7 @@ export class SalesPageComponent implements OnInit, OnDestroy {
     }
 
   }
+
   prnSearch = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),
@@ -159,7 +161,7 @@ export class SalesPageComponent implements OnInit, OnDestroy {
       if (!this.checkWhetherOutOfStock(resultProduct[0].stock)) {
         // default selection of size
         cartProduct.addedBy = this.invoice.billedBy;
-        cartProduct.fromProductData(resultProduct[0])
+        cartProduct.fromProductData(resultProduct[0]);
         this.calculateTotal(cartProduct);
         this.cartProducts.push(cartProduct);
         this.calculateInvoiceTotal();
@@ -192,7 +194,7 @@ export class SalesPageComponent implements OnInit, OnDestroy {
 //   }
 
   findProduct(prn) {
-    console.log( this.allProducts.filter(product => product['prn'] === prn), prn, this.prn);
+    console.log(this.allProducts.filter(product => product['prn'] === prn), prn, this.prn);
     return this.allProducts.filter(product => product['prn'] === prn);
   }
 
@@ -230,7 +232,7 @@ export class SalesPageComponent implements OnInit, OnDestroy {
         storeName: this.currentStore.storeName,
         address: this.currentStore.address ? this.currentStore.address : '',
         mobileNumber: this.currentStore.mobileNumber ? this.currentStore.mobileNumber : '',
-        location: this.currentStore.location,
+        location: this.currentStore.location ? this.currentStore.location : '',
         gstNumber: this.currentStore.gstNumber ? this.currentStore.gstNumber : '',
         storeLogo: this.currentStore.storeLogo ? this.currentStore.storeLogo.localDownloadUrl : ''
       };
