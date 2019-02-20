@@ -29,6 +29,7 @@ import {
   SelectStoreOnly
 } from '../actions/store.actions';
 import {el} from '@angular/platform-browser/testing/src/browser_util';
+import {GetAllProducts} from '../actions/product.actions';
 
 
 @State<UserModel>({

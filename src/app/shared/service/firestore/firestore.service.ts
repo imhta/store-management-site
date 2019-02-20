@@ -226,7 +226,20 @@ export class FirestoreService {
         this.store.dispatch([new GotAllInvoiceSuccessfully(this.allInvoice)]);
       });
   }
-
+  reduceStock(invoice: InvoiceModel) {
+    return invoice.cartProducts.forEach((product) => {
+      const productRef = this.db.doc(`products/${product['productUid']}`).ref;
+      return this.db.firestore.runTransaction(transaction => {
+        return transaction.get(productRef).then((doc) => {
+          if (doc.exists) {
+            const newStock = doc.data()['stock'] > 0 ? doc.data()['stock'] - product['totalQuantity'] : 0;
+            const sold = doc.data()['sold'] ? doc.data()['sold'] + product['totalQuantity'] : 1 ;
+            return transaction.set(productRef, {stock: newStock, sold: sold}, {merge: true});
+          }
+        });
+      });
+    });
+  }
   getInvoice(invoiceId: string) {
     return this.db.collection(`invoices`).doc(`${invoiceId}`).ref.get().then((doc) => {
       const invoice = new InvoiceModel();

@@ -9,7 +9,7 @@ import {
   ErrorInSavingInvoice,
   GetAllInvoice,
   GotAllInvoiceSuccessfully,
-  InvoiceSavedSuccessfully,
+  InvoiceSavedSuccessfully, ReduceStock,
   SaveInvoice
 } from '../actions/invoice.actions';
 import {ErrorInGettingAllReturns, GetAllReturns, GetInvoice, GotAllReturnsSuccessfully, ReturnInvoice} from '../actions/return.actions';
@@ -34,14 +34,14 @@ export class InvoicesState {
   saveInvoice(cxt: StateContext<any[]>, {invoice}: SaveInvoice) {
     this.dbService
       .saveInvoice(invoice)
-      .then(() => this.store.dispatch([new InvoiceSavedSuccessfully()]))
+      .then(() => this.store.dispatch([new ReduceStock(invoice), new InvoiceSavedSuccessfully()]))
       .catch((err) => this.store.dispatch([new LoadingFalse(), new ErrorInSavingInvoice(err)]));
   }
 
   @Action(InvoiceSavedSuccessfully)
   invoiceSavedSuccessfully() {
-    const id = +this.router.routerState.snapshot.url.split('/')[2];
-    this.store.dispatch([new LoadingFalse(), new Navigate([`u/${id}/invoice`])]);
+    const id = +this.router.routerState.snapshot.url.split('/')[3];
+    this.store.dispatch([new LoadingFalse(), new Navigate([`go/u/${id}/invoice`])]);
   }
 
   @Action(ErrorInSavingInvoice)
@@ -104,5 +104,10 @@ export class InvoicesState {
   @Action(CheckCustomerNewToStore)
   checkCustomerNewToStore(cxt: StateContext<any>, {customerNumber, storeId}: CheckCustomerNewToStore) {
     this.dbService.checkCustomerNewToStore(storeId, customerNumber);
+  }
+
+  @Action(ReduceStock)
+  reduceStock(cxt: StateContext<any[]>, {invoice}: ReduceStock) {
+      this.dbService.reduceStock(invoice);
   }
 }

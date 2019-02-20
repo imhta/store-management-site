@@ -1,154 +1,159 @@
-<!--<ngb-tabset id="tab" [justify]="'start'">-->
-  <!--<ngb-tab title="Billing">-->
-    <!--<ng-template ngbTabContent>-->
+<ngb-tabset id="tab" [justify]="'start'">
+  <ngb-tab title="Billing">
+    <ng-template ngbTabContent>
 
 
-      <!--<div class="page  bg-white">-->
+      <div class="page  bg-white" id="billing-page">
 
-        <!--<div class=" qr-scanner-preview">-->
-          <!--<div class="card">-->
-            <!--<app-qr-scanner (data)="getProduct($event)"></app-qr-scanner>-->
-          <!--</div>-->
-        <!--</div>-->
+        <div class=" qr-scanner-preview">
+          <div class="card">
+            <app-qr-scanner (data)="getProduct($event)"></app-qr-scanner>
+          </div>
+        </div>
 
 
-        <!--<div class="container">-->
-          <!--<a class="float-right" style="cursor: pointer" (click)="reset()"><i class="material-icons">refresh</i> </a>-->
-          <!--<h3>Create Invoice</h3>-->
+        <div class="container">
+          <a class="float-right" style="cursor: pointer" (click)="reset()"><i class="material-icons">refresh</i> </a>
+          <h3>Create Invoice</h3>
 
-          <!--<ngb-alert [dismissible]="true" *ngIf="isErrorInSavingInvoice" (close)="isErrorInSavingInvoice = false"-->
-                     <!--[type]="'danger'">-->
-            <!--<p-->
-              <!--*ngIf="!(invoice.customerNumber.toString().indexOf('') === 0-->
-      <!--&& invoice.customerNumber.toString().length === 10)"-->
-            <!--&gt; You can't sent invoice without customer phone number.</p>-->
-            <!--<p *ngIf="!(cartProducts.length > 0)">You can't sent invoice without products.</p>-->
-            <!--<p *ngIf="outStockedProducts.length > 0">You can't sent invoice with out of stock products.</p>-->
-          <!--</ngb-alert>-->
+          <ngb-alert [dismissible]="true" *ngIf="isErrorInSavingInvoice" (close)="isErrorInSavingInvoice = false"
+                     [type]="'danger'">
+            <p
+              *ngIf="!(invoice.customerNumber.toString().indexOf('') === 0
+      && invoice.customerNumber.toString().length === 10)"
+            > You can't sent invoice without customer phone number.</p>
+            <p *ngIf="!(cartProducts.length > 0)">You can't sent invoice without products.</p>
+            <p *ngIf="outStockedProducts.length > 0">You can't sent invoice with out of stock products.</p>
+          </ngb-alert>
 
-          <!--<div class="form-group">-->
-            <!--<label for="customer-number">Customer number :</label>-->
-            <!--<h6 class="float-right"><span class="badge "-->
-                                          <!--[ngClass]="invoice.typeOfPayment == payment?'badge-primary': 'badge-light'"-->
-                                          <!--(click)="selectPayment(payment)"-->
-                                          <!--*ngFor="let payment of typeOfPayment">{{payment}}</span></h6>-->
-            <!--<div class="input-group">-->
-              <!--<input type="number" class="form-control"  [ngClass]="screenWidth > 1400 ? 'form-control-lg':'form-control-sm'" id="customer-number" placeholder="Phone number"-->
-                     <!--required-->
-                     <!--[(ngModel)]="invoice.customerNumber"-->
-                     <!--(ngModelChange)="phoneNoChanged($event)">-->
-            <!--</div>-->
-            <!--<div>-->
-              <!--<small class="form-text text-info">-->
-                <!--Phone number is required.-->
-              <!--</small>-->
-            <!--</div>-->
-          <!--</div>-->
-          <!--<div class="form-group">-->
-            <!--<label for="customer-number">Customer Name :</label>-->
-            <!--<div class="input-group">-->
-              <!--<input type="text" class="form-control" [ngClass]="screenWidth > 1400 ? 'form-control-lg':'form-control-sm'" id="customer-name" placeholder="Customer name"-->
-                     <!--required-->
-                     <!--[attr.readonly]="customerNotExit ? null : ''"-->
-                     <!--[(ngModel)]="invoice.customerName">-->
-            <!--</div>-->
-            <!--<div>-->
-              <!--<small class="form-text text-info float-right" style="cursor: pointer" placement="right"-->
-                     <!--[ngbPopover]="!customerNotExit && isOldCustomer ? 'Old Customer' : 'New Customer'"-->
-                     <!--popoverTitle="Customer Insight">-->
-                <!--Mini insights-->
-              <!--</small>-->
-              <!--<small class="form-text text-info">-->
-                <!--Name is required.-->
-              <!--</small>-->
-            <!--</div>-->
-          <!--</div>-->
-          <!--<div class="form-group">-->
-            <!--<label for="add-cart">Product ID :</label>-->
-            <!--<div class="input-group">-->
-              <!--<input type="text" class="form-control" [ngClass]="screenWidth > 1400 ? 'form-control-lg':'form-control-sm'" id="add-cart" aria-describedby="button-addon4"-->
-                     <!--placeholder="Product Reference Number (PRN)"-->
-                     <!--[(ngModel)]="prn" [ngbTypeahead]="prnSearch" (keyup.enter)="addToCart(prn)">-->
-              <!--<div class="input-group-append" id="button-addon4">-->
-                <!--<button class="btn btn-primary" [ngClass]="screenWidth > 1400 ? '':' btn-sm'"  type="button" (click)="addToCart(prn)">Add</button>-->
-              <!--</div>-->
-            <!--</div>-->
-          <!--</div>-->
-          <!--<div class="scrolling-wrapper">-->
-            <!--<div class="card" *ngFor="let discount of allDiscounts; let i = index">-->
-              <!--<div class="card-header">{{discount.discountName}}-->
-                <!--<a class="float-right text-success"-->
-                   <!--(click)="!invoice.isDiscountApplied ? addDiscount(i) : removeDiscount(i)">-->
-                  <!--<i class="material-icons" *ngIf="selectedDiscountIndex !== i">add_circle</i>-->
-                  <!--<i class="material-icons" *ngIf="selectedDiscountIndex === i">delete</i>-->
-                <!--</a>-->
-              <!--</div>-->
-              <!--<div class="card-body">-->
-                <!--{{discount.discountConditionalNote}}<br>-->
-                <!--<span>-->
-                  <!--<span *ngIf="discount.amountType === 'rupees'">&#8377;</span>-->
-                  <!--{{discount.amount}}-->
-                  <!--<span *ngIf="discount.amountType === 'percentage'">%</span>-->
-                <!--</span>-->
-              <!--</div>-->
-            <!--</div>-->
-          <!--</div>-->
-          <!--<div class="grid-wrapper" *ngIf="!(cartProducts.length > 0)">-->
-            <!--<div class="card">-->
+          <div class="form-group">
+            <label for="customer-number">Customer number :</label>
+            <h6 class="float-right"><span class="badge "
+                                          [ngClass]="invoice.typeOfPayment == payment?'badge-primary': 'badge-light'"
+                                          (click)="selectPayment(payment)"
+                                          *ngFor="let payment of typeOfPayment">{{payment}}</span></h6>
+            <div class="input-group">
+              <input type="number" class="form-control"
+                     [ngClass]="screenWidth > 1400 ? 'form-control-lg':'form-control-sm'" id="customer-number"
+                     placeholder="Phone number"
+                     required
+                     [(ngModel)]="invoice.customerNumber"
+                     (ngModelChange)="phoneNoChanged($event)">
+            </div>
+            <div>
+              <small class="form-text text-info">
+                Phone number is required.
+              </small>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="customer-number">Customer Name :</label>
+            <div class="input-group">
+              <input type="text" class="form-control"
+                     [ngClass]="screenWidth > 1400 ? 'form-control-lg':'form-control-sm'" id="customer-name"
+                     placeholder="Customer name"
+                     required
+                     [attr.readonly]="customerNotExit ? null : ''"
+                     [(ngModel)]="invoice.customerName">
+            </div>
+            <div>
+              <small class="form-text text-info float-right" style="cursor: pointer" placement="right"
+                     [ngbPopover]="!customerNotExit && isOldCustomer ? 'Old Customer' : 'New Customer'"
+                     popoverTitle="Customer Insight">
+                Mini insights
+              </small>
+              <small class="form-text text-info">
+                Name is required.
+              </small>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="add-cart">Product ID :</label>
+            <div class="input-group">
+              <input type="text" class="form-control"
+                     [ngClass]="screenWidth > 1400 ? 'form-control-lg':'form-control-sm'" id="add-cart"
+                     aria-describedby="button-addon4"
+                     placeholder="Product Reference Number (PRN)"
+                     [(ngModel)]="prn" [ngbTypeahead]="prnSearch" (keyup.enter)="addToCart(prn)">
+              <div class="input-group-append" id="button-addon4">
+                <button class="btn btn-primary" [ngClass]="screenWidth > 1400 ? '':' btn-sm'" type="button"
+                        (click)="addToCart(prn)">Add
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="scrolling-wrapper">
+            <div class="card" *ngFor="let discount of allDiscounts; let i = index">
+              <div class="card-header">{{discount.discountName}}
+                <a class="float-right text-success"
+                   (click)="!invoice.isDiscountApplied ? addDiscount(i) : removeDiscount(i)">
+                  <i class="material-icons" *ngIf="selectedDiscountIndex !== i">add_circle</i>
+                  <i class="material-icons" *ngIf="selectedDiscountIndex === i">delete</i>
+                </a>
+              </div>
+              <div class="card-body">
+                {{discount.discountConditionalNote}}<br>
+                <span>
+                  <span *ngIf="discount.amountType === 'rupees'">&#8377;</span>
+                  {{discount.amount}}
+                  <span *ngIf="discount.amountType === 'percentage'">%</span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="grid-wrapper" *ngIf="!(cartProducts.length > 0)">
+            <div class="card">
 
-              <!--<img src="../../assets/logo/logo-120x120.png" class="grey-icon" alt="">-->
-              <!--<div class="content">There is no product added to cart yet</div>-->
-            <!--</div>-->
-          <!--</div>-->
-          <!--<div class="item-wrapper" *ngIf="cartProducts.length > 0">-->
-            <!--<div class="item" *ngFor="let product of cartProducts; let i = index">-->
-              <!--<a class="menu float-right" (click)="deleteProductFromCart(i)"><i class="material-icons">delete</i> </a>-->
-              <!--<img *ngIf="product.productPreviewUrl === ''" src="../../../assets/logo/logo-120x120.png" class="grey-icon m-2"-->
-                   <!--width="50px" alt="no-preview">-->
-              <!--<img class="m-2" *ngIf="product.productPreviewUrl !== ''" [src]="product.productPreviewUrl" width="50px"-->
-                   <!--alt="product preview">-->
-              <!--<h5>{{ product.productName }}</h5>-->
-              <!--<h6>{{product.prn}}</h6>-->
-              <!--<span class="badge search-option"-->
-                    <!--[ngClass]="product.selectedSize === i?'badge-primary': 'badge-light'"-->
-                    <!--(click)="selectSize(product, i)"-->
-                    <!--*ngFor="let differentSize of product.variants;let i = index">-->
-          <!--{{differentSize.size}}-->
-        <!--</span>-->
+              <img src="../../assets/logo/logo-120x120.png" class="grey-icon" alt="">
+              <div class="content">There is no product added to cart yet</div>
+            </div>
+          </div>
+          <div class="item-wrapper" *ngIf="cartProducts.length > 0">
+            <div class="item" *ngFor="let product of cartProducts; let i = index">
+              <a class="menu float-right" (click)="deleteProductFromCart(i)"><i class="material-icons">delete</i> </a>
+              <img *ngIf="!product.pictures['url'][0]" src="../../assets/logo/logo-120x120.png"
+                   class="grey-icon m-2"
+                   width="50px" alt="no-preview">
+              <img class="m-2" *ngIf="product.pictures['url'][0]" [src]="product.pictures['url'][0]" width="50px"
+                   alt="product preview">
+              <h5>{{ product.productName }}</h5>
+              <h6>{{product.prn}}</h6>
 
-              <!--<div class="form-group">-->
-                <!--<label for="total-quantity">Quantity</label>-->
-                <!--<div class="input-group">-->
-                  <!--<input type="number" class="form-control form-control-md " id="total-quantity"-->
-                         <!--[(ngModel)]="product.totalQuantity " (ngModelChange)="calculateTotal(product)">-->
-                <!--</div>-->
-                <!--<p *ngIf="!product.totalQuantity">Quantity of the product can't be zero</p>-->
-                <!--<p *ngIf="product.isOutStock">Out of stock</p>-->
-              <!--</div>-->
-              <!--<h6>Price: &#8377; {{product.totalPrice}}</h6>-->
-            <!--</div>-->
 
-          <!--</div>-->
-          <!--<div class="alert-dark text-right p-3 font-weight-bold ">-->
-            <!--<div class=" m-4"><a >Total Quantity: {{invoice.totalQuantity}}</a></div>-->
-            <!--<div class=" m-4 "> <a  *ngIf="!invoice.isDiscountApplied">Total Price: &#8377; {{invoice.totalPrice}}</a></div>-->
-            <!--<div class=" m-4"><a  *ngIf="invoice.isDiscountApplied">Total Discount price:-->
-              <!--&#8377; {{invoice.discountPrice}}</a></div>-->
-          <!--</div>-->
-          <!--<div class="w-100">-->
-            <!--<a class="button" (click)="saveInvoice()">Send Invoice</a>-->
-          <!--</div>-->
-        <!--</div>-->
+              <div class="form-group">
+                <label for="total-quantity">Quantity</label>
+                <div class="input-group">
+                  <input type="number" class="form-control form-control-md " id="total-quantity"
+                         [(ngModel)]="product.totalQuantity " (ngModelChange)="calculateTotal(product)">
+                </div>
+                <p *ngIf="!product.totalQuantity">Quantity of the product can't be zero</p>
+                <p *ngIf="product.isOutStock">Out of stock</p>
+              </div>
+              <h6>Price: &#8377; {{product.totalPrice}}</h6>
+            </div>
 
-      <!--</div>-->
-      <!--<emptyspace></emptyspace>-->
-    <!--</ng-template>-->
-  <!--</ngb-tab>-->
-  <!--<ngb-tab>-->
-    <!--<ng-template ngbTabTitle>Return</ng-template>-->
-    <!--<ng-template ngbTabContent >-->
-      <!--<app-return-products ></app-return-products>-->
-    <!--</ng-template>-->
-  <!--</ngb-tab>-->
+          </div>
+          <div class="alert-dark text-right p-3 font-weight-bold ">
+            <div class=" m-4"><a>Total Quantity: {{invoice.totalQuantity}}</a></div>
+            <div class=" m-4 "><a *ngIf="!invoice.isDiscountApplied">Total Price: &#8377; {{invoice.totalPrice}}</a>
+            </div>
+            <div class=" m-4"><a *ngIf="invoice.isDiscountApplied">Total Discount price:
+              &#8377; {{invoice.discountPrice}}</a></div>
+          </div>
+          <div class="w-100">
+            <a class="button" (click)="saveInvoice()" tabindex="0">Send Invoice</a>
+          </div>
+        </div>
 
-<!--</ngb-tabset>-->
+      </div>
+      <emptyspace></emptyspace>
+    </ng-template>
+  </ngb-tab>
+  <ngb-tab>
+    <ng-template ngbTabTitle>Return</ng-template>
+    <ng-template ngbTabContent>
+      <app-return-products></app-return-products>
+    </ng-template>
+  </ngb-tab>
+
+</ngb-tabset>
