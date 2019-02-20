@@ -70,8 +70,8 @@ export class DashboardPageComponent implements OnInit {
   }
 
   navigateToAddProduct(path: string) {
-    const id = +this.router.routerState.snapshot.url.split('/')[2];
-    return this.store.dispatch([new Navigate([`u/${id}/${path}`])]);
+    const id = +this.router.routerState.snapshot.url.split('/')[3];
+    return this.store.dispatch([new Navigate([`go/u/${id}/${path}`])]);
   }
 
   refresh() {

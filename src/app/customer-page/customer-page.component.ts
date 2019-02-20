@@ -80,7 +80,7 @@ export class CustomerPageComponent implements OnInit {
 
 
   navigateToSell() {
-    const id = +this.router.routerState.snapshot.url.split('/')[2];
-    return this.store.dispatch([new Navigate([`u/${id}/sell`])]);
+    const id = +this.router.routerState.snapshot.url.split('/')[3];
+    return this.store.dispatch([new Navigate([`go/u/${id}/sell`])]);
   }
 }
