@@ -68,7 +68,10 @@ export class CustomerPageComponent implements OnInit {
     this.selectedCustomerValue = customerNumber;
     this.selectedCustomerInvoiceData = this.allInvoices.filter((invoice) => invoice.customerNumber === +customerNumber);
     this.selectedCustomerData = this.customerDetails.filter((customer) => customer.number === customerNumber)[0];
-    this.lastPurchasedProduct = this.selectedCustomerInvoiceData[0].cartProducts.map((product) => product.productName + '-' + product.size)[0] ;
+    this.lastPurchasedProduct =
+      this.selectedCustomerInvoiceData[0].cartProducts
+        .map((product) => product.productName + '-' +
+          product.attributeValues.forEach((att) => att + ''))[0] ;
   }
 
   toggleCustomer() {
