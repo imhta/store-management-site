@@ -1,7 +1,13 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {UniversalMicroAddService} from '../../services/universal-micro-add/universal-micro-add.service';
-
+interface dataObject {
+  storeId ?: string;
+  type ?: string;
+  src ?: string;
+  name ?: string;
+  taxInPercentage ?: number;
+}
 @Component({
   selector: 'app-universal-micro-add-dialog',
   templateUrl: './universal-micro-add-dialog.component.html',
@@ -11,11 +17,9 @@ export class UniversalMicroAddDialogComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<UniversalMicroAddDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) private data: {}, private service: UniversalMicroAddService) {
+    @Inject(MAT_DIALOG_DATA) public data: dataObject, public service: UniversalMicroAddService) {
 
   }
-
-
   ngOnInit() {
   }
   onNoClick(): void {
