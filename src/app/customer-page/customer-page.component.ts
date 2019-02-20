@@ -71,7 +71,7 @@ export class CustomerPageComponent implements OnInit {
     this.lastPurchasedProduct =
       this.selectedCustomerInvoiceData[0].cartProducts
         .map((product) => product.productName + '-' +
-          product.attributeValues.forEach((att) => att + ''))[0] ;
+          product.attributeValues);
   }
 
   toggleCustomer() {
