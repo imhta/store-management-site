@@ -12,7 +12,14 @@ import {
   InvoiceSavedSuccessfully, ReduceStock,
   SaveInvoice
 } from '../actions/invoice.actions';
-import {ErrorInGettingAllReturns, GetAllReturns, GetInvoice, GotAllReturnsSuccessfully, ReturnInvoice} from '../actions/return.actions';
+import {
+  ErrorInGettingAllReturns,
+  GetAllReturns,
+  GetInvoice,
+  GotAllReturnsSuccessfully,
+  ReturnInvoice,
+  ReturnStock
+} from '../actions/return.actions';
 import {ReturnModel} from '../models/return.model';
 import {CheckCustomerExitsOrNot, CheckCustomerNewToStore} from '../actions/customers.actions';
 import {Router} from '@angular/router';
@@ -109,5 +116,9 @@ export class InvoicesState {
   @Action(ReduceStock)
   reduceStock(cxt: StateContext<any[]>, {invoice}: ReduceStock) {
       this.dbService.reduceStock(invoice);
+  }
+  @Action(ReturnStock)
+  returnStock(cxt: StateContext<any[]>, {returnInvoice}: ReturnStock) {
+    this.dbService.returnStock(returnInvoice);
   }
 }

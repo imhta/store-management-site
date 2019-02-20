@@ -1,7 +1,7 @@
 <div class="page bg-white h-100">
 <div class=" qr-scanner-preview">
   <div class="card">
-    <app-qr-scanner (data)="getInvoiceId($event)"></app-qr-scanner>
+    <!--<app-qr-scanner (data)="getInvoiceId($event)"></app-qr-scanner>-->
   </div>
 </div>
 <div class="container  ">
@@ -46,8 +46,8 @@
           <i class="material-icons" *ngIf="isSelected(product)">delete</i></a>
         <h5>{{ product['productName'] }}</h5>
         <h6>{{product['prn']}}</h6>
-        <span class="badge search-option badge-primary">
-          {{product['size']}}
+        <span class="badge search-option badge-primary" *ngFor="let attribute of product['attributeValues']">
+          {{attribute}}
         </span>
         <hr>
         <h6>Quantity: {{product['totalQuantity']}}</h6>

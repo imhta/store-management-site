@@ -41,6 +41,7 @@ export class ErrorInReturningInvoice {
   static readonly type = '[Return] Error in Returning  invoice ';
 
   constructor(public err: string) {
+    console.log(err);
   }
 }
 
@@ -63,4 +64,14 @@ export class ErrorInGettingAllReturns {
 
   constructor(public err: string) {
   }
+}
+export class ReturnStock {
+  static readonly type = '[Return] Return Stock';
+
+  constructor(public returnInvoice: ReturnModel) {
+  }
+}
+export class ReturnStockSuccessfully {
+  static readonly type = '[Return] Return Stock Successfully';
+
 }

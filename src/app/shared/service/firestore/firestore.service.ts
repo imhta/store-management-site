@@ -43,7 +43,7 @@ import {
   GotAllReturnsSuccessfully,
   GotInvoiceSuccessfully,
   InvoiceNotFound,
-  ReturnedInvoiceSuccessfully
+  ReturnedInvoiceSuccessfully, ReturnStock
 } from '../../actions/return.actions';
 import {ReturnModel} from '../../models/return.model';
 import {DiscountModel} from '../../models/discount.model';
@@ -241,15 +241,17 @@ export class FirestoreService {
     });
   }
   getInvoice(invoiceId: string) {
+
     return this.db.collection(`invoices`).doc(`${invoiceId}`).ref.get().then((doc) => {
       const invoice = new InvoiceModel();
+      console.log(doc.data());
       if (doc.exists) {
         invoice.fromJson(doc.data());
         return this.store.dispatch([new GotInvoiceSuccessfully(invoice), new LoadingFalse()]);
       } else {
         return this.store.dispatch([new InvoiceNotFound(), new LoadingFalse()]);
       }
-    }).catch((err) => this.store.dispatch([new LoadingFalse(), new ErrorInGettingInvoice(err)]));
+    }).catch((err) => this.store.dispatch([new LoadingFalse(), new ErrorInGettingInvoice(err)]) );
   }
 
   getAllReturns(storeUid: string) {
@@ -265,22 +267,54 @@ export class FirestoreService {
   }
 
   returnInvoice(returnInvoice: ReturnModel) {
-    this.db.collection(`stores/${returnInvoice.storeUid}/returns`).ref
-      .where('invoiceId', '==', returnInvoice.invoiceId)
-      .limit(1)
+    this.db.collection(`stores/${returnInvoice.storeUid}/returns`).doc(returnInvoice.invoiceId).ref
       .get()
       .then((data) =>
-        data.size === 0
+        !data.exists
           ? this.newReturnInvoice(returnInvoice)
-          : this.updateReturnInvoice(returnInvoice, data.forEach((doc) => doc.id)))
+          : this.updateReturnInvoice(returnInvoice, data.id))
       .catch((err) => this.store.dispatch([new ErrorInReturningInvoice(err), new LoadingFalse()]));
 
   }
-
+  async returnStock(returnInvoice: ReturnModel) {
+    if (returnInvoice.isAllReturn) {
+      await this.addStock(returnInvoice);
+      this.db.collection(`invoices`).doc(`${returnInvoice.invoiceId}`).delete();
+    } else {
+      await this.addStock(returnInvoice);
+     const invoiceRef =  this.db.collection(`invoices`).doc(`${returnInvoice.invoiceId}`).ref;
+      return this.db.firestore.runTransaction(transaction => {
+         return transaction.get(invoiceRef).then((doc) => {
+           if (doc.exists) {
+             const invoiceCartProduct: object[] = doc.data()['cartProducts'];
+             returnInvoice.cartProducts.forEach((product) => {
+               invoiceCartProduct.splice(returnInvoice.cartProducts.indexOf(product), 1);
+             });
+             return transaction.set(invoiceRef, {cartProducts: invoiceCartProduct}, {merge: true});
+           }
+         });
+       });
+    }
+  }
+  addStock(returnInvoice: ReturnModel) {
+   return returnInvoice.cartProducts.forEach((product) => {
+      const productRef = this.db.doc(`products/${product['productUid']}`).ref;
+      return this.db.firestore.runTransaction(transaction => {
+        return transaction.get(productRef).then((doc) => {
+          if (doc.exists) {
+            const newStock = doc.data()['stock'] > 0 ? doc.data()['stock'] + product['totalQuantity'] : product['totalQuantity'];
+            const sold = doc.data()['sold'] ? doc.data()['sold'] - product['totalQuantity'] : 0 ;
+            const newReturn = doc.data()['return'] ? doc.data()['sold'] + product['totalQuantity'] : 1 ;
+            return transaction.set(productRef, {stock: newStock, sold: sold, return: newReturn}, {merge: true});
+          }
+        });
+      });
+    });
+  }
   newReturnInvoice(returnInvoice: ReturnModel) {
     this.db.collection(`stores/${returnInvoice.storeUid}/returns`)
       .add(returnInvoice.toJson())
-      .then(() => this.store.dispatch([new ReturnedInvoiceSuccessfully(), new LoadingFalse()]))
+      .then(() => this.store.dispatch([new ReturnStock(returnInvoice), new ReturnedInvoiceSuccessfully(), new LoadingFalse()]))
       .catch((err) => this.store.dispatch([new ErrorInReturningInvoice(err), new LoadingFalse()]));
   }
 
@@ -288,7 +322,7 @@ export class FirestoreService {
     console.log(docId);
     this.db.collection(`stores/${returnInvoice.storeUid}/returns`).doc(docId)
       .set(returnInvoice.toJson(), {merge: true, mergeFields: ['cartProducts']})
-      .then(() => this.store.dispatch([new ReturnedInvoiceSuccessfully(), new LoadingFalse()]))
+      .then(() => this.store.dispatch([new ReturnStock(returnInvoice), new ReturnedInvoiceSuccessfully(), new LoadingFalse()]))
       .catch((err) => this.store.dispatch([new ErrorInReturningInvoice(err), new LoadingFalse()]));
   }
 
