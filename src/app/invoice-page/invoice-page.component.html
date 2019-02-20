@@ -55,7 +55,7 @@
                 <tr  *ngFor="let product of invoice.cartProducts; let i = index">
                   <th scope="row">{{i+1}}</th>
                   <td>{{product['prn']}}</td>
-                  <td>{{product['productName'] +' - ' + product['size']}}</td>
+                  <td>{{product['productName'] +' - ' }} <span *ngFor="let attribute of product['attributeValues']">{{attribute + ' '}}</span></td>
                   <td>{{product['totalQuantity']}}</td>
                   <td>&#8377; {{product['totalPrice']}}</td>
                 </tr>
@@ -105,7 +105,7 @@
             <hr>
             <p><b>{{product['productName']}}</b></p>
             <p><b>{{product['prn']}}</b></p>
-            <p><b>Size: {{product['size']}}</b></p>
+            <p> <span *ngFor="let attribute of product['attributeValues']">{{attribute + ' '}}</span></p>
             <p> Total Quantity: {{product['totalQuantity']}}</p>
             <p> Total price: &#8377; {{product['totalPrice']}}</p>
 
