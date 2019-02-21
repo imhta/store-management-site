@@ -61,6 +61,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         return this.store.dispatch([new Navigate([`go/u/${id}/customers`])]);
       } else if (litKeys && (event.key === 'D' || event.key === 'd')) {
         return this.store.dispatch([new Navigate([`go/u/${id}/dashboard`])]);
+      } else if (litKeys && (event.key === 'M' || event.key === 'm')) {
+        return this.store.dispatch([new Navigate([`go/u/${id}/manage/users`])]);
       } else if (litKeys && (event.key === 'H' || event.key === 'h')) {
         return this.store.dispatch([new Navigate([`go/u/${id}/store`])]);
       } else if (litKeys && (event.key === 'X' || event.key === 'x')) {
