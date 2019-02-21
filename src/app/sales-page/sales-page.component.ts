@@ -53,10 +53,9 @@ export class SalesPageComponent implements OnInit, OnDestroy {
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
-
-    if (event.shiftKey && (event.key === 'S' || event.key === 's')) {
+    const litKeys = event.altKey && event.ctrlKey;
+    if (litKeys && (event.key === 'S' || event.key === 's')) {
       this.saveInvoice();
-
     }
 
   }

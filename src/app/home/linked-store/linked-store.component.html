@@ -11,7 +11,7 @@
   <h3>Get started</h3>
   <div class="card ">
     <div class="item-wrapper">
-      <div class="item" *ngFor="let store of this.storeState?.linkedStores; let i = index" (click)="selectStore(i)">
+      <div class="item" *ngFor="let store of this.storeState?.linkedStores; let i = index" (click)="selectStore(i)" [tabIndex]="i">
         <a class="menu"><i class="material-icons">keyboard_arrow_right</i> </a>
         <h5>{{ store['storeName'] }}</h5>
         <h6>{{store['address']['city']}}</h6>
