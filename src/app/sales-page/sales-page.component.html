@@ -86,12 +86,14 @@
           <mat-form-field class="col-12">
             <input matInput placeholder="Phone Number" type="number" formControlName="phoneNumber">
             <mat-hint align="end">{{phoneNumber.value ? phoneNumber.value?.toString().length : 0 }}/10</mat-hint>
+            <mat-error *ngIf="phoneNumber.errors">Phone number is required</mat-error>
           </mat-form-field>
         </mat-card>
         <mat-card class="row" *ngIf="customerNotExit">
           <mat-form-field class="col-md-6">
             <input matInput placeholder="Phone Number" type="number" formControlName="phoneNumber">
             <mat-hint align="end">{{phoneNumber.value ? phoneNumber.value?.toString().length : 0 }}/10</mat-hint>
+            <mat-error *ngIf="phoneNumber.errors">Phone number is required</mat-error>
           </mat-form-field>
           <mat-form-field class="col-md-6">
             <input matInput placeholder="Customer Name" type="text" formControlName="customerName">
@@ -156,6 +158,11 @@
             <!--<input matInput placeholder="Referral Code">-->
           <!--</mat-form-field>-->
         <!--</mat-card-header>-->
+        <div [formGroup]="uiModelGroup" >
+        <mat-button-toggle-group name="paymentType" aria-label="Payment type" formControlName="typeOfPayment">
+          <mat-button-toggle [value]="type" *ngFor="let type of typeOfPaymentValues">{{type}}</mat-button-toggle>
+        </mat-button-toggle-group>
+        </div>
         <div class=" m-4"><a>Total Quantity: {{invoice.totalQuantity}}</a></div>
         <div class=" m-4 "><a *ngIf="!invoice.isDiscountApplied">Total Price: &#8377; {{invoice.totalPrice}}</a>
         </div>
@@ -220,12 +227,14 @@
       <mat-form-field class="col-12">
         <input matInput placeholder="Phone Number" type="number" formControlName="phoneNumber">
         <mat-hint align="end">{{phoneNumber.value ? phoneNumber.value?.toString().length : 0 }}/10</mat-hint>
+        <mat-error *ngIf="phoneNumber.errors">Phone number is required</mat-error>
       </mat-form-field>
     </mat-card>
     <mat-card class="row" *ngIf="customerNotExit">
       <mat-form-field class="col-md-6">
         <input matInput placeholder="Phone Number" type="number" formControlName="phoneNumber">
         <mat-hint align="end">{{phoneNumber.value ? phoneNumber.value?.toString().length : 0 }}/10</mat-hint>
+        <mat-error *ngIf="phoneNumber.errors">Phone number is required</mat-error>
       </mat-form-field>
       <mat-form-field class="col-md-6">
         <input matInput placeholder="Customer Name" type="text" formControlName="customerName">
@@ -325,6 +334,11 @@
             <!--<input matInput placeholder="Referral Code">-->
           <!--</mat-form-field>-->
         <!--</mat-card-header>-->
+        <div [formGroup]="uiModelGroup" >
+          <mat-button-toggle-group name="paymentType" aria-label="Payment type" formControlName="typeOfPayment">
+            <mat-button-toggle [value]="type" *ngFor="let type of typeOfPaymentValues">{{type}}</mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
         <div class=" m-4"><a>Total Quantity: {{invoice.totalQuantity}}</a></div>
         <div class=" m-4 "><a *ngIf="!invoice.isDiscountApplied">Total Price: &#8377; {{invoice.totalPrice}}</a>
         </div>

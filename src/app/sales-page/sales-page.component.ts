@@ -5,7 +5,7 @@ import {Observable, Subscription} from 'rxjs';
 import {CartProduct, InvoiceModel} from '../shared/models/invoice.model';
 import {AuthState} from '../shared/state/auth.state';
 import {LoadingTrue} from '../shared/state/app-general.state';
-import {debounceTime, distinctUntilChanged, first, map} from 'rxjs/operators';
+import {first} from 'rxjs/operators';
 import {SingleProductModel} from '../shared/models/product.model';
 import {
   CheckCustomerExitsOrNot,
@@ -34,7 +34,7 @@ export class SalesPageComponent implements OnInit, OnDestroy {
   storeState: UserStoreState;
   currentStore;
   allProducts: any[];
-  typeOfPayment = ['Cash', 'Card', 'Cash & Card'];
+  typeOfPaymentValues = ['Cash', 'Card', 'Cash & Card'];
   cartProducts: CartProduct[] = [];
   invoice = new InvoiceModel();
   outStockedProducts = [];
@@ -51,12 +51,29 @@ export class SalesPageComponent implements OnInit, OnDestroy {
     prn: '',
     phoneNumber: ['', Validators.required],
     customerName: [],
-    typeOfPayment: [],
+    typeOfPayment: ['Cash'],
   });
-  isSmallScreen = this.breakpointObserver.isMatched('(max-width: 599px)');
+  isSmallScreen = this.breakpointObserver.isMatched('(max-width: 650px)');
+
   constructor(private store: Store, private action$: Actions, private fb: FormBuilder, private breakpointObserver: BreakpointObserver) {
     this.invoice.typeOfPayment = 'Cash';
     this.screenWidth = window.screen.width;
+  }
+
+  get prn() {
+    return this.uiModelGroup.get('prn');
+  }
+
+  get phoneNumber() {
+    return this.uiModelGroup.get('phoneNumber');
+  }
+
+  get customerName() {
+    return this.uiModelGroup.get('customerName');
+  }
+
+  get typeOfPayment() {
+    return this.uiModelGroup.get('typeOfPayment');
   }
 
   @HostListener('window:keyup', ['$event'])
@@ -67,7 +84,6 @@ export class SalesPageComponent implements OnInit, OnDestroy {
     }
 
   }
-
 
   ngOnInit() {
     this.uid$.subscribe((uid) => this.invoice.billedBy = uid);
@@ -90,15 +106,7 @@ export class SalesPageComponent implements OnInit, OnDestroy {
     this.storeDataSubscription.unsubscribe();
 
   }
-  get prn () {
-    return this.uiModelGroup.get('prn');
-  }
-  get phoneNumber () {
-    return this.uiModelGroup.get('phoneNumber');
-  }
-  get customerName () {
-    return this.uiModelGroup.get('customerName');
-  }
+
   subscribeToProducts() {
 
     this.storeDataSubscription = this.storeState$.subscribe((data) => {
@@ -134,6 +142,7 @@ export class SalesPageComponent implements OnInit, OnDestroy {
     this.invoice.discountPrice = 0;
     this.selectedDiscountIndex = null;
   }
+
   phoneNoChanged(phoneNo) {
     if (String(phoneNo).length === 10) {
       this.store.dispatch([new LoadingTrue(), new CheckCustomerExitsOrNot(phoneNo)]);
@@ -158,7 +167,7 @@ export class SalesPageComponent implements OnInit, OnDestroy {
   }
 
   getProduct(product: string) {
-   this.prn.patchValue( product.split('/')[1]);
+    this.prn.patchValue(product.split('/')[1]);
   }
 
   checkWhetherOutOfStock(stock) {
