@@ -195,17 +195,19 @@ export class AddProductPageComponent implements OnInit, OnDestroy {
 
   onSubmit() {
 
-   this.store.dispatch([new UploadSingleProduct(this.uiModel.createProducts(this.productForm.value, this.currentStore))]) ;
 
-    // if (this.productForm.valid) {
-    //   this.addStoreDetails();
-    //   this.addAddedBy();
-    //   this.productForm.reset();
-    // } else {
-    //   Object.keys(this.productForm.controls).forEach(key => {
-    //     this.productForm.controls[key].markAsDirty();
-    //   });
-    // }
+    if (this.productForm.valid) {
+      this.addStoreDetails();
+      this.addAddedBy();
+
+      this.store.dispatch([new UploadSingleProduct(this.uiModel.createProducts(this.productForm.value, this.currentStore))]) ;
+
+      this.productForm.reset();
+    } else {
+      Object.keys(this.productForm.controls).forEach(key => {
+        this.productForm.controls[key].markAsDirty();
+      });
+    }
 
   }
 

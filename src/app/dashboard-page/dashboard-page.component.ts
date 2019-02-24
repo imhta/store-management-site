@@ -4,12 +4,12 @@ import {Observable} from 'rxjs';
 import {BillsModel} from '../shared/models/invoice.model';
 import {Chart} from 'chart.js';
 import {StoreState} from '../shared/state/store.state';
-import {GetAllInvoice} from '../shared/actions/invoice.actions';
+
 import {DashboardModel} from './dashboard.model';
 import {SingleProductModel} from '../shared/models/product.model';
-import {GetAllProducts} from '../shared/actions/product.actions';
+
 import {Navigate} from '@ngxs/router-plugin';
-import {take} from 'rxjs/operators';
+
 import {Router} from '@angular/router';
 
 @Component({
@@ -27,9 +27,7 @@ export class DashboardPageComponent implements OnInit {
   dashboard = new DashboardModel();
 
   constructor(private store: Store, private router: Router) {
-    this.storeUid$.pipe(take(1)).subscribe((storeUid) => {
-      this.store.dispatch([new GetAllInvoice(storeUid), new GetAllProducts(storeUid)]);
-    });
+
   }
 
   ngOnInit() {
@@ -72,15 +70,12 @@ export class DashboardPageComponent implements OnInit {
   }
 
   navigateToAddProduct(path: string) {
-    const id = +this.router.routerState.snapshot.url.split('/')[2];
-    return this.store.dispatch([new Navigate([`u/${id}/${path}`])]);
+    const id = +this.router.routerState.snapshot.url.split('/')[3];
+    return this.store.dispatch([new Navigate([`go/u/${id}/${path}`])]);
   }
 
   refresh() {
     this.today = new Date();
-    this.storeUid$.pipe(take(1)).subscribe((storeUid) => {
-      this.store.dispatch([new GetAllInvoice(storeUid), new GetAllProducts(storeUid)]);
-    });
   }
 
   refreshCharts() {

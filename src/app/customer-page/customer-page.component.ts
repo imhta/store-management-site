@@ -68,7 +68,10 @@ export class CustomerPageComponent implements OnInit {
     this.selectedCustomerValue = customerNumber;
     this.selectedCustomerInvoiceData = this.allInvoices.filter((invoice) => invoice.customerNumber === +customerNumber);
     this.selectedCustomerData = this.customerDetails.filter((customer) => customer.number === customerNumber)[0];
-    this.lastPurchasedProduct = this.selectedCustomerInvoiceData[0].cartProducts.map((product) => product.productName + '-' + product.size)[0] ;
+    this.lastPurchasedProduct =
+      this.selectedCustomerInvoiceData[0].cartProducts
+        .map((product) => product.productName + '-' +
+          product.attributeValues);
   }
 
   toggleCustomer() {
@@ -77,7 +80,7 @@ export class CustomerPageComponent implements OnInit {
 
 
   navigateToSell() {
-    const id = +this.router.routerState.snapshot.url.split('/')[2];
-    return this.store.dispatch([new Navigate([`u/${id}/sell`])]);
+    const id = +this.router.routerState.snapshot.url.split('/')[3];
+    return this.store.dispatch([new Navigate([`go/u/${id}/sell`])]);
   }
 }

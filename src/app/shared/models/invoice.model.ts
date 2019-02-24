@@ -29,11 +29,13 @@ export class InvoiceModel {
     address: object,
     location: firestore.GeoPoint,
     gstNumber: string,
-    storeLogo: string };
+    storeLogo: string
+  };
   createdOn: firestore.Timestamp;
   billedBy: string;
 
   constructor() {
+    this.customerName = '';
     this.customerNumber = '';
     this.totalQuantity = 0;
     this.totalPrice = 0;
@@ -103,23 +105,22 @@ export class CartProduct {
   productUid: string;
   productName: string;
   brandName: string;
-  categories: { category1: string, category2: string, colorCategory: string };
-  material: string;
-  size: string;
-  isVariantsWithSamePrice: boolean;
+  categories: string[];
   singleUnitPrice: number;
   totalQuantity: number;
   maxQuantity: number;
   totalPrice: number;
-  hsnCode: string;
   taxInPercentage: number;
   totalTax: number;
-  variants: { size: string, stock: number, purchasedPrice: number, sellingPrice: number }[];
-  selectedSize: number;
-  inclusiveAllTaxes: boolean;
+  attributeTemplate: string;
+  attributeValues: string[];
+  unit: string;
+  purchasedPrice: number;
+  sellingPrice: number;
+  inclusiveOfAllTaxes: boolean;
   addedBy: string;
   isOutStock = false;
-  productPreviewUrl: string;
+  pictures: { url: []; path: [] } | string;
 
   constructor() {
     this.maxQuantity = 0;
@@ -131,19 +132,45 @@ export class CartProduct {
     this.productName = data.productName;
     this.categories = data.categories;
     this.brandName = data.brandName;
-    this.size = data.size ? data.size : '';
     this.singleUnitPrice = data.singleUnitPrice;
+    this.unit = data.unit;
+    this.purchasedPrice = data.purchasedPrice;
+    this.sellingPrice = data.sellingPrice;
+    this.pictures = data.isListable ? data.pictures : {url: [], path: []};
+    this.attributeValues = data.attributeValues;
+    this.attributeTemplate = data.attributeTemplate;
     this.totalQuantity = data.totalQuantity;
     this.maxQuantity = data.maxQuantity;
     this.totalPrice = data.totalPrice;
     this.totalTax = data.totalTax;
     this.taxInPercentage = data.taxInPercentage;
-    this.inclusiveAllTaxes = data.inclusiveAllTaxes;
+    this.inclusiveOfAllTaxes = data.inclusiveOfAllTaxes;
+    this.addedBy = data.addedBy;
+    this.isOutStock = data.isOutStock;
   }
-
+  fromProductData(data) {
+    this.prn = data.prn;
+    this.productUid = data.productUid;
+    this.productName = data.productName;
+    this.categories = data.categories;
+    this.brandName = data.brandName;
+    this.unit = data.unit;
+    this.singleUnitPrice = data.sellingPrice;
+    this.purchasedPrice = data.purchasedPrice;
+    this.sellingPrice = data.sellingPrice;
+    this.pictures = data.isListable ? data.pictures : {url: [], path: []};
+    this.attributeValues = data.attributeValues;
+    this.attributeTemplate = data.attributeTemplate;
+    this.totalQuantity = 1;
+    this.maxQuantity = data.stock;
+    this.totalPrice = data.sellingPrice * this.totalQuantity;
+    this.taxInPercentage = data.taxInPercentage;
+    this.totalTax = (this.taxInPercentage / 100) * data.totalPrice;
+    this.inclusiveOfAllTaxes = data.inclusiveOfAllTaxes;
+  }
   calculateProductTotal() {
     this.isOutStock = this.totalQuantity > this.maxQuantity;
-    if (this.inclusiveAllTaxes) {
+    if (this.inclusiveOfAllTaxes) {
       this.totalPrice = this.singleUnitPrice * this.totalQuantity;
       this.totalTax = +((this.totalPrice - (this.totalPrice / (1 + (this.taxInPercentage / 100)))).toFixed(2));
     } else {
@@ -160,18 +187,21 @@ export class CartProduct {
       'productUid': this.productUid,
       'productName': this.productName,
       'brandName': this.brandName,
-      'size': this.size ? this.size : '',
+      'attributeTemplate': this.attributeTemplate,
       'singleUnitPrice': this.singleUnitPrice,
-      'hsnCode': this.hsnCode,
+      'attributeValues': this.attributeValues,
+      'unit': this.unit,
+      'purchasedPrice': this.purchasedPrice,
+      'sellingPrice': this.sellingPrice,
       'totalPrice': this.totalPrice,
       'totalQuantity': this.totalQuantity,
       'maxQuantity': this.maxQuantity,
       'totalTax': this.totalTax,
       'categories': this.categories,
       'taxInPercentage': this.taxInPercentage,
-      'inclusiveAllTaxes': this.inclusiveAllTaxes ? this.inclusiveAllTaxes : null,
+      'inclusiveAllTaxes': this.inclusiveOfAllTaxes ? this.inclusiveOfAllTaxes : null,
       'addedBy': this.addedBy ? this.addedBy : '',
-      'productPreviewUrl': this.productPreviewUrl
+      'pictures': this.pictures
     };
   }
 

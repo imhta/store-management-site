@@ -43,7 +43,6 @@ export class StorePageComponent implements OnInit, OnDestroy {
     this.storeDataSubscription = this.storeState$.pipe(take(1)).subscribe((data) => {
       this.storeState = new UserStoreState(data.valueOf());
       this.currentStore = this.storeState.linkedStores[this.storeState.selectedStore];
-      this.store.dispatch([new GetAllProducts(this.currentStore['storeUid']), new LoadingTrue()]);
     });
     this.allProducts$.subscribe((data: any[]) => {
       this.allProducts = data;
@@ -58,13 +57,13 @@ export class StorePageComponent implements OnInit, OnDestroy {
   }
 
   navigateToProduct(productId: string) {
-    const id = +this.router.routerState.snapshot.url.split('/')[2];
-    this.store.dispatch([new Navigate([`u/${id}/store/product`], {uid: productId})]);
+    const id = +this.router.routerState.snapshot.url.split('/')[3];
+    this.store.dispatch([new Navigate([`go/u/${id}/store/product`], {uid: productId})]);
   }
 
   navigateToAddProduct() {
-    const id = +this.router.routerState.snapshot.url.split('/')[2];
-    this.store.dispatch([new Navigate([`u/${id}/add`])]);
+    const id = +this.router.routerState.snapshot.url.split('/')[3];
+    this.store.dispatch([new Navigate([`go/u/${id}/add`])]);
   }
 
   onChange() {

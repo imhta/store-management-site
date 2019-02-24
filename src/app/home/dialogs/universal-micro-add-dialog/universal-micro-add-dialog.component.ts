@@ -8,6 +8,7 @@ interface dataObject {
   name ?: string;
   taxInPercentage ?: number;
 }
+
 @Component({
   selector: 'app-universal-micro-add-dialog',
   templateUrl: './universal-micro-add-dialog.component.html',

@@ -3,7 +3,7 @@ import {UserStoreState} from '../models/store.model';
 import {
   DeleteEmployee,
   EmployeeDeletedSuccessfully,
-  EmptyLinkedStore,
+  EmptyLinkedStore, GetAll,
   GetAllEmployees, GetConfig,
   GetEmployeeLinkedStores,
   GetLinkedStores,
@@ -24,12 +24,14 @@ import {
 import {FirestoreService} from '../service/firestore/firestore.service';
 import {Navigate} from '@ngxs/router-plugin';
 import {LoadingFalse} from './app-general.state';
-import {GetProductByUid} from '../actions/product.actions';
+import {GetAllProducts, GetProductByUid} from '../actions/product.actions';
 import {DeleteADiscount, GetAllDiscounts, UploadDiscount} from '../actions/discount.actions';
 import {Observable} from 'rxjs';
 import {take} from 'rxjs/operators';
 import {UserModel} from '../models/auth.model';
 import {ActivatedRoute, Router} from '@angular/router';
+import {GetAllInvoice} from '../actions/invoice.actions';
+import {GetAllReturns} from '../actions/return.actions';
 
 
 @State<UserStoreState>({
@@ -126,12 +128,12 @@ export class StoreState {
     if (this.user.role === 'Register') {
       return this.store.dispatch([
         new Navigate(['go/u', action.index, 'dashboard']),
-        new GetConfig(state.linkedStores[action.index]['storeUid'])
+        new GetAll(action.index)
       ]);
     } else {
       return this.store.dispatch([
         new Navigate([`go/u/${action.index}/store`]),
-        new GetConfig(state.linkedStores[action.index]['storeUid'])
+        new GetAll(action.index)
       ]);
     }
   }
@@ -140,7 +142,7 @@ export class StoreState {
   selectStoreOnly(ctx: StateContext<UserStoreState>, action: SelectStoreOnly) {
     const state = ctx.getState();
     ctx.setState({...state, selectedStore: action.index});
-    this.store.dispatch([ new GetConfig(state.linkedStores[action.index]['storeUid'])]);
+    this.store.dispatch([new GetAll(action.index)]);
   }
 
 
@@ -152,6 +154,18 @@ export class StoreState {
     return this.store.dispatch([new LoadingFalse()]);
   }
 
+  @Action(GetAll)
+  getAll(ctx: StateContext<UserStoreState>, {index}: GetAll) {
+    const state = ctx.getState();
+    this.store.dispatch([
+      new GetConfig(state.linkedStores[index]['storeUid']),
+      new GetAllDiscounts(state.linkedStores[index]['storeUid']),
+      new GetAllEmployees(state.linkedStores[index]['storeUid']),
+      new GetAllInvoice(state.linkedStores[index]['storeUid']),
+      new GetAllProducts(state.linkedStores[index]['storeUid']),
+      new GetAllReturns(state.linkedStores[index]['storeUid']),
+    ]);
+  }
 
   @Action(GetAllEmployees)
   getAllEmployees(ctx: StateContext<any>, {storeUid}: GetAllEmployees) {
@@ -241,4 +255,6 @@ export class StoreState {
     }
 
   }
+
+
 }

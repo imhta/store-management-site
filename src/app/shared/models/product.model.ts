@@ -71,6 +71,7 @@ export class SingleProductModel {
     this.trackThisProduct = data.trackThisProduct;
     this.storeDetails = data.storeDetails;
     this.inclusiveOfAllTaxes = data.inclusiveOfAllTaxes;
+    this.isListable = data.isListable;
     this.isVariantsWithSamePriceAndTax = data.isVariantsWithSamePriceAndTax;
     this.hasNoGstNumber = data.hasNoGstNumber;
     this.stock = +data.stock;

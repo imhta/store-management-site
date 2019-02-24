@@ -31,7 +31,7 @@ export class ReturnProductsComponent implements OnInit {
   storeDataSubscription: Subscription;
   storeState: UserStoreState;
   currentStore;
-  invoiceId: string;
+  invoiceId = '';
   invoiceNotFound = false;
   selectedCartProducts: object[] = [];
   tempInvoice: InvoiceModel;
@@ -83,8 +83,8 @@ export class ReturnProductsComponent implements OnInit {
     this.action$
       .pipe(ofActionDispatched(ReturnedInvoiceSuccessfully), take(1))
       .subscribe(() => {
-        const id = +this.router.routerState.snapshot.url.split('/')[2];
-        return this.store.dispatch([new Navigate([`u/${id}/store`])]);
+        const id = +this.router.routerState.snapshot.url.split('/')[3];
+        return this.store.dispatch([new Navigate([`go/u/${id}/store`])]);
       });
     this.action$
       .pipe(ofActionDispatched(ErrorInReturningInvoice), take(1))
@@ -108,8 +108,8 @@ export class ReturnProductsComponent implements OnInit {
     this.action$
       .pipe(ofActionDispatched(ReturnedInvoiceSuccessfully), take(1))
       .subscribe(() => {
-        const id = +this.router.routerState.snapshot.url.split('/')[2];
-        return this.store.dispatch([new Navigate([`u/${id}/store`])]);
+        const id = +this.router.routerState.snapshot.url.split('/')[3];
+        return this.store.dispatch([new Navigate([`go/u/${id}/store`])]);
       });
     this.action$
       .pipe(ofActionDispatched(ErrorInReturningInvoice), take(1))

@@ -148,3 +148,7 @@ export class GotConfig {
   static readonly type = '[Store] Got Config';
   constructor(public type: string, public data: {}[]) {}
 }
+export  class GetAll {
+ static  readonly type = '[Store] Get All';
+  constructor(public index: number) {}
+}

@@ -23,3 +23,10 @@ export class ErrorInGettingAllInvoice {
   static readonly type = '[Invoice] Error in getting all invoice ';
   constructor(public err: string) {}
 }
+export class ReduceStock {
+  static readonly type = '[Invoice] Reduce Stock';
+  constructor(public invoice: InvoiceModel) {}
+}
+export class ReducedStockSuccessfully {
+  static readonly type = '[Invoice] Reduced Stock successfully';
+}
