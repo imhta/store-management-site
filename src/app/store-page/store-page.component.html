@@ -2,14 +2,12 @@
 <nav class="bg-dark text-white navbar toolbar">
   <diV><h5><b>{{currentStore['storeName']}}</b></h5></diV>
 
-  <div>
-    <a routerLink="profile" *ngIf="((role === 'Register' && isRegister) || !isEmployee)"><i class="material-icons">settings</i></a>
-  </div>
+
 </nav>
 
 <div class="container">
-  <button class="btn btn-primary float-right" type="button" (click)="navigateToAddProduct()">Add Product</button>
-  <h3>Store</h3>
+  <button class="btn btn-primary float-right" type="button" (click)="navigateToAddProduct()">Add Product / Discount</button>
+  <h3>Products</h3>
   <hr>
   <div class="m-4">
     <div class="input-group">

@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 import {LinkedStoreComponent} from './linked-store/linked-store.component';
 import {HomeComponent} from './home/home.component';
 import {SetupStorePageComponent} from './setup-store-page/setup-store-page.component';
@@ -18,6 +18,7 @@ import {ProductPageComponent} from '../product-page/product-page.component';
 import {QrPageComponent} from '../qr-page/qr-page.component';
 import {ManageUsersComponent} from '../manage-users/manage-users.component';
 import {AddUserComponent} from '../manage-users/add-user/add-user.component';
+import {ReturnProductsComponent} from '../sales-page/return-products/return-products.component';
 
 const routes: Routes = [
   {
@@ -46,7 +47,7 @@ const routes: Routes = [
             canActivate: [AuthGuard, RegisterGuard]
           },
           {
-            path: 'store',
+            path: 'products',
             canActivate: [AuthGuard],
             // resolve: {getAllProducts: StoreResolver},
             children: [
@@ -54,12 +55,12 @@ const routes: Routes = [
                 path: '',
                 component: StorePageComponent
               },
-              {
-                path: 'profile',
-                component: StoreSettingsComponent,
-                canActivate: [AuthGuard, RegisterGuard]
-              }
             ]
+          },
+          {
+            path: 'store/preference',
+            component: StoreSettingsComponent,
+            canActivate: [AuthGuard, RegisterGuard]
           },
           {
             path: 'sales',
@@ -75,6 +76,11 @@ const routes: Routes = [
             path: 'add',
             component: AddPageComponent,
             canActivate: [AuthGuard]
+          },
+          {
+            path: 'return-products',
+            component: ReturnProductsComponent,
+            canActivate: [AuthGuard, SellingGuard]
           },
           {
             path: 'invoice',
@@ -116,4 +122,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class HomeRoutingModule { }
+export class HomeRoutingModule {
+}

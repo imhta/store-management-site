@@ -36,4 +36,8 @@ mat-sidenav{
 }
 .menu {
   cursor: pointer;
+  position: fixed;
+  bottom: 0;
+  z-index: 10000;
+  color: white;
 }

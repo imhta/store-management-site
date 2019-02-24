@@ -27,6 +27,7 @@
       <h4 mat-line>Manage Stores</h4>
       <!--<p mat-line> </p>-->
     </mat-list-item>
+
     <mat-divider></mat-divider>
 
     <div *ngIf="storeState.selectedStore !== null">
@@ -38,13 +39,13 @@
         <mat-icon mat-list-icon>shopping_cart</mat-icon>
         <h4 mat-line>Billing</h4>
       </mat-list-item>
-      <mat-list-item (click)="navigateTo('/add')" *ngIf="user.role !== 'Billing'">
-        <mat-icon mat-list-icon>add_circle</mat-icon>
-        <h4 mat-line>Add</h4>
-      </mat-list-item>
-      <mat-list-item (click)="navigateTo('/store')">
-        <mat-icon mat-list-icon>store</mat-icon>
-        <h4 mat-line>Store</h4></mat-list-item>
+      <mat-list-item (click)="navigateTo('/return-products')">
+        <mat-icon mat-list-icon>keyboard_return</mat-icon>
+        <h4 mat-line>Return products</h4></mat-list-item>
+      <mat-list-item (click)="navigateTo('/products')">
+        <mat-icon mat-list-icon>dashboard</mat-icon>
+        <h4 mat-line>Products</h4></mat-list-item>
+
       <mat-list-item (click)="navigateTo('/invoice')" *ngIf="user.role !== 'Data entry'">
         <mat-icon mat-list-icon>pages
         </mat-icon>
@@ -57,12 +58,16 @@
       </mat-list-item>
       <mat-list-item (click)="navigateTo('/customers')" *ngIf="user.role !== 'Data entry'">
         <mat-icon mat-list-icon>people</mat-icon>
-        <h4 mat-line>Customer</h4>
+        <h4 mat-line>Customers</h4>
       </mat-list-item>
       <mat-list-item (click)="navigateTo('/billing')"
                      *ngIf="user.isRegister === true">
         <mat-icon mat-list-icon>attach_money</mat-icon>
         <h4 mat-line>Subscription</h4>
+      </mat-list-item>
+      <mat-list-item (click)="navigateTo('/store/preference')" *ngIf="user.isRegister">
+        <mat-icon mat-list-icon>settings</mat-icon>
+        <h4 mat-line> Store Preference</h4>
       </mat-list-item>
       <mat-list-item (click)="navigateToHelp()">
         <mat-icon mat-list-icon>live_help</mat-icon>

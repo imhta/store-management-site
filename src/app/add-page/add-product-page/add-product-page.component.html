@@ -193,21 +193,21 @@
               <input matInput
                      formControlName="purchasedPrice"
                      placeholder="Purchased Price"
-                     type="number">
+                     type="number" #purchasedPrice>
               <span matPrefix>&#8377;</span>
             </mat-form-field>
             <mat-form-field class="col">
               <input matInput
                      formControlName="marginInPercentage"
                      placeholder="Margin (%)"
-                     type="number">
+                     type="number" #margin (change)="sellingPrice.value = +purchasedPrice.value + (+purchasedPrice.value * +margin.value/100)">
               <span matSuffix>%</span>
             </mat-form-field>
             <mat-form-field class="col">
               <input matInput
                      formControlName="sellingPrice"
                      placeholder="Selling Price"
-                     type="number">
+                     type="number" #sellingPrice (change)="margin.value = ((+sellingPrice.value  - +purchasedPrice.value)/ +purchasedPrice.value)* 100">
               <span matPrefix>&#8377;</span>
             </mat-form-field>
           </div>
@@ -393,21 +393,23 @@
                   <input matInput
                          formControlName="purchasedPrice"
                          placeholder="Purchased Price"
-                         type="number">
+                         type="number" #purchasedPrice>
                   <span matPrefix>&#8377;</span>
                 </mat-form-field>
                 <mat-form-field class="col">
                   <input matInput
                          formControlName="marginInPercentage"
                          placeholder="Margin (%)"
-                         type="number">
+                         type="number"
+                         #margin (change)="sellingPrice.value = +purchasedPrice.value + (+purchasedPrice.value * +margin.value/100)">
                   <span matSuffix>%</span>
                 </mat-form-field>
                 <mat-form-field class="col">
                   <input matInput
                          formControlName="sellingPrice"
                          placeholder="Selling Price"
-                         type="number">
+                         type="number"
+                         #sellingPrice (change)="margin.value = ((+sellingPrice.value  - +purchasedPrice.value)/ +purchasedPrice.value)* 100">
                   <span matPrefix>&#8377;</span>
                 </mat-form-field>
               </div>

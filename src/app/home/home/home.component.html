@@ -7,11 +7,12 @@
       <app-navbar (toggle)="toggle($event, snav)"></app-navbar>
     </mat-sidenav>
     <mat-sidenav-content>
-      <div class="navbar bg-dark" ><button (click)="snav?.toggle()" mat-icon-button class="menu"  color="primary">
-        <mat-icon aria-label="menu"> menu</mat-icon>
-      </button></div>
       <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>
 
 </div>
+<button (click)="snav?.toggle()" mat-fab class="menu"  color="primary">
+  <mat-icon aria-label="menu" *ngIf="!snav?.opened"> keyboard_arrow_right</mat-icon>
+  <mat-icon aria-label="menu"  *ngIf="snav?.opened"> keyboard_arrow_left</mat-icon>
+</button>

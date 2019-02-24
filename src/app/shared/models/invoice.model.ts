@@ -41,6 +41,7 @@ export class InvoiceModel {
     this.totalPrice = 0;
     this.totalTax = 0;
     this.sendSms = true;
+    this.createdOn = firestore.Timestamp.now();
   }
 
   fromJson(data) {
@@ -92,7 +93,7 @@ export class InvoiceModel {
       'storeUid': this.storeUid,
       'sendSms': this.sendSms,
       'storeDetails': this.storeDetails,
-      'createdOn': firestore.Timestamp.now(),
+      'createdOn': this.createdOn,
       'invoiceId': this.invoiceId ? this.invoiceId : '',
       'pending': true
     };

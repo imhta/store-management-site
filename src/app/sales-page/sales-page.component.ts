@@ -17,6 +17,8 @@ import {
 import {GetAllDiscounts, GotAllDiscountsSuccessfully} from '../shared/actions/discount.actions';
 import {DiscountModel} from '../shared/models/discount.model';
 import {SaveInvoice} from '../shared/actions/invoice.actions';
+import {FormBuilder, Validators} from '@angular/forms';
+import {BreakpointObserver} from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-billing-page',
@@ -33,7 +35,6 @@ export class SalesPageComponent implements OnInit, OnDestroy {
   currentStore;
   allProducts: any[];
   typeOfPayment = ['Cash', 'Card', 'Cash & Card'];
-  prn = '';
   cartProducts: CartProduct[] = [];
   invoice = new InvoiceModel();
   outStockedProducts = [];
@@ -45,8 +46,15 @@ export class SalesPageComponent implements OnInit, OnDestroy {
   isErrorInSavingInvoice = false;
   isFc = true;
   screenWidth;
-
-  constructor(private store: Store, private action$: Actions) {
+  printContents;
+  uiModelGroup = this.fb.group({
+    prn: '',
+    phoneNumber: ['', Validators.required],
+    customerName: [],
+    typeOfPayment: [],
+  });
+  isSmallScreen = this.breakpointObserver.isMatched('(max-width: 599px)');
+  constructor(private store: Store, private action$: Actions, private fb: FormBuilder, private breakpointObserver: BreakpointObserver) {
     this.invoice.typeOfPayment = 'Cash';
     this.screenWidth = window.screen.width;
   }
@@ -60,13 +68,6 @@ export class SalesPageComponent implements OnInit, OnDestroy {
 
   }
 
-  prnSearch = (text$: Observable<string>) =>
-    text$.pipe(
-      debounceTime(200),
-      distinctUntilChanged(),
-      map(term => term.length < 1 ? []
-        : this.allProducts.map(v => v['prn']).filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).reverse().slice(0, 10))
-    );
 
   ngOnInit() {
     this.uid$.subscribe((uid) => this.invoice.billedBy = uid);
@@ -76,13 +77,28 @@ export class SalesPageComponent implements OnInit, OnDestroy {
     this.invoice.storeUid = this.currentStore.storeUid;
     this.invoice.hasNoGstNumber = this.currentStore.hasNoGstNumber;
     this.invoice.gstNumber = this.currentStore.gstNumber;
+    this.phoneNumber.valueChanges.subscribe((number) => {
+      this.invoice.customerNumber = number;
+      this.phoneNoChanged(number);
+    });
+    this.customerName.valueChanges.subscribe((customerName) => {
+      this.invoice.customerName = customerName;
+    });
   }
 
   ngOnDestroy() {
     this.storeDataSubscription.unsubscribe();
 
   }
-
+  get prn () {
+    return this.uiModelGroup.get('prn');
+  }
+  get phoneNumber () {
+    return this.uiModelGroup.get('phoneNumber');
+  }
+  get customerName () {
+    return this.uiModelGroup.get('customerName');
+  }
   subscribeToProducts() {
 
     this.storeDataSubscription = this.storeState$.subscribe((data) => {
@@ -118,7 +134,6 @@ export class SalesPageComponent implements OnInit, OnDestroy {
     this.invoice.discountPrice = 0;
     this.selectedDiscountIndex = null;
   }
-
   phoneNoChanged(phoneNo) {
     if (String(phoneNo).length === 10) {
       this.store.dispatch([new LoadingTrue(), new CheckCustomerExitsOrNot(phoneNo)]);
@@ -143,14 +158,14 @@ export class SalesPageComponent implements OnInit, OnDestroy {
   }
 
   getProduct(product: string) {
-    this.prn = product.split('/')[1];
+   this.prn.patchValue( product.split('/')[1]);
   }
 
   checkWhetherOutOfStock(stock) {
     return stock === 0;
   }
 
-  addToCart(prn) {
+  addToCart(prn: string) {
     const resultProduct: SingleProductModel[] = this.findProduct(prn);
     console.log(resultProduct);
     if (resultProduct.length > 0) {
@@ -214,12 +229,12 @@ export class SalesPageComponent implements OnInit, OnDestroy {
     this.cartProducts = [];
     this.invoice = new InvoiceModel();
     this.outStockedProducts = [];
-    this.prn = '';
     this.isErrorInSavingInvoice = false;
     this.invoice.typeOfPayment = 'Cash';
   }
 
-  saveInvoice() {
+  saveInvoice(type?: string) {
+
     if (
       this.invoice.customerNumber.toString().indexOf('') === 0
       && this.invoice.customerNumber.toString().length === 10
@@ -236,10 +251,71 @@ export class SalesPageComponent implements OnInit, OnDestroy {
         storeLogo: this.currentStore.storeLogo ? this.currentStore.storeLogo.localDownloadUrl : ''
       };
 
+      if (type === 'print') {
+        this.print();
+        this.invoice.sendSms = false;
+      } else {
+        this.invoice.sendSms = true;
+      }
       return this.store.dispatch([new LoadingTrue(), new SaveInvoice(this.invoice)]);
     } else {
       this.isErrorInSavingInvoice = true;
     }
+  }
+
+  print(): void {
+    this.printContents = '';
+    let popupWin;
+
+    this.printContents = document.getElementById('print-section').innerHTML + this.printContents;
+
+    popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
+    popupWin.document.open();
+    popupWin.document.write(`
+      <html>
+        <head>
+          <title>Print tab</title>
+          <style>
+           @page {
+            size: auto;  /* auto is the initial value */
+            margin: 0mm; /* this affects the margin in the printer settings */
+          }
+          html {
+            background-color: #FFFFFF;
+            margin: 0px; /* this affects the margin on the HTML before sending to printer */
+            padding: 0px;
+          }
+          .container{
+          max-width: 300px;
+          text-align: center;
+          }
+          p{
+          text-align: right;
+          }
+          table {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+            }
+            td, th {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+            tr:nth-child(even) {
+                background-color: #dddddd;
+            }
+          </style>
+        </head>
+    <body onload="window.print();window.close()">
+    <div class="container" >
+
+     ${this.printContents}
+    </div>
+    </body>
+      </html>`
+    );
+    popupWin.document.close();
   }
 
 }

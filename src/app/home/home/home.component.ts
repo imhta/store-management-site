@@ -63,9 +63,13 @@ export class HomeComponent implements OnInit, OnDestroy {
         return this.store.dispatch([new Navigate([`go/u/${id}/dashboard`])]);
       } else if (litKeys && (event.key === 'M' || event.key === 'm')) {
         return this.store.dispatch([new Navigate([`go/u/${id}/manage/users`])]);
-      } else if (litKeys && (event.key === 'H' || event.key === 'h')) {
-        return this.store.dispatch([new Navigate([`go/u/${id}/store`])]);
-      } else if (litKeys && (event.key === 'X' || event.key === 'x')) {
+      } else if (litKeys && (event.key === 'R' || event.key === 'r')) {
+        return this.store.dispatch([new Navigate([`go/u/${id}/return-products`])]);
+      } else if (litKeys && (event.key === 'P' || event.key === 'p')) {
+        return this.store.dispatch([new Navigate([`go/u/${id}/products`])]);
+      }else if (litKeys && (event.key === 'X' || event.key === 'x')) {
+        return this.store.dispatch([new Navigate([`go/u/${id}/store/preference`])]);
+      } else if (litKeys && (event.key === 'Q' || event.key === 'q')) {
         this.store.dispatch([new ResetSelectedStore(null), new Navigate(['go'])]);
       }
     }

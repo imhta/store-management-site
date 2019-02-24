@@ -84,7 +84,7 @@ export class ReturnProductsComponent implements OnInit {
       .pipe(ofActionDispatched(ReturnedInvoiceSuccessfully), take(1))
       .subscribe(() => {
         const id = +this.router.routerState.snapshot.url.split('/')[3];
-        return this.store.dispatch([new Navigate([`go/u/${id}/store`])]);
+        return this.store.dispatch([new Navigate([`go/u/${id}/products`])]);
       });
     this.action$
       .pipe(ofActionDispatched(ErrorInReturningInvoice), take(1))
@@ -109,7 +109,7 @@ export class ReturnProductsComponent implements OnInit {
       .pipe(ofActionDispatched(ReturnedInvoiceSuccessfully), take(1))
       .subscribe(() => {
         const id = +this.router.routerState.snapshot.url.split('/')[3];
-        return this.store.dispatch([new Navigate([`go/u/${id}/store`])]);
+        return this.store.dispatch([new Navigate([`go/u/${id}/products`])]);
       });
     this.action$
       .pipe(ofActionDispatched(ErrorInReturningInvoice), take(1))

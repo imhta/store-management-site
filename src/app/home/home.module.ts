@@ -46,11 +46,9 @@ import {ReturnProductsComponent} from '../sales-page/return-products/return-prod
 import {AddPageComponent} from '../add-page/add-page.component';
 import {DiscountsManagerComponent} from '../add-page/discounts-manager/discounts-manager.component';
 import {StoreTableViewComponent} from '../store-page/store-table-view/store-table-view.component';
-import {StoreGridViewComponent} from '../store-page/store-grid-view/store-grid-view.component';
 import {HttpClientModule} from '@angular/common/http';
 import {AngularFireStorageModule} from '@angular/fire/storage';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
-import {AngularFireDatabaseModule} from '@angular/fire/database';
 import {NgxKjuaModule} from 'ngx-kjua';
 import {ZXingScannerModule} from '@zxing/ngx-scanner';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -85,7 +83,6 @@ import {UniversalMicroAddService} from './services/universal-micro-add/universal
     AddPageComponent,
     DiscountsManagerComponent,
     StoreTableViewComponent,
-    StoreGridViewComponent,
     UniversalMicroAddDialogComponent,
   ],
   imports: [
