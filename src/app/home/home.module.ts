@@ -121,6 +121,7 @@ import {UniversalMicroAddService} from './services/universal-micro-add/universal
     ZXingScannerModule,
     NgbModule,
     AngularFirestoreModule,
+    AngularFirestoreModule.enablePersistence(),
     AngularFireStorageModule,
     SharedModule,
     HomeRoutingModule

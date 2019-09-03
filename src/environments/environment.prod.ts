@@ -1,11 +1,11 @@
 export const environment = {
   production: true,
   firebase: {
-    apiKey: 'AIzaSyDrNiX9Hz2aFxbIlH81bC9mp5oPnM9Gs04',
-    authDomain: 'console.spoteasy.in',
-    databaseURL: 'https://clothxnet.firebaseio.com',
-    projectId: 'clothxnet',
-    storageBucket: 'clothxnet.appspot.com',
-    messagingSenderId: '909059793100'
+    apiKey: 'AIzaSyB6efG3JDE-EGULLlPJLzyHGFpflBmPut4',
+    authDomain: 'clothxdemo.firebaseapp.com',
+    databaseURL: 'https://clothxdemo.firebaseio.com',
+    projectId: 'clothxdemo',
+    storageBucket: 'clothxdemo.appspot.com',
+    messagingSenderId: '549130511122'
   }
 };

@@ -23,13 +23,12 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {
   EmptyLinkedStore,
   GetEmployeeLinkedStores,
-  GetLinkedStores, GotEmployeeLinkedStoresSuccessfully,
+  GetLinkedStores,
+  GotEmployeeLinkedStoresSuccessfully,
   GotLinkedStores,
   ResetSelectedStore,
   SelectStoreOnly
 } from '../actions/store.actions';
-import {el} from '@angular/platform-browser/testing/src/browser_util';
-import {GetAllProducts} from '../actions/product.actions';
 
 
 @State<UserModel>({
@@ -190,7 +189,10 @@ export class AuthState {
         }
       });
     } else if ((state.role && state.isEmployee && state.isRegister) === undefined || null) {
-      this.store.dispatch([new EmptyLinkedStore()]);
+      this.store.dispatch([
+        new Navigate(['authenticated'], {}, {replaceUrl: true}),
+        new ResetSelectedStore(null),
+        new GetLinkedStores(state.uid)]);
     }
 
 
@@ -205,7 +207,7 @@ export class AuthState {
   navigateToLogin() {
     const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
     if (returnUrl) {
-      return this.store.dispatch([new LoadingFalse(), new Navigate(['login', {returnUrl : returnUrl}])]);
+      return this.store.dispatch([new LoadingFalse(), new Navigate(['login', {returnUrl: returnUrl}])]);
     } else {
       return this.store.dispatch([new LoadingFalse(), new Navigate(['login'])]);
     }

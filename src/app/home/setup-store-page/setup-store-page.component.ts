@@ -54,7 +54,7 @@ export class SetupStorePageComponent implements OnInit, OnDestroy {
       ]
     ],
     hasNoGstNumber: [false, [Validators.required]],
-    typeOfStore: ['fashion brand outlet', [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
+    typeOfStore: ['Fashion brand', [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
     address: this.fb.group({
       street: ['', [Validators.required]],
       city: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],

@@ -112,7 +112,7 @@ export class StoreState {
 
   @Action(NewStoreSetupSuccessfully)
   newStoreSetupSuccessfully() {
-    return this.store.dispatch([new LoadingFalse(), new Navigate(['home'])]);
+    return this.store.dispatch([new LoadingFalse(), new Navigate(['go'])]);
   }
 
   @Action(NewStoreSetupNotSuccessful)
@@ -132,7 +132,7 @@ export class StoreState {
       ]);
     } else {
       return this.store.dispatch([
-        new Navigate([`go/u/${action.index}/store`]),
+        new Navigate([`go/u/${action.index}/products`]),
         new GetAll(action.index)
       ]);
     }

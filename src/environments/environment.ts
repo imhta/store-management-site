@@ -6,13 +6,14 @@ export const environment = {
   production: false,
 
   firebase : {
-    apiKey: 'AIzaSyC25cgbnqtHtI_2JfDYfQOfjQZVYbAhnNI',
-    authDomain: 'clothxtest.firebaseapp.com',
-    databaseURL: 'https://clothxtest.firebaseio.com',
-    projectId: 'clothxtest',
-    storageBucket: 'clothxtest.appspot.com',
-    messagingSenderId: '275075175462'
+    apiKey: 'AIzaSyB6efG3JDE-EGULLlPJLzyHGFpflBmPut4',
+    authDomain: 'clothxdemo.firebaseapp.com',
+    databaseURL: 'https://clothxdemo.firebaseio.com',
+    projectId: 'clothxdemo',
+    storageBucket: 'clothxdemo.appspot.com',
+    messagingSenderId: '549130511122'
   }
+
 };
 
 /*

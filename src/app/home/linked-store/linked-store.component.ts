@@ -71,6 +71,6 @@ export class LinkedStoreComponent implements OnInit, OnDestroy {
   }
 
   navigateToSetupStore() {
-    return this.store.dispatch(new Navigate(['setup/store']));
+    return this.store.dispatch(new Navigate(['go/setup/store']));
   }
 }

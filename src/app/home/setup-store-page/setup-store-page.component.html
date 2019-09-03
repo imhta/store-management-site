@@ -6,9 +6,14 @@
 
 
       <mat-form-field>
-        <mat-select formControlName="typeOfStore" id="type" placeholder="Type of store" required>
-          <mat-option [value]="type['value']" *ngFor="let type of typeOfStores$ | async">{{type['key']}}</mat-option>
-        </mat-select>
+        <input matInput
+               id="type"
+               type="text"
+               placeholder="Type of store"
+               formControlName="typeOfStore"
+               [errorStateMatcher]="TouchedMatcher"
+               required
+        >
       </mat-form-field>
 
       <mat-form-field hintLabel="Min 5 characters">

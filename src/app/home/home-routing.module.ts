@@ -38,7 +38,7 @@ const routes: Routes = [
         children: [
           {
             path: '',
-            redirectTo: 'store',
+            redirectTo: 'products',
             pathMatch: 'full'
           },
           {
@@ -50,12 +50,8 @@ const routes: Routes = [
             path: 'products',
             canActivate: [AuthGuard],
             // resolve: {getAllProducts: StoreResolver},
-            children: [
-              {
-                path: '',
-                component: StorePageComponent
-              },
-            ]
+
+            component: StorePageComponent
           },
           {
             path: 'store/preference',
@@ -111,6 +107,10 @@ const routes: Routes = [
             path: 'add/user',
             component: AddUserComponent,
             canActivate: [AuthGuard, RegisterGuard]
+          },
+          {
+            path: 'manage/order',
+            loadChildren: '../e-order-management/e-order-management.module#EOrderManagementModule'
           }
         ]
       },
